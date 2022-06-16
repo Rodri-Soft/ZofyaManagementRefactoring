@@ -1,0 +1,66 @@
+﻿@model ZofyaManagementMVC.Models.staff
+@{
+    Layout = "_ZofyaManagementLayout";
+    ViewData["Title"] = "Zofya";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Management/zofya_management_mainpage_style.css" />
+}
+
+<section id="header">
+    <div class="container-xxl">
+
+        <div class="row">
+            <div class="middle column col-12 col-md-6 title-style d-flex align-items-center justify-content-center">
+                <div class="row">
+                    <div class="column col-12 d-flex align-items-center justify-content-center">
+                        <h1 class="text-white display-3 brand-zofya">
+                            Zofya
+                        </h1>
+                    </div>
+                    <div class="column col-12 d-flex align-items-center justify-content-center">
+                        <h4 class="text-white display-3 brand-zofya">
+                            Show us what you're loving
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="column col-12 col-md-6 d-flex align-items-center justify-content-center">
+                <form class="form-style rounded-4 shadow-5-strong" asp-action="LogIn" method="post">
+
+
+                    <div class="text-center mb-3">
+                        <h3 class="brand-zofya brand-zofya-logo">Login</h3>
+                    </div>
+
+                    <h6 id="errorAlertManagement">@ViewBag.InvalidCredentialsManagement</h6>
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input type="email" class="form-control" asp-for="Email">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input type="password" class="form-control" asp-for="Password">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button id="button-logIn-management" type="submit"
+                     class="btn btn-primary btn-block background-color-zofya">Login</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+@section Scripts {
+    <script src="/js/Management/indexManagement.js"></script>
+}

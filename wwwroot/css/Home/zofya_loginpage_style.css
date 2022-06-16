@@ -1,0 +1,107 @@
+
+.container-login{
+    padding-top: 10%;
+    padding-bottom: 10%;
+    width: 45%;
+}
+
+@media (max-width: 596px) {
+    .container-login{        
+        width: 60%;
+    }
+}
+
+@media (max-width: 447px) {
+    .container-login{      
+        padding-top: 15%;  
+        width: 80%;
+    }
+}
+
+.container-login .nav-link{
+    color: rgba(0,0,0,.6)!important;
+}
+
+.container-login .active{
+    color: hsla(0, 0%, 100%, .9)!important;    
+}
+
+.form-register .form-outline .active,
+.form-login .form-outline .active{
+    color: #4f4f4f!important;
+}
+
+@media (min-width: 320px) {
+
+    .form-register .form-outline,
+    .form-login .form-outline {
+        margin-bottom: 18%;
+    }
+}
+
+@media (min-width: 447px) {
+
+    .form-register .form-outline,
+    .form-login .form-outline {
+        margin-bottom: 16%;
+    }
+}
+
+@media (min-width: 768px) {
+
+    .form-register .form-outline,
+    .form-login .form-outline {
+        margin-bottom: 10%;
+    }
+}
+
+@media (min-width: 1200px) {
+
+    .form-register .form-outline,
+    .form-login .form-outline {
+        margin-bottom: 8%;
+    }
+}
+
+.container-login .nav-item .active,
+.container-login button{
+    background-color: #c66!important;
+}
+
+.container-login .active .form-check-label,
+.container-login .active h3,
+.container-login .active p{
+    color: #4f4f4f!important;
+}
+
+.container-login .active h3{
+    padding-top: 3%;
+    padding-bottom: 3%;
+}
+
+.modal-body{
+    color: #4f4f4f!important;
+}
+
+#button-close-modal-terms,
+#button-close-modal-correctmessage,
+#button-close-modal-errors{
+    background-color: transparent!important;
+}
+
+#check-label{
+    margin-bottom: 5%;
+}
+
+.tab-login-style{
+    text-transform: none!important;
+    width: 100%!important;
+}
+
+.modal-title{
+    color: black;
+}
+
+.login-gap{
+    margin-top: 6%!important;
+}
