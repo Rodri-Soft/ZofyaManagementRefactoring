@@ -121,7 +121,7 @@ function setAdministratorUpdateInformation(userEmail) {
                 $("#updateFormFooter").html(`
 
                     <button onclick="updateEmail();" type="button" class="btn btn-primary" 
-                        id="updateEmailButton">Save Email</button>
+                        id="updateButton">Save Email</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         onclick="hideUpdateModal();">Close</button>
                 
@@ -139,7 +139,7 @@ function setAdministratorUpdateInformation(userEmail) {
                 $("#updateFormFooter").html(`
 
                     <button onclick="updateFullname();" type="button" class="btn btn-primary"
-                        id="updateFullnameButton">Save Fullname</button>
+                        id="updateButton">Save Fullname</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         onclick="hideUpdateModal();">Close</button>
                 
@@ -173,7 +173,7 @@ function setAdministratorUpdateInformation(userEmail) {
                 $("#updateFormFooter").html(`
 
                     <button onclick="updatePhone(); return false;" type="button" class="btn btn-primary"
-                        id="updatePhoneButton">Save Phone</button>
+                        id="updateButton">Save Phone</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         onclick="hideUpdateModal();">Close</button>
                 
@@ -206,8 +206,8 @@ function loadData(userEmail) {
 
     }).done(function (data) {
         
-        staffInformation = data;       
-        // console.log(staffInformation);
+        staffInformation = data;               
+        console.log(staffInformation);
         loadStaffDataTable(staffInformation);
     });
 } 
@@ -479,12 +479,6 @@ function validatePassword() {
     return isCorrect;
 }
 
-function updatePassword() {
-    
-    console.log(staffInformation);
-    
-}
-
 function updateRFC() {
 
     disableUpdateButton();
@@ -514,14 +508,311 @@ function updateRFC() {
         }).done(function (data) {
 
             if (data.correct) {
-
                 
                 clearUpdateForm();
                 enableUpdateButton();
 
                 hideUpdateModal();
-                showSuccessAlert(data.message);
-                loadData(staffInformation.email);
+                showSuccessInformationAlert(data.message);  
+                // showSuccessAlert(data.message);
+                // loadData(staffInformation.email);
+
+            } else {
+
+                var errorMessages = data.message;
+                var errorFields = data.field;
+                
+                showAlert(errorMessages, true);
+                changeInValidField();
+                enableUpdateButton();
+            }
+
+        }).fail(function (jqXHR, textStatus) {
+
+            showRequestErrors(jqXHR, textStatus);
+            enableUpdateButton();
+
+        });
+
+    } else {
+        enableUpdateButton();
+    }
+
+}
+
+function updateCURP() {
+    
+    disableUpdateButton();
+    var validationResult = true;   
+
+    validationResult = validateCURP();
+
+    if (validationResult) {        
+
+        var updateCURPValue= $("#updateInput").val();
+
+        var staffInformationUpdate = {
+            "field": "curp",
+            "value": updateCURPValue,
+            "primaryKeyRFC": staffInformation.rfc
+        }
+
+        $.ajax({
+
+            method: "PUT",
+            url: urlServer+"/UpdateAdministrator",
+            cache: false,
+            processData: false,
+            contentType: "application/json",                    
+            data: JSON.stringify(staffInformationUpdate)
+
+        }).done(function (data) {
+
+            if (data.correct) {
+                
+                clearUpdateForm();
+                enableUpdateButton();
+
+                hideUpdateModal();
+                showSuccessInformationAlert(data.message);  
+                // showSuccessAlert(data.message);
+                // loadData(staffInformation.email);
+
+            } else {
+
+                var errorMessages = data.message;
+                var errorFields = data.field;
+                
+                showAlert(errorMessages, true);
+                changeInValidField();
+                enableUpdateButton();
+            }
+
+        }).fail(function (jqXHR, textStatus) {
+
+            showRequestErrors(jqXHR, textStatus);
+            enableUpdateButton();
+
+        });
+
+    } else {
+        enableUpdateButton();
+    }
+
+}
+
+function updateEmail() {
+    
+    disableUpdateButton();
+    var validationResult = true;   
+
+    validationResult = validateEmail();
+
+    if (validationResult) {        
+
+        var updateEmailValue= $("#updateInput").val();
+
+        var staffInformationUpdate = {
+            "field": "email",
+            "value": updateEmailValue,
+            "primaryKeyRFC": staffInformation.rfc
+        }
+
+        $.ajax({
+
+            method: "PUT",
+            url: urlServer+"/UpdateAdministrator",
+            cache: false,
+            processData: false,
+            contentType: "application/json",                    
+            data: JSON.stringify(staffInformationUpdate)
+
+        }).done(function (data) {
+
+            if (data.correct) {
+                
+                clearUpdateForm();
+                enableUpdateButton();
+
+                hideUpdateModal();
+                showSuccessAccessAlert(data.message);                
+
+            } else {
+
+                var errorMessages = data.message;
+                var errorFields = data.field;
+                
+                showAlert(errorMessages, true);
+                changeInValidField();
+                enableUpdateButton();
+            }
+
+        }).fail(function (jqXHR, textStatus) {
+
+            showRequestErrors(jqXHR, textStatus);
+            enableUpdateButton();
+
+        });
+
+    } else {
+        enableUpdateButton();
+    }
+}
+
+function updateFullname() {
+    
+    disableUpdateButton();
+    var validationResult = true;   
+
+    validationResult = validateFullName();
+
+    if (validationResult) {        
+
+        var updateFullnameValue= $("#updateInput").val();
+
+        var staffInformationUpdate = {
+            "field": "fullname",
+            "value": updateFullnameValue,
+            "primaryKeyRFC": staffInformation.rfc
+        }
+
+        $.ajax({
+
+            method: "PUT",
+            url: urlServer+"/UpdateAdministrator",
+            cache: false,
+            processData: false,
+            contentType: "application/json",                    
+            data: JSON.stringify(staffInformationUpdate)
+
+        }).done(function (data) {
+
+            if (data.correct) {
+                
+                clearUpdateForm();
+                enableUpdateButton();
+
+                hideUpdateModal();
+                showSuccessInformationAlert(data.message);                
+
+            } else {
+
+                var errorMessages = data.message;
+                var errorFields = data.field;
+                
+                showAlert(errorMessages, true);
+                changeInValidField();
+                enableUpdateButton();
+            }
+
+        }).fail(function (jqXHR, textStatus) {
+
+            showRequestErrors(jqXHR, textStatus);
+            enableUpdateButton();
+
+        });
+
+    } else {
+        enableUpdateButton();
+    }
+
+}
+
+function updatePassword() {
+    
+    disableUpdatePasswordButton();
+    var validationResult = true;   
+
+    validationResult = validatePassword();
+
+    if (validationResult) {        
+
+        var updateCurrentPasswordValue= $("#updateInputCurrentPassword").val();
+        var updateNewPasswordValue= $("#updateInputNewPassword").val();
+
+        var staffInformationUpdate = {
+            "currentValue": updateCurrentPasswordValue,
+            "newValue": updateNewPasswordValue,
+            "primaryKeyRFC": staffInformation.rfc
+        }
+
+        $.ajax({
+
+            method: "PUT",
+            url: urlServer+"/UpdateAdministratorPassword",
+            cache: false,
+            processData: false,
+            contentType: "application/json",                    
+            data: JSON.stringify(staffInformationUpdate)
+
+        }).done(function (data) {
+
+            if (data.correct) {
+                
+                clearUpdatePasswordForm();
+                enableUpdatePasswordButton();
+
+                hideUpdateModalPassword();
+                showSuccessInformationAlert(data.message);                
+
+            } else {
+
+                var errorMessages = data.message;
+                var errorFields = data.field;
+                
+                showAlert(errorMessages, true);
+                changeInValidField();
+                enableUpdatePasswordButton();
+            }
+
+        }).fail(function (jqXHR, textStatus) {
+
+            showRequestErrors(jqXHR, textStatus);
+            enableUpdatePasswordButton();
+
+        });
+
+    } else {
+        enableUpdatePasswordButton();
+    }
+
+}
+
+function updatePhone() {
+    
+    disableUpdateButton();
+    var validationResult = true;   
+
+    validationResult = validatePhone();
+
+    if (validationResult) {        
+
+        var updatePhoneValue= $("#updateInput").val();
+
+        var staffInformationUpdate = {
+            "field": "phone",
+            "value": updatePhoneValue,
+            "primaryKeyRFC": staffInformation.rfc
+        }
+
+        $.ajax({
+
+            method: "PUT",
+            url: urlServer+"/UpdateAdministrator",
+            cache: false,
+            processData: false,
+            contentType: "application/json",                    
+            data: JSON.stringify(staffInformationUpdate)
+
+        }).done(function (data) {
+
+            if (data.correct) {
+                
+                clearUpdateForm();
+                enableUpdateButton();
+
+                hideUpdateModal();
+                showSuccessInformationAlert(data.message);                  
 
             } else {
 
@@ -588,6 +879,42 @@ function showSuccessAlert(successMessages) {
     });
     
     $('#modalCorrectMessage').modal('show');    
+}
+
+function showSuccessAccessAlert(successMessages) {      
+    
+
+    $("#modalCorrectUserAccess").find(".modal-body").empty();
+    successMessages.forEach(message => {
+       
+        $("#modalCorrectUserAccess").find(".modal-body").html(`
+            <i class="fa-regular fa-circle-check fa-3x" style="color:green"></i>
+            <br>
+            <br>
+            ${message}        
+        `);     
+
+    });
+    
+    $('#modalCorrectUserAccess').modal('show');    
+}
+
+function showSuccessInformationAlert(successMessages) {      
+    
+
+    $("#modalCorrectUserInformation").find(".modal-body").empty();
+    successMessages.forEach(message => {
+       
+        $("#modalCorrectUserInformation").find(".modal-body").html(`
+            <i class="fa-regular fa-circle-check fa-3x" style="color:green"></i>
+            <br>
+            <br>
+            ${message}        
+        `);     
+
+    });
+    
+    $('#modalCorrectUserInformation').modal('show');    
 }
 
 function showRequestErrors(jqXHR, textStatus) {
@@ -670,8 +997,16 @@ function disableUpdateButton() {
     document.getElementById("updateButton").setAttribute("disabled", "");           
 }
 
+function disableUpdatePasswordButton() {
+    document.getElementById("updatePasswordButton").setAttribute("disabled", "");           
+}
+
 function enableUpdateButton() {
     document.getElementById("updateButton").removeAttribute("disabled");      
+}
+
+function enableUpdatePasswordButton() {
+    document.getElementById("updatePasswordButton").removeAttribute("disabled");      
 }
 
 function changeValidField() {
@@ -698,7 +1033,6 @@ function hideUpdateModal() {
     $("#updateInput").val("");
     $("#updateInput").removeClass("is-valid");
     $("#updateInput").removeClass("is-invalid");
-
 }
 
 function hideUpdateModalPassword() {

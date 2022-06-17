@@ -56,7 +56,7 @@ public class ManagementController : Controller
 
                     new Claim("Email", staff.Email),
                     new Claim("Name", staffFound.FullName),
-                    new Claim("ID", staffFound.RFC)
+                    new Claim("RFC", staffFound.RFC)
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

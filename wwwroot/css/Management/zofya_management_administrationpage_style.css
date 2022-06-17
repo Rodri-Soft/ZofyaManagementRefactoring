@@ -186,7 +186,38 @@ body.active .page .content {
 }
 
 .form-table{
-    padding-top: 15%;
+    padding-top: 65%;
+}
+
+.table{
+    font-size: .5rem;   
+}
+
+@media (min-width: 576px) {
+    .form-table{
+        padding-top: 35%;
+    }
+    .table{
+        font-size: .9rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .form-table{
+        padding-top: 27%;
+    }
+}
+
+@media (min-width: 992px) {
+    .form-table{
+        padding-top: 20%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .form-table{
+        padding-top: 15%;
+    }
 }
 
 tbody, td, tfoot, th, thead, tr {
@@ -214,7 +245,11 @@ tbody, td, tfoot, th, thead, tr {
     #invalidFieldNewPassword{
         margin-top: 6%;
     }
+
+
 }
+
+
 
 
 

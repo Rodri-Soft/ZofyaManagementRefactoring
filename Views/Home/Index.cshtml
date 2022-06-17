@@ -313,7 +313,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalCorrectMessage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    @* <div class="modal fade" id="modalCorrectMessage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -322,14 +322,46 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    @* <i class="fa-regular fa-circle-check fa-3x" style="color:green"></i>
-                    <br>
-                    <br>
-                    The account has been successfully registered *@
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal"
                         onclick="hideSuccessModal();">Close</button>
+                </div>
+            </div>
+        </div>
+    </div> *@
+
+    <div class="modal fade" id="modalCorrectUserAccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Success</h5>                    
+                </div>
+                <div class="modal-body text-center">
+                   
+                </div>
+                <div class="modal-footer">
+                    
+                    <a class="btn btn-secondary" asp-controller="Home" asp-action="LogOut">Close</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCorrectUserInformation" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Success</h5>                    
+                </div>
+                <div class="modal-body text-center">                   
+                </div>
+                <div class="modal-footer">
+                    
+                    <a class="btn btn-secondary" asp-controller="Home" asp-action="UpdateUserInformation">Close</a>
+                    
                 </div>
             </div>
         </div>
@@ -352,9 +384,9 @@
         
         function downloadData() {
 
-            var userEmail = '@ViewData["UserManagementEmail"]';        
-
-            setAdministratorUpdateInformation(userEmail)
+            var userEmail = '@ViewData["UserManagementEmail"]';             
+            
+            setAdministratorUpdateInformation(userEmail);
 
         }    
 
