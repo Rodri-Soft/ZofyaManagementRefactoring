@@ -6,6 +6,702 @@ sidebarToggle.addEventListener("click", function () {
     document.getElementById("sidebarToggle").classList.toggle("active");
 });
 
+var sizesList = [];
+function addSize() {
+
+    
+    var sizeValue = $("#newInputSize").val();
+
+    disableButtonItem("addSizeButton");
+    
+    var isCorrect = validateSize();
+
+    if (!isCorrect) {
+        
+        enableButtonItem("addSizeButton");
+
+        return;
+    }
+     
+    sizesList.push(sizeValue);
+        
+    var sizeValuesTable = {"size" :  sizeValue,
+                        
+                            "delete" : 
+                            `        
+                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                    onclick='deleteSize("${sizeValue}");'>
+                                    <i class="fas fa-times"></i>
+                                </button>    
+                            `  
+                            };  
+    
+    addSizeTable(sizeValuesTable);
+
+    enableButtonItem("addSizeButton");
+}
+
+var imagesList = [];
+function addImage() {
+
+    var imageValue = $("#newInputImage").val();
+
+    disableButtonItem("addImageButton");
+    
+    var isCorrect = validateImage();
+
+    if (!isCorrect) {
+        changeInValidFieldInput("newInputImage");
+        enableButtonItem("addImageButton");
+
+        return;
+    }
+
+    clearItemField("newInputImage");    
+    imagesList.push(imageValue);
+
+    var imagesNumber = imagesList.length;
+    var imageTag = "image "+(imagesNumber);
+        
+    var imageValuesTable = {"image" :  imageTag,
+                        
+                            "delete" : 
+                            `        
+                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                    onclick='deleteImage("${imageValue}");'>
+                                    <i class="fas fa-times"></i>
+                                </button>    
+                            `  
+                            };  
+    
+    addImageTable(imageValuesTable);
+
+    enableButtonItem("addImageButton");
+}
+
+var colorsList = [];
+function addColor() {
+
+    
+    var colorValue = $("#newInputColor").val();
+
+    disableButtonItem("addColorButton");
+    
+    var isCorrect = validateColor();
+
+    if (!isCorrect) {
+        
+        enableButtonItem("addColorButton");
+
+        return;
+    }
+    
+    colorsList.push(colorValue);
+        
+    var colorValuesTable = {"color" :  colorValue,
+                        
+                            "delete" : 
+                            `        
+                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                    onclick='deleteColor("${colorValue}");'>
+                                    <i class="fas fa-times"></i>
+                                </button>    
+                            `  
+                            };  
+    
+    addColorTable(colorValuesTable);
+
+    enableButtonItem("addColorButton");
+}
+
+function deleteColor(color) {
+    
+    var index = colorsList.findIndex( c => c === color);    
+    colorsList.splice(index, 1);
+
+    $("#colorsTable").find("tbody").empty();
+
+    $.each(colorsList, function (i, colorValue) {  
+
+        var colorValuesTable = {"color" :  colorValue,
+                        
+                            "delete" : 
+                            `        
+                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                    onclick='deleteColor("${colorValue}");'>
+                                    <i class="fas fa-times"></i>
+                                </button>    
+                            `  
+                            };  
+    
+        addColorTable(colorValuesTable);
+
+    });
+   
+}
+
+function deleteImage(image) {
+    
+    var index = imagesList.findIndex( i => i === image);    
+    imagesList.splice(index, 1);
+
+    $("#imagesTable").find("tbody").empty();
+
+    $.each(imagesList, function (i, imageValue) {  
+
+        var index = imagesList.findIndex( i => i === imageValue);  
+        var imageTag = "image "+(index+1);
+
+        var colorValuesTable = {"image" :  imageTag,
+                        
+                            "delete" : 
+                            `        
+                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                    onclick='deleteImage("${imageValue}");'>
+                                    <i class="fas fa-times"></i>
+                                </button>    
+                            `  
+                            };  
+    
+        addImageTable(colorValuesTable);
+
+    });
+   
+}
+
+function deleteSize(size) {
+    
+    var index = sizesList.findIndex( s => s === size);    
+    sizesList.splice(index, 1);
+
+    $("#sizesTable").find("tbody").empty();
+
+    $.each(sizesList, function (i, sizeValue) {  
+
+        var sizeValuesTable = {"size" :  sizeValue,
+                        
+                            "delete" : 
+                            `        
+                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                    onclick='deleteSize("${sizeValue}");'>
+                                    <i class="fas fa-times"></i>
+                                </button>    
+                            `  
+                            };  
+    
+        addSizeTable(sizeValuesTable);
+
+    });
+   
+}
+
+function addSizeTable(size) {
+    
+    $("#sizesTable").find("tbody")
+        .append($("<tr>")           
+            .append($("<td>").html(size.size))            
+            .append($("<td>").html(size.delete))
+
+        );  
+}
+
+
+function addImageTable(image) {
+    $("#imagesTable").find("tbody")
+        .append($("<tr>")           
+            .append($("<td>").html(image.image))            
+            .append($("<td>").html(image.delete))
+
+        );  
+}
+
+function addColorTable(color) {
+    
+    $("#colorsTable").find("tbody")
+        .append($("<tr>")           
+            .append($("<td>").html(color.color))            
+            .append($("<td>").html(color.delete))
+
+        );  
+}
+
+function validateFieldItems(input, validateFunction) {
+
+    $("#"+input).keydown(function (event) {
+        validateFunction();
+    });
+    $("#"+input).keyup(function (event) {
+        validateFunction();
+    });
+    $("#"+input).blur(function (event) {
+        validateFunction();
+    });
+}
+
+function validateColor() {
+
+    var color = $("#newInputColor").val();
+    
+    var isCorrect = true;
+      
+    var index = colorsList.findIndex( c => c === color); 
+    if(index != -1){
+        isCorrect = false;
+    }
+               
+
+    return isCorrect;
+}
+
+function validateSize() {
+
+    var size = $("#newInputSize").val();
+    
+    var isCorrect = true;
+      
+    var index = sizesList.findIndex( s => s === size); 
+    if(index != -1){
+        isCorrect = false;
+    }
+               
+
+    return isCorrect;
+}
+
+function validateImage() {
+
+    var image = $("#newInputImage").val();
+
+    const imageMaxLength = 200;
+    var isCorrect = true;
+
+    var imageLength = image.length;
+
+    var pattern =  new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/);
+    if(!pattern.test(image)){
+        
+        isCorrect = false;        
+    }
+
+    if ((image === "") || (imageLength > imageMaxLength)) {
+
+        isCorrect = false;        
+    }
+
+    var index = imagesList.findIndex( c => c === image); 
+    if(index != -1){
+        isCorrect = false;
+    }
+            
+    if (!isCorrect) {
+        changeInValidFieldInput("newInputImage");
+    } else {
+        changeValidFieldInput("newInputImage");
+    }
+
+    return isCorrect;
+}
+
+function setItemsInformation() {
+    $("body").addClass("active");
+    $("#sidebarToggle").addClass("active");
+
+    uncheckButtons();
+    $("#productsButton").addClass("active");
+    $('#pageContentFluid').empty();
+    $('#pageContent').empty();
+    $('#pageContentlg').empty();
+    $('#pageContentColorTable').empty();
+    $('#pageContentImageTable').empty();
+    $('#pageContentSizeTable').empty();
+
+    $("#pageContentFluid").html(`
+
+        <div class="text-center mb-3">
+            <h3 class="brand-zofya brand-zofya-logo">Items</h3>
+        </div>        
+        <table id="itemsTable" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">SKU</th>
+                    <th scope="col">Description</th>                    
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Care</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+               
+            </tbody>
+        </table>
+        <div class="my-3">
+            <button class="btn btn-primary background-color-zofya" data-bs-toggle="modal" data-bs-target="#addItemModal">Add new
+             item</button>
+        </div>
+    `);
+
+    $("#pageContentColorTable").html(`
+          
+        <table id="colorsTable" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Color</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
+        </table>
+    `);
+
+    $("#pageContentImageTable").html(`
+          
+        <table id="imagesTable" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
+        </table>
+    `);
+
+    $("#pageContentSizeTable").html(`
+          
+        <table id="sizesTable" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Size</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
+        </table>
+    `);
+
+    itemsTable = $('#itemsTable').DataTable({       
+        paging: false,
+        ordering: false,
+        searching: false,
+        info: false,
+        scrollY: 300,        
+        columns : [            
+            {"data": "sku"},
+            {"data": "description"},
+            {"data": "name"},
+            {"data": "price"},
+            {"data": "category"},
+            {"data": "status"},
+            {"data": "stock"},
+            {"data": "gender"},
+            {"data": "care"},
+            {"data": "edit"},
+            {"data": "delete"}
+        ] 
+    });
+
+    loadItemsServerData();
+
+    colorTable = $('#colorsTable').DataTable({       
+        paging: false,
+        ordering: false,
+        searching: false,
+        info: false,               
+        columns : [            
+            {"data": "color"},            
+            {"data": "delete"}
+        ] 
+    });
+
+    imageTable = $('#imagesTable').DataTable({       
+        paging: false,
+        ordering: false,
+        searching: false,
+        info: false,                                      
+        columns : [            
+            {"data": "image"},            
+            {"data": "delete"}
+        ] 
+    });
+    
+    sizeTable = $('#sizesTable').DataTable({       
+        paging: false,
+        ordering: false,
+        searching: false,
+        info: false,               
+        columns : [            
+            {"data": "size"},            
+            {"data": "delete"}
+        ] 
+    });
+
+    // validateFieldItems("newInputColor", validateColor);
+    validateFieldItems("newInputImage", validateImage);
+
+
+}
+
+var items = [];
+function loadItemsServerData() {       
+
+    $.ajax({
+
+        method: "POST",
+        url: urlServer+"/ItemsData",
+        cache: false,
+        processData: false,
+        contentType: "application/json",
+        data: null
+    }).done(function (data) {      
+
+        $("#itemsTable").find("tbody").empty();
+        items = data;        
+        loadItemsDataTable(items);
+
+    });
+}        
+
+function loadItemsDataTable(items) {
+
+
+    $.each(items, function (i, item) {                               
+
+        var itemSKUValue = item.sku;        
+        
+        var itemValues = {"sku" :  item.sku,
+                            "description" : item.description,
+                            "name" : item.name,
+                            "price" : item.price,
+                            "category" : item.category,
+                            "status" : item.status,
+                            "stock" : item.stock,
+                            "gender" : item.gender,
+                            "care" : item.care,                            
+                            "edit" : 
+                            `        
+                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                    >
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>    
+                            `,
+                            "delete" : 
+                            `        
+                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                    onclick='deleteItem("${itemSKUValue}");'>
+                                    <i class="fas fa-times"></i>
+                                </button>    
+                            `  
+                            };  
+
+        addItemTable(itemValues);
+                           
+    });
+
+}
+
+var deleteSKU="";
+function deleteItem(sku) {
+    deleteSKU = sku;    
+    // console.log(deleteSKU);
+    $("#modalDeleteItem").modal("show");
+}
+
+function removeItem() {
+    hideDeleteModalItem();
+    $.ajax({
+
+        method: "DELETE",
+        url: urlServer+"/ItemDelete/"+deleteSKU,
+        cache: false,
+        processData: false,
+        contentType: false,                    
+        data: null
+
+    }).done(function (data) {
+
+        if(data.correct){
+
+
+            loadItemsServerData();     
+            showSuccessAlert(data.message);   
+                                                              
+        } else {
+            
+            var errorMessages = data.message;
+            showAlert(errorMessages, true) 
+        }
+    });
+}
+
+function addItemTable(item) {
+    
+    $("#itemsTable").find("tbody")
+        .append($("<tr>")           
+            .append($("<td>").html(item.sku))
+            .append($("<td>").html(item.description))
+            .append($("<td>").html(item.name))            
+            .append($("<td>").html(item.price))
+            .append($("<td>").html(item.category))
+            .append($("<td>").html(item.status))
+            .append($("<td>").html(item.stock))
+            .append($("<td>").html(item.gender))
+            .append($("<td>").html(item.care))
+            .append($("<td>").html(item.edit))
+            .append($("<td>").html(item.delete))
+
+        );  
+}
+
+function setCustomersInformation() {
+    
+    $("body").addClass("active");
+    $("#sidebarToggle").addClass("active");
+
+    uncheckButtons();
+    $("#customersButton").addClass("active");
+    $('#pageContentFluid').empty();
+    $('#pageContent').empty();
+    $('#pageContentlg').empty();
+
+    $("#pageContentlg").html(`
+
+        <div class="text-center mb-3">
+            <h3 class="brand-zofya brand-zofya-logo">Customers</h3>
+        </div>        
+        <table id="customersTable" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th id="fullnameCol">Full Name</th>
+                    <th id="emailCol">Email</th>
+                    <th id="phoneCol">Phone</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    `);
+
+    customerTable = $('#customersTable').DataTable({       
+        paging: false,
+        ordering: false,
+        searching: false,
+        info: false,
+        scrollY: 300,        
+        columns : [            
+            {"data": "fullname"},
+            {"data": "email"},
+            {"data": "phone"},
+            {"data": "delete"}
+        ] 
+    });
+
+    loadCustomersServerData();
+
+
+}
+
+var customers = [];
+function loadCustomersServerData() {       
+
+    $.ajax({
+
+        method: "POST",
+        url: urlServer+"/CustomersData",
+        cache: false,
+        processData: false,
+        contentType: "application/json",
+        data: null
+    }).done(function (data) {      
+
+        $("#customersTable").find("tbody").empty();
+        customers = data;        
+        loadCustomersDataTable(customers);
+
+    });
+}        
+
+function loadCustomersDataTable(customers) {
+
+
+    $.each(customers, function (i, customer) {                               
+        var customerEmailValue = customer.email;
+        
+        var customerValues = {"fullname" :  customer.fullName,
+                            "email" : customer.email,
+                            "phone" : customer.phone,
+                            "delete" : 
+                            `        
+                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                    onclick='deleteCustomer("${customerEmailValue}");'>
+                                    <i class="fas fa-times"></i>
+                                </button>    
+                            ` 
+                            };  
+
+        addCustomerTable(customerValues);
+                           
+    });
+
+}
+
+var deleteEmail="";
+function deleteCustomer(email) {
+    deleteEmail = email;    
+    $("#modalDelete").modal("show");
+}
+
+function removeCustomer() {
+    hideDeleteModal();
+    $.ajax({
+
+        method: "DELETE",
+        url: urlServer+"/CustomerDelete/"+deleteEmail,
+        cache: false,
+        processData: false,
+        contentType: false,                    
+        data: null
+
+    }).done(function (data) {
+
+        if(data.correct){
+
+
+            loadCustomersServerData();     
+            showSuccessAlert(data.message);   
+                                                              
+        } else {
+            
+            var errorMessages = data.message;
+            showAlert(errorMessages, true) 
+        }
+    });
+}
+
+function addCustomerTable(customer) {
+    
+    $("#customersTable").find("tbody")
+        .append($("<tr>")           
+            .append($("<td>").html(customer.fullname))
+            .append($("<td>").html(customer.email))
+            .append($("<td>").html(customer.phone))            
+            .append($("<td>").html(customer.delete))
+
+        );  
+}
 
 function setAdministratorUpdateInformation(userEmail) {
 
@@ -14,7 +710,9 @@ function setAdministratorUpdateInformation(userEmail) {
 
     uncheckButtons();
     $("#personalButton").addClass("active");
+    $('#pageContentFluid').empty();
     $('#pageContent').empty();
+    $('#pageContentlg').empty();
 
     $("#pageContent").html(`
 
@@ -993,12 +1691,20 @@ function hideSuccessModal() {
     $('#modalCorrectMessage').modal('hide');
 }
 
+function disableButtonItem(button) {
+    document.getElementById(button).setAttribute("disabled", "");           
+}
+
 function disableUpdateButton() {
     document.getElementById("updateButton").setAttribute("disabled", "");           
 }
 
 function disableUpdatePasswordButton() {
     document.getElementById("updatePasswordButton").setAttribute("disabled", "");           
+}
+
+function enableButtonItem(button) {
+    document.getElementById(button).removeAttribute("disabled");      
 }
 
 function enableUpdateButton() {
@@ -1023,9 +1729,26 @@ function changeInValidField() {
 
 }
 
+function changeValidFieldInput(input) {
+
+    $("#"+input).removeClass("is-invalid");
+    $("#"+input).addClass("is-valid");
+
+}
+
+function changeInValidFieldInput(input) {
+
+    $("#"+input).removeClass("is-valid");
+    $("#"+input).addClass("is-invalid");
+
+}
+
 function uncheckButtons() {
     $("#dashBoardButton").removeClass("active");
     $("#personalButton").removeClass("active");
+    $("#customersButton").removeClass("active");
+    $("#productsButton").removeClass("active");
+
 }
 
 function hideUpdateModal() {
@@ -1039,11 +1762,26 @@ function hideUpdateModalPassword() {
     $('#updateDialogPassword').modal('hide');
 }
 
+function hideDeleteModal() {
+    $('#modalDelete').modal('hide');
+}
+
+function hideDeleteModalItem() {
+    $('#modalDeleteItem').modal('hide');
+}
+
 function clearUpdateForm() {
     
     $("#updateInput").val("");
     $("#updateInput").removeClass("is-valid");
     $("#updateInput").removeClass("is-invalid");
+}
+
+function clearItemField(input) {
+    
+    $("#"+input).val("");
+    $("#"+input).removeClass("is-valid");
+    $("#"+input).removeClass("is-invalid");
 }
 
 function clearUpdatePasswordForm() {

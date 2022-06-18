@@ -1,5 +1,6 @@
 ::-webkit-scrollbar {
     width: 5px;
+    height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -18,16 +19,21 @@
     cursor: pointer;
 }
 
+:root {
+    --main-color: #c66;
+}
+  
+
 body {
     background-color: #fafafa;
 }
 
 .sidebar{
-    z-index: 1;
+    z-index: 2;
 }
 
 .navbar{
-    z-index:0;
+    z-index:1;
 }
 
 .page .sidebar {
@@ -190,7 +196,26 @@ body.active .page .content {
 }
 
 .table{
-    font-size: .5rem;   
+    font-size: .5rem;       
+}
+
+/* #fullnameCol{
+    width: 9px;
+}
+#emailCol{
+    width: 18px;
+} */
+
+/* .table th{
+    width: 30%!important;
+} */
+
+.form-table-fluid{
+    padding-top: 0%!important;
+}
+
+.form-table-lg{
+    padding-top: 0%!important;
 }
 
 @media (min-width: 576px) {
@@ -199,25 +224,33 @@ body.active .page .content {
     }
     .table{
         font-size: .9rem;
-    }
+    }       
 }
 
 @media (min-width: 768px) {
     .form-table{
         padding-top: 27%;
-    }
+    }   
+   
 }
 
 @media (min-width: 992px) {
     .form-table{
         padding-top: 20%;
     }
+    .form-table-fluid{
+        padding-top: 1%;
+    }
+   
 }
 
 @media (min-width: 1200px) {
     .form-table{
         padding-top: 15%;
     }
+    /* .table th{
+        width: 30%!important;
+    } */
 }
 
 tbody, td, tfoot, th, thead, tr {
@@ -228,7 +261,6 @@ tbody, td, tfoot, th, thead, tr {
     max-width: 70%;
 }
 
-
 .form-control.is-invalid, .was-validated .form-control:invalid{
     margin-bottom: 0;
 }
@@ -237,19 +269,36 @@ tbody, td, tfoot, th, thead, tr {
     margin-bottom: 0;
 }
 
-#invalidFieldNewPassword{
+#invalidFieldNewPassword, #invalidFieldColor{
     margin-top: 1.5%;
 }
 
 @media (min-width: 992px) {
     #invalidFieldNewPassword{
         margin-top: 6%;
-    }
-
-
+    }    
 }
 
+.dataTables_empty
+{
+    display:none;
+}
 
+.background-color-zofya{
+    background-color: var(--main-color)!important;      
+}
+
+.button-add-style{
+    padding-left: 0;
+    padding-top: 2%;
+}
+
+@media (min-width: 992px) {
+    .button-add-style{
+        padding-left: 1%!important;
+        padding-top: initial;
+    }
+}
 
 
 

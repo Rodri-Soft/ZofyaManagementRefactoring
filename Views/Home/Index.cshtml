@@ -34,26 +34,26 @@
                         </div>
                     </a>
                 </li>
-                <li class="navigation-list-item">
-                    <a class="navigation-link" href="/">
+                <li class="navigation-list-item" id="customersButton" onclick="setCustomersInformation();">
+                    <a class="navigation-link" href="#">
                         <div class="row">
                             <div class="col-2">
                                 <i class="fas fa-users"></i>
                             </div>
                             <div class="col-9">
-                                Teams
+                                Customers
                             </div>
                         </div>
                     </a>
                 </li>
-                <li class="navigation-list-item ">
-                    <a class="navigation-link" href="/">
+                <li class="navigation-list-item" id="productsButton" onclick="setItemsInformation();">
+                    <a class="navigation-link" href="#">
                         <div class="row">
                             <div class="col-2">
-                                <i class="fas fa-comments"></i>
+                                <i class="fa-solid fa-bag-shopping"></i>
                             </div>
                             <div class="col-9">
-                                Chat
+                                Products
                             </div>
                         </div>
                     </a>
@@ -152,18 +152,37 @@
         @* <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">SKU</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Discount</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Care</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
+                    <th scope="row">Otto</th>                    
+                    <td>Otto@gmail.com</td>
+                    <td>2281963700</td>
                     <td>Otto</td>
-                    <td>fat</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark">
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+                    </td>
                     <td>
                         <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark">
                             <i class="fas fa-times"></i>
@@ -172,10 +191,21 @@
                 </tr>
                 </tr>
                 <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>fat</td>
+                    <th scope="row">Robert</th>
+                    <td>Robert@gmail.com</td>
+                    <td>2281963700</td>   
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark">
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+                    </td>                 
                     <td>
                         <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark">
                             <i class="fas fa-times"></i>
@@ -183,9 +213,21 @@
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>twitter</td>
+                    <th scope="row">Steven</th>                    
+                    <td>Steven@gmail.com</td>
+                    <td>2281963700</td> 
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark">
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+                    </td>
                     <td>
                         <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark">
                             <i class="fas fa-times"></i>
@@ -194,7 +236,7 @@
                 </tr>
             </tbody>
         </table> *@
-        
+
     </div>
 
     @* Modals *@
@@ -313,13 +355,11 @@
         </div>
     </div>
 
-    @* <div class="modal fade" id="modalCorrectMessage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalCorrectMessage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Success</h5>
-                    <button id="button-close-modal-correctmessage" type="button" class="btn-close" data-mdb-dismiss="modal"
-                        aria-label="Close"></button>
+                    <h5 class="modal-title" id="exampleModalLabel">Success</h5>                    
                 </div>
                 <div class="modal-body text-center">
                     
@@ -330,7 +370,7 @@
                 </div>
             </div>
         </div>
-    </div> *@
+    </div>
 
     <div class="modal fade" id="modalCorrectUserAccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -367,8 +407,422 @@
         </div>
     </div>
 
+    <div class="modal fade" tabindex="-1" id="modalDelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete</h5>                    
+                </div>
+                <div class="modal-body">
+
+                    <div class="row mb-3">
+                        <label class="col-sm-12 col-form-label">
+                            Are you sure you want to delete this customer?
+                        </label>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button onclick="removeCustomer();" type="button" class="btn btn-primary">Delete Customer</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="modalDeleteItem" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete</h5>                    
+                </div>
+                <div class="modal-body">
+
+                    <div class="row mb-3">
+                        <label class="col-sm-12 col-form-label">
+                            Are you sure you want to delete this item?
+                        </label>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button onclick="removeItem();" type="button" class="btn btn-primary">Delete Item</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="addItemModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Item</h5>                    
+                </div>
+                <div class="modal-body">
+                    <form class="needs-validation" id="itemForm" novalidate>
+
+                        <div class="row" style="margin: 3% 0;">
+
+                            <label id="labelSKU" for="labelSKU" class="col-12 col-lg-2 col-form-label">
+                                SKU:
+                            </label>
+
+                            <div class="form-outline col-12 col-lg-8">
+
+                                <input type="text" id="newInputSKU" class="form-control" placeholder="Fill in the field">
+                                <label id="newLabelSKU" for="newLabelSKU" class="form-label">
+                                    SKU
+                                </label>
+                                <div id="invalidFieldSKU" class="invalid-feedback"></div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin: 0 0 3% 0;">
+
+                           <label id="labelDescription" for="labelDescription" class="col-12 col-lg-2 col-form-label">
+                                Description:
+                            </label>
+
+                            <div class="form-outline col-12 col-lg-8">
+
+                                <input type="text" id="newInputDescription" class="form-control" placeholder="Fill in the field">
+                                <label id="newLabelDescription" for="newLabelDescription" class="form-label">
+                                    Description
+                                </label>
+                                <div id="invalidFieldDescription" class="invalid-feedback"></div>
+                            </div>
+
+                        </div> 
+
+                        <div class="row" style="margin: 3% 0;">
+
+                            <label id="labelName" for="labelName" class="col-12 col-lg-2 col-form-label">
+                                Name:
+                            </label>
+
+                            <div class="form-outline col-12 col-lg-8">
+
+                                <input type="text" id="newInputName" class="form-control" placeholder="Fill in the field">
+                                <label id="newLabelName" for="newLabelName" class="form-label">
+                                    Name
+                                </label>
+                                <div id="invalidFieldName" class="invalid-feedback"></div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin: 3% 0;">
+
+                            <label id="labelPrice" for="labelPrice" class="col-12 col-lg-2 col-form-label">
+                                Price:
+                            </label>
+
+                            <div class="form-outline col-12 col-lg-8">
+
+                                <input type="number" id="newInputPrice" class="form-control" placeholder="Fill in the field">
+                                <label id="newLabelPrice" for="newLabelPrice" class="form-label">
+                                    Price
+                                </label>
+                                <div id="invalidFieldPrice" class="invalid-feedback"></div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin: 3% 0;">
+
+                            <label id="labelCategory" for="labelCategory" class="col-12 col-lg-2 col-form-label">
+                                Category:
+                            </label>
+
+                            <div class="form-outline col-12 col-lg-8">
+
+                                <input type="text" id="newInputCategory" class="form-control" placeholder="Fill in the field">
+                                <label id="newLabelCategory" for="newLabelCategory" class="form-label">
+                                    Category
+                                </label>
+                                <div id="invalidFieldCategory" class="invalid-feedback"></div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin: 3% 0;">
+
+                            <label id="labelStatus" for="labelStatus" class="col-12 col-lg-2 col-form-label">
+                                Status:
+                            </label>
+
+                            <div class="form-outline col-12 col-lg-8">
+
+                                <input type="text" id="newInputStatus" class="form-control" placeholder="Fill in the field">
+                                <label id="newLabelStatus" for="newLabelStatus" class="form-label">
+                                    Status
+                                </label>
+                                <div id="invalidFieldStatus" class="invalid-feedback"></div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin: 3% 0;">
+
+                            <label id="labelStock" for="labelStock" class="col-12 col-lg-2 col-form-label">
+                                Stock:
+                            </label>
+
+                            <div class="form-outline col-12 col-lg-8">
+
+                                <input type="number" id="newInputStock" class="form-control" placeholder="Fill in the field">
+                                <label id="newLabelStock" for="newLabelStock" class="form-label">
+                                    Stock
+                                </label>
+                                <div id="invalidFieldStock" class="invalid-feedback"></div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin: 3% 0;">
+
+                            <label id="labelGender" for="labelGender" class="col-12 col-lg-2 col-form-label">
+                                Gender:
+                            </label>
+
+                            <div class="form-outline col-12 col-lg-8">
+
+                                <input type="text" id="newInputGender" class="form-control" placeholder="Fill in the field">
+                                <label id="newLabelGender" for="newLabelGender" class="form-label">
+                                    Gender
+                                </label>
+                                <div id="invalidFieldGender" class="invalid-feedback"></div>
+                            </div>
+
+                        </div>
+
+                        <div class="row" style="margin: 3% 0;">
+
+                            <label id="labelCare" for="labelCare" class="col-12 col-lg-2 col-form-label">
+                                Care:
+                            </label>
+
+                            <div class="form-outline col-12 col-lg-8">
+
+                                <input type="text" id="newInputCare" class="form-control" placeholder="Fill in the field">
+                                <label id="newLabelCare" for="newLabelCare" class="form-label">
+                                    Care
+                                </label>
+                                <div id="invalidFieldCare" class="invalid-feedback"></div>
+                            </div>
+
+                        </div>
+
+                        <div class="row border rounded p-3" style="margin: 7% 0;">
+
+                            <label id="labelColor" for="labelColor" class="col-12 col-lg-2 col-form-label">
+                                Colors:
+                            </label>
+
+                            <div class="col-12 col-lg-6">
+
+                                @* <input type="text" id="newInputColor" class="form-control" placeholder="Fill in the field">
+                                <label id="newLabelColor" for="newLabelColor" class="form-label">
+                                    Color
+                                </label>
+                                <div id="invalidFieldColor" class="invalid-feedback"></div> *@
+
+                                <select id="newInputColor" class="form-select">
+                                    <option value="#000">Black</option>
+                                    <option value="#0000FF">Blue</option>
+                                    <option value="#FF0000">Red</option>
+                                    <option value="#FF8000">Orange</option>
+                                    <option value="#800080">Purple</option>
+                                    <option value="#008000">Green</option>
+                                    <option value="#FFFF00">Yellow</option>
+                                    <option value="#FFF">White</option>
+                                    <option value="#1E918C">Turquoise</option>
+                                    <option value="#FFD1DC">Pink</option>                                    
+                                </select>
+
+                            </div>
+
+                            <div class="col-12 col-lg-4 button-add-style">
+                                <button onclick="addColor();" type="button" class="btn btn-primary"
+                                 id="addColorButton">Add color</button>
+                            </div>
+
+                            <div class="col-12 col-lg-10" id="pageContentColorTable">
+                                
+                            </div>                           
+                        </div>
+
+                        <div class="row border rounded p-3" style="margin: 7% 0;">
+
+                            <label id="labelImage" for="labelColor" class="col-12 col-lg-2 col-form-label">
+                                Images:
+                            </label>
+
+                            <div class="form-outline col-12 col-lg-6">
+
+                                <input type="text" id="newInputImage" class="form-control" placeholder="Fill in the field">
+                                <label id="newLabelImage" for="newLabelImage" class="form-label">
+                                    Image
+                                </label>
+                                <div id="invalidFieldImage" class="invalid-feedback"></div>
+                            </div>
+
+                            <div class="col-12 col-lg-4 button-add-style">
+                                <button onclick="addImage();" type="button" class="btn btn-primary"
+                                 id="addImageButton">Add image</button>
+                            </div>
+
+                            <div class="col-12 col-lg-10" id="pageContentImageTable">
+                                
+                            </div>                           
+                        </div>
+
+                        <div class="row border rounded p-3" style="margin: 7% 0;">
+
+                            <label id="labelSize" for="labelSize" class="col-12 col-lg-2 col-form-label">
+                                Sizes:
+                            </label>
+
+                            <div class="col-12 col-lg-6">                            
+
+                                <select id="newInputSize" class="form-select">
+                                    <option value="XXS">XXS</option>
+                                    <option value="XS">XS</option>
+                                    <option value="S">S</option>
+                                    <option value="M">M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                    <option value="XXL">XXL</option>                                                                
+                                </select>
+
+                            </div>
+
+                            <div class="col-12 col-lg-4 button-add-style">
+                                <button onclick="addSize();" type="button" class="btn btn-primary"
+                                 id="addSizeButton">Add size</button>
+                            </div>
+
+                            <div class="col-12 col-lg-10" id="pageContentSizeTable">
+                                
+                            </div>                           
+                        </div>
+                                                                                             
+                    </form>
+                </div>
+                
+                <div class="modal-footer">
+                    <button onclick="agregarAlumno(); return false;" type="button" class="btn btn-primary"
+                        data-bs-toggle="modal" id="#agregarAlumno">Add Item</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    >Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
+<div class="container-fluid">
+    <div id="pageContentFluid" class="form-table-fluid">
+        @* <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">SKU</th>
+                    <th scope="col">Description</th>                    
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Care</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">Otto</th>                    
+                    <td>Otto@gmail.com</td>
+                    <td>2281963700</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark">
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </td>
+                </tr>
+                </tr>
+                <tr>
+                    <th scope="row">Robert</th>
+                    <td>Robert@gmail.com</td>
+                    <td>2281963700</td>   
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark">
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+                    </td>                 
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Steven</th>                    
+                    <td>Steven@gmail.com</td>
+                    <td>2281963700</td> 
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>Otto</td>
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark">
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table> *@
+
+    </div>
+</div>
+
+<div class="container-lg">
+    <div id="pageContentlg" class="form-table-lg">
+
+    </div>
+</div>
 
 
 
