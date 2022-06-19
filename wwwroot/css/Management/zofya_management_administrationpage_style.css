@@ -26,8 +26,7 @@
 }
   
 
-body {
-    /* background-color: #fafafa; */
+body {    
     background-color: white;
 }
 
@@ -97,8 +96,7 @@ body.active .page .sidebar {
 }
 
 body.active .page .content {
-    margin-left: 0;
-    /* width: 100%; */
+    margin-left: 0;    
 }
 
 .sidebar-header {
@@ -113,8 +111,7 @@ body.active .page .content {
 }
 
 .logo-container {
-    max-width: 40px;
-    /* background-color: rgb(255, 255, 255, 0.1); */
+    max-width: 40px;    
     border-radius: 5px;
     margin: 8px;
     padding: 6px 8px;
@@ -202,17 +199,6 @@ body.active .page .content {
     font-size: .5rem;       
 }
 
-/* #fullnameCol{
-    width: 9px;
-}
-#emailCol{
-    width: 18px;
-} */
-
-/* .table th{
-    width: 30%!important;
-} */
-
 .form-table-fluid{
     padding-top: 0%!important;
 }
@@ -250,10 +236,7 @@ body.active .page .content {
 @media (min-width: 1200px) {
     .form-table{
         padding-top: 15%;
-    }
-    /* .table th{
-        width: 30%!important;
-    } */
+    }    
 }
 
 tbody, td, tfoot, th, thead, tr {
@@ -327,8 +310,6 @@ tbody, td, tfoot, th, thead, tr {
 
 
 
-
-
 .highcharts-figure,
 .highcharts-data-table table {
     min-width: 320px;
@@ -371,10 +352,6 @@ tbody, td, tfoot, th, thead, tr {
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 }
-
-
-
-
 
 
 

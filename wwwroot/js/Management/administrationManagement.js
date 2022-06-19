@@ -20,7 +20,7 @@ function setAnalyticsInformation() {
     $('#pageContentImageTable').empty();
     $('#pageContentSizeTable').empty();
     
-    $("#highchartsConteiner").html(`
+    $("#highchartsContainer").html(`
         <div class="row">
             <figure class="highcharts-figure col-6">
                 <div id="containerPie"></div>        
@@ -759,7 +759,7 @@ function setItemsInformation() {
     $('#pageContentColorTable').empty();
     $('#pageContentImageTable').empty();
     $('#pageContentSizeTable').empty();
-    $('#highchartsConteiner').empty();
+    $('#highchartsContainer').empty();
 
     $("#pageContentFluid").html(`
 
@@ -1215,7 +1215,7 @@ function setCustomersInformation() {
     $('#pageContentColorTable').empty();
     $('#pageContentImageTable').empty();
     $('#pageContentSizeTable').empty();
-    $('#highchartsConteiner').empty();
+    $('#highchartsContainer').empty();
 
     $("#pageContentlg").html(`
 
@@ -1269,7 +1269,7 @@ function setOrdersInformation() {
     $('#pageContentColorTable').empty();
     $('#pageContentImageTable').empty();
     $('#pageContentSizeTable').empty();
-    $('#highchartsConteiner').empty();
+    $('#highchartsContainer').empty();
 
     $("#pageContentlg").html(`
 
@@ -1531,7 +1531,7 @@ function setAdministratorUpdateInformation(userEmail) {
     $('#pageContentColorTable').empty();
     $('#pageContentImageTable').empty();
     $('#pageContentSizeTable').empty();
-    $('#highchartsConteiner').empty();
+    $('#highchartsContainer').empty();
 
     $("#pageContent").html(`
 
