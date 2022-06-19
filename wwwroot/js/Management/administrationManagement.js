@@ -6,6 +6,152 @@ sidebarToggle.addEventListener("click", function () {
     document.getElementById("sidebarToggle").classList.toggle("active");
 });
 
+function setAnalyticsInformation() {
+
+    $("body").addClass("active");
+    $("#sidebarToggle").addClass("active");
+
+    uncheckButtons();
+    $("#analyticsButton").addClass("active");
+    $('#pageContentFluid').empty();
+    $('#pageContent').empty();
+    $('#pageContentlg').empty();
+    $('#pageContentColorTable').empty();
+    $('#pageContentImageTable').empty();
+    $('#pageContentSizeTable').empty();
+    
+    $("#highchartsConteiner").html(`
+        <div class="row">
+            <figure class="highcharts-figure col-6">
+                <div id="containerPie"></div>        
+            </figure>
+
+            <figure class="highcharts-figure col-6">
+                <div id="containerBar"></div>                      
+            </figure>  
+        </div>
+    `);
+
+    $.ajax({
+
+        method: "GET",
+        url: urlServer+"/PopularItems",
+        cache: false,
+        processData: false,
+        contentType: false,                    
+        data: null
+
+    }).done(function (data) {
+
+        setPieGraph(data);
+        
+    });
+
+    $.ajax({
+
+        method: "GET",
+        url: urlServer+"/DeliveryOrders",
+        cache: false,
+        processData: false,
+        contentType: false,                    
+        data: null
+
+    }).done(function (data) {
+
+        setBarGraph(data);
+        
+    });
+    
+
+}
+
+function setBarGraph(data) {
+    
+    Highcharts.chart('containerBar', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            align: 'center',
+            text: 'Concentration of delivery dates'
+        },        
+        accessibility: {
+            announceNewData: {
+                enabled: true
+            }
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Total percent delivery dates'
+            }
+    
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%'
+                }
+            }
+        },             
+        series: [
+            {
+                name: "Delivery date",
+                colorByPoint: true,
+                data: data
+            }
+        ],
+        credits: false
+        
+    });
+}
+
+function setPieGraph(data) {
+    Highcharts.chart('containerPie', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Customer Interest In Zofya Items'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: 'Interest',
+            colorByPoint: true,
+            data: data
+        }],
+        credits: false
+    });
+        
+}
+
 var sizesList = [];
 function addSize() {
 
@@ -29,7 +175,7 @@ function addSize() {
                         
                             "delete" : 
                             `        
-                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                     onclick='deleteSize("${sizeValue}");'>
                                     <i class="fas fa-times"></i>
                                 </button>    
@@ -61,13 +207,19 @@ function addImage() {
     imagesList.push(imageValue);
 
     var imagesNumber = imagesList.length;
-    var imageTag = "image "+(imagesNumber);
+    var imageTag = "image_"+(imagesNumber);
         
-    var imageValuesTable = {"image" :  imageTag,
+    var imageValuesTable = {"image" : 
+                            `
+                                <a href="${imageValue}" target="_blank">
+                                   ${imageTag}
+                                </a>
+                            `    
+                            ,
                         
                             "delete" : 
                             `        
-                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                     onclick='deleteImage("${imageValue}");'>
                                     <i class="fas fa-times"></i>
                                 </button>    
@@ -102,7 +254,7 @@ function addColor() {
                         
                             "delete" : 
                             `        
-                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                     onclick='deleteColor("${colorValue}");'>
                                     <i class="fas fa-times"></i>
                                 </button>    
@@ -127,7 +279,7 @@ function deleteColor(color) {
                         
                             "delete" : 
                             `        
-                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                     onclick='deleteColor("${colorValue}");'>
                                     <i class="fas fa-times"></i>
                                 </button>    
@@ -150,13 +302,19 @@ function deleteImage(image) {
     $.each(imagesList, function (i, imageValue) {  
 
         var index = imagesList.findIndex( i => i === imageValue);  
-        var imageTag = "image "+(index+1);
+        var imageTag = "image_"+(index+1);
 
-        var imageValuesTable = {"image" :  imageTag,
+        var imageValuesTable = {"image" :  
+                            `
+                                <a href="${imageValue}" target="_blank">
+                                ${imageTag}
+                                </a>
+                            `                   
+                            ,
                         
                             "delete" : 
                             `        
-                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                     onclick='deleteImage("${imageValue}");'>
                                     <i class="fas fa-times"></i>
                                 </button>    
@@ -182,7 +340,7 @@ function deleteSize(size) {
                         
                             "delete" : 
                             `        
-                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                     onclick='deleteSize("${sizeValue}");'>
                                     <i class="fas fa-times"></i>
                                 </button>    
@@ -562,7 +720,7 @@ function validateCare() {
     
     var isCorrect = true;    
 
-    var pattern =  new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:',_-]{0,}$/);
+    var pattern =  new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:º',_-]{0,}$/);
     if(!pattern.test(newCare)){
         
         isCorrect = false;
@@ -601,6 +759,7 @@ function setItemsInformation() {
     $('#pageContentColorTable').empty();
     $('#pageContentImageTable').empty();
     $('#pageContentSizeTable').empty();
+    $('#highchartsConteiner').empty();
 
     $("#pageContentFluid").html(`
 
@@ -628,11 +787,11 @@ function setItemsInformation() {
             </tbody>
         </table>
         <div class="my-3">
-            <button class="btn btn-primary background-color-zofya" onclick="showModalAddItem();">Add new
+            <button id="buttonTest" class="btn button-action-style" onclick="showModalAddItem();">Add new
              item</button>
         </div>
     `);
-    // showModalAddItem
+    
     $("#pageContentColorTable").html(`
           
         <table id="colorsTable" class="table table-striped table-hover">
@@ -752,9 +911,9 @@ function showModalAddItem() {
     $("#addItemModal").modal("show");
     $("#modalFooterContent").html(`
 
-        <button onclick="addItem();" type="button" class="btn btn-primary"
+        <button onclick="addItem();" type="button" class="btn button-action-style"
             id="addItemButton">Add Item</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" 
+        <button type="button" class="btn button-action-style" data-bs-dismiss="modal" 
             onclick="hideAddItemModal();">Close</button>
     `);
 }
@@ -785,26 +944,63 @@ function loadItemsDataTable(items) {
     $.each(items, function (i, item) {                               
 
         var itemSKUValue = item.sku;        
+
+        var descriptionString = item.description;
+        var descriptionLength = item.description.length;
+        var newDescriptionTag = "";
+        const descriptionTagLength = 25;
+                
+        if (descriptionLength > descriptionTagLength) {
+            for (let i = 0; i < descriptionTagLength; i++) {
+                
+                const charDescription = descriptionString[i];
+                newDescriptionTag += charDescription;
+                
+            }
+            newDescriptionTag = newDescriptionTag + "...";
+
+        }else{
+            newDescriptionTag = descriptionString;
+        }
+
+        var careString = item.care;
+        var careLength = item.care.length;
+        var newCareTag = "";
+        const careTagLength = 30;
+                
+        if (careLength > careTagLength) {
+            for (let i = 0; i < careTagLength; i++) {
+                
+                const charCare = careString[i];
+                newCareTag += charCare;
+                
+            }
+            newCareTag = newCareTag + "...";
+
+        }else{
+            newCareTag = careString;
+        }
+       
         
         var itemValues = {"sku" :  item.sku,
-                            "description" : item.description,
+                            "description" : newDescriptionTag,
                             "name" : item.name,
                             "price" : item.price,
                             "category" : item.category,
                             "status" : item.status,
                             "stock" : item.stock,
                             "gender" : item.gender,
-                            "care" : item.care,                            
+                            "care" : newCareTag,                            
                             "edit" : 
                             `        
-                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                     onclick='updateItem("${itemSKUValue}");'>
                                     <i class="fa-solid fa-pencil"></i>
                                 </button>    
                             `,
                             "delete" : 
                             `        
-                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                     onclick='deleteItem("${itemSKUValue}");'>
                                     <i class="fas fa-times"></i>
                                 </button>    
@@ -825,9 +1021,9 @@ function updateItem(sku) {
 
     $("#modalFooterContent").html(`
 
-        <button onclick="updateDBItem();" type="button" class="btn btn-primary"
+        <button onclick="updateDBItem();" type="button" class="btn button-action-style"
             id="updateItemButton">Update Item</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" 
+        <button type="button" class="btn button-action-style" data-bs-dismiss="modal" 
             onclick="hideAddItemModal();">Close</button>
     `);
 
@@ -867,7 +1063,7 @@ function updateItem(sku) {
                             
                                 "delete" : 
                                 `        
-                                    <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                    <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                         onclick='deleteColor("${colorValue}");'>
                                         <i class="fas fa-times"></i>
                                     </button>    
@@ -882,13 +1078,20 @@ function updateItem(sku) {
         $.each(imagesList, function (i, imageValue) {  
 
             var index = imagesList.findIndex( i => i === imageValue);  
-            var imageTag = "image "+(index+1);
+            var imageTag = "image_"+(index+1);
     
-            var imageValuesTable = {"image" :  imageTag,
+            var imageValuesTable = {"image" :  
+            
+                                `
+                                    <a href="${imageValue}" target="_blank">
+                                        ${imageTag}
+                                    </a>
+                                `   
+                                ,
                             
                                 "delete" : 
                                 `        
-                                    <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                    <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                         onclick='deleteImage("${imageValue}");'>
                                         <i class="fas fa-times"></i>
                                     </button>    
@@ -906,7 +1109,7 @@ function updateItem(sku) {
                             
                                 "delete" : 
                                 `        
-                                    <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                    <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                         onclick='deleteSize("${sizeValue}");'>
                                         <i class="fas fa-times"></i>
                                     </button>    
@@ -919,9 +1122,7 @@ function updateItem(sku) {
        
 
         $("#addItemModal").modal("show");
-
-        // customers = data;        
-        // loadCustomersDataTable(customers);
+        
 
     });
 }
@@ -1011,6 +1212,10 @@ function setCustomersInformation() {
     $('#pageContentFluid').empty();
     $('#pageContent').empty();
     $('#pageContentlg').empty();
+    $('#pageContentColorTable').empty();
+    $('#pageContentImageTable').empty();
+    $('#pageContentSizeTable').empty();
+    $('#highchartsConteiner').empty();
 
     $("#pageContentlg").html(`
 
@@ -1051,6 +1256,179 @@ function setCustomersInformation() {
 
 }
 
+function setOrdersInformation() {
+    
+    $("body").addClass("active");
+    $("#sidebarToggle").addClass("active");
+
+    uncheckButtons();
+    $("#ordersButton").addClass("active");
+    $('#pageContentFluid').empty();
+    $('#pageContent').empty();
+    $('#pageContentlg').empty();
+    $('#pageContentColorTable').empty();
+    $('#pageContentImageTable').empty();
+    $('#pageContentSizeTable').empty();
+    $('#highchartsConteiner').empty();
+
+    $("#pageContentlg").html(`
+
+        <div class="text-center mb-3">
+            <h3 class="brand-zofya brand-zofya-logo">Orders</h3>
+        </div>        
+        <table id="ordersTable" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th id="idCol">ID</th>
+                    <th id="dateCol">Date</th>
+                    <th id="deliveryDateCol">Delivery Date</th>
+                    <th id="statusCol">Status</th>
+                    <th id="totalToPayCol">Total to Pay</th>
+                    <th id="idUserCol">ID User</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    `);
+
+    customerTable = $('#ordersTable').DataTable({       
+        paging: false,
+        ordering: false,
+        searching: false,
+        info: false,
+        scrollY: 300,        
+        columns : [            
+            {"data": "id"},
+            {"data": "date"},
+            {"data": "deliveryDate"},
+            {"data": "status"},
+            {"data": "totalToPay"},
+            {"data": "idUser"},
+            {"data": "delete"}
+        ] 
+    });
+
+    loadOrdersServerData();
+
+}
+
+var orders = [];
+function loadOrdersServerData() {       
+
+    $.ajax({
+
+        method: "POST",
+        url: urlServer+"/OrdersData",
+        cache: false,
+        processData: false,
+        contentType: "application/json",
+        data: null
+    }).done(function (data) {      
+
+        $("#ordersTable").find("tbody").empty();
+        orders = data;        
+        loadOrdersDataTable(orders);
+
+    });
+} 
+
+function loadOrdersDataTable(orders) {
+
+
+    $.each(orders, function (i, order) {       
+
+        var orderIDValue = order.idOrder;
+
+        var dateFormat = order.date;
+        dateFormat = dateFormat.substring(0,10);
+
+        var deliveryDateFormat = order.deliveryDate;
+        deliveryDateFormat = deliveryDateFormat.substring(0,10);
+                
+        var orderValues = {"id" :  order.idOrder,
+                            "date" : dateFormat,
+                            "deliveryDate" : deliveryDateFormat,
+                            "status" : order.status,
+                            "totalToPay" : order.totalToPay,
+                            "idUser" : order.idUser,
+                            "delete" : 
+                            `        
+                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
+                                    onclick='updateOrder("${orderIDValue}");'>
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>    
+                            ` 
+                            };  
+
+        addOrderTable(orderValues);
+                           
+    });
+
+}
+
+var updatedIDOrder="";
+function updateOrder(idOrder) {
+    updatedIDOrder = idOrder;    
+    $("#updateOrderModal").modal("show");
+}
+
+function updateOrderStatus() {
+    
+    hideUpdateOrderModal();    
+
+    var newStatus = $("#updatedStatudInput").val();        
+
+    let orderUpdateValuesJson = {
+        "idOrder" : updatedIDOrder,
+        "status": newStatus
+    }    
+
+    $.ajax({
+
+        method: "PATCH",
+        url: urlServer+"/UpdateOrder",                        
+        contentType: "application/json",                
+        data: JSON.stringify(orderUpdateValuesJson)
+
+    }).done(function (data) {
+
+        if(data.correct){
+            
+            loadOrdersServerData();
+            showSuccessAlert(data.message);   
+                                                              
+        } else {
+            
+            var errorMessages = data.message;
+            showAlert(errorMessages, true) 
+        }
+
+    }).fail(function (jqXHR, textStatus) {
+
+        console.log(jqXHR, textStatus);        
+
+    });
+}
+
+
+function addOrderTable(order) {
+    
+    $("#ordersTable").find("tbody")
+        .append($("<tr>")           
+            .append($("<td>").html(order.id))
+            .append($("<td>").html(order.date))
+            .append($("<td>").html(order.deliveryDate))            
+            .append($("<td>").html(order.status))            
+            .append($("<td>").html(order.totalToPay))            
+            .append($("<td>").html(order.idUser))            
+            .append($("<td>").html(order.delete))
+
+        );  
+}
+
 var customers = [];
 function loadCustomersServerData() {       
 
@@ -1082,7 +1460,7 @@ function loadCustomersDataTable(customers) {
                             "phone" : customer.phone,
                             "delete" : 
                             `        
-                                <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                     onclick='deleteCustomer("${customerEmailValue}");'>
                                     <i class="fas fa-times"></i>
                                 </button>    
@@ -1150,6 +1528,10 @@ function setAdministratorUpdateInformation(userEmail) {
     $('#pageContentFluid').empty();
     $('#pageContent').empty();
     $('#pageContentlg').empty();
+    $('#pageContentColorTable').empty();
+    $('#pageContentImageTable').empty();
+    $('#pageContentSizeTable').empty();
+    $('#highchartsConteiner').empty();
 
     $("#pageContent").html(`
 
@@ -1220,8 +1602,8 @@ function setAdministratorUpdateInformation(userEmail) {
                 document.getElementById("updateNewLabel").innerHTML = "New RFC:";
                 $("#updateFormFooter").html(`
 
-                    <button type="button" class="btn btn-primary" id="updateButton" onclick="updateRFC();">Save RFC</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    <button type="button" class="btn button-action-style" id="updateButton" onclick="updateRFC();">Save RFC</button>
+                    <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
                         onclick="hideUpdateModal();">Close</button>
                 
                 `);             
@@ -1237,9 +1619,9 @@ function setAdministratorUpdateInformation(userEmail) {
                 document.getElementById("updateNewLabel").innerHTML = "New CURP:";
                 $("#updateFormFooter").html(`
 
-                    <button onclick="updateCURP();" type="button" class="btn btn-primary"
+                    <button onclick="updateCURP();" type="button" class="btn button-action-style"
                      id="updateButton">Save CURP</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
                         onclick="hideUpdateModal();">Close</button>
                 
                 `);
@@ -1255,9 +1637,9 @@ function setAdministratorUpdateInformation(userEmail) {
                 document.getElementById("updateNewLabel").innerHTML = "New Email:";
                 $("#updateFormFooter").html(`
 
-                    <button onclick="updateEmail();" type="button" class="btn btn-primary" 
+                    <button onclick="updateEmail();" type="button" class="btn button-action-style" 
                         id="updateButton">Save Email</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
                         onclick="hideUpdateModal();">Close</button>
                 
                 `);
@@ -1273,9 +1655,9 @@ function setAdministratorUpdateInformation(userEmail) {
                 document.getElementById("updateNewLabel").innerHTML = "Fullname:";
                 $("#updateFormFooter").html(`
 
-                    <button onclick="updateFullname();" type="button" class="btn btn-primary"
+                    <button onclick="updateFullname();" type="button" class="btn button-action-style"
                         id="updateButton">Save Fullname</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
                         onclick="hideUpdateModal();">Close</button>
                 
                 `);
@@ -1290,8 +1672,8 @@ function setAdministratorUpdateInformation(userEmail) {
 
                 $("#updateFormFooterPassword").html(`
 
-                    <button onclick="updatePassword();" type="button" class="btn btn-primary" id="updatePasswordButton">Save Password</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    <button onclick="updatePassword();" type="button" class="btn button-action-style" id="updatePasswordButton">Save Password</button>
+                    <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
                         onclick="hideUpdateModalPassword();">Close</button>
                 
                 `);
@@ -1307,9 +1689,9 @@ function setAdministratorUpdateInformation(userEmail) {
                 document.getElementById("updateNewLabel").innerHTML = "New Phone:";
                 $("#updateFormFooter").html(`
 
-                    <button onclick="updatePhone(); return false;" type="button" class="btn btn-primary"
+                    <button onclick="updatePhone(); return false;" type="button" class="btn button-action-style"
                         id="updateButton">Save Phone</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
                         onclick="hideUpdateModal();">Close</button>
                 
                 `);
@@ -1341,8 +1723,7 @@ function loadData(userEmail) {
 
     }).done(function (data) {
         
-        staffInformation = data;               
-        console.log(staffInformation);
+        staffInformation = data;                       
         loadStaffDataTable(staffInformation);
     });
 } 
@@ -1831,8 +2212,7 @@ function updateDBItem() {
                 cleanFields("newInputName");
                 cleanFields("newInputPrice");
                 cleanFields("newInputStock");
-                cleanFields("newInputCare");                
-                // enableButtonItem("addItemButton");
+                cleanFields("newInputCare");                                
 
                 showSuccessAlert(data.message);   
 
@@ -1903,9 +2283,7 @@ function updateRFC() {
                 enableUpdateButton();
 
                 hideUpdateModal();
-                showSuccessInformationAlert(data.message);  
-                // showSuccessAlert(data.message);
-                // loadData(staffInformation.email);
+                showSuccessInformationAlert(data.message);                  
 
             } else {
 
@@ -1965,8 +2343,7 @@ function updateCURP() {
 
                 hideUpdateModal();
                 showSuccessInformationAlert(data.message);  
-                // showSuccessAlert(data.message);
-                // loadData(staffInformation.email);
+                
 
             } else {
 
@@ -2436,10 +2813,12 @@ function changeInValidFieldInput(input) {
 }
 
 function uncheckButtons() {
-    $("#dashBoardButton").removeClass("active");
+    
     $("#personalButton").removeClass("active");
     $("#customersButton").removeClass("active");
     $("#productsButton").removeClass("active");
+    $("#ordersButton").removeClass("active");
+    $("#analyticsButton").removeClass("active");
 
 }
 
@@ -2469,6 +2848,10 @@ function hideAddItemModal() {
 
 function hideUpdateModalPassword() {
     $('#updateDialogPassword').modal('hide');
+}
+
+function hideUpdateOrderModal() {
+    $('#updateOrderModal').modal('hide');
 }
 
 function hideDeleteModal() {

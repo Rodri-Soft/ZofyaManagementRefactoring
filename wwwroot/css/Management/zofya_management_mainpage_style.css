@@ -1,5 +1,6 @@
 :root {
-  --main-color: #c66;
+  --main-color: rgb(34, 40, 49)!important;
+  --selection-button: #c66;
 }
 
 #header {
@@ -39,4 +40,14 @@ svg.wave {
 
 .background-color-zofya{
   background-color: var(--main-color)!important;      
+}
+
+.button-action-style {    
+  background-color: rgba(34, 40, 49, 1);
+  color: white;
+}
+
+.button-action-style:hover {
+  background-color: var(--selection-button);
+  color: white;
 }
