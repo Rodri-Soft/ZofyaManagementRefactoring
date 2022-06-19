@@ -269,7 +269,7 @@ tbody, td, tfoot, th, thead, tr {
     margin-bottom: 0;
 }
 
-#invalidFieldNewPassword, #invalidFieldColor{
+#invalidFieldNewPassword, #invalidFieldColor, .invalid-field-margin{
     margin-top: 1.5%;
 }
 
@@ -277,6 +277,9 @@ tbody, td, tfoot, th, thead, tr {
     #invalidFieldNewPassword{
         margin-top: 6%;
     }    
+    .invalid-field-margin{
+        margin-top: 1%;
+    }
 }
 
 .dataTables_empty
@@ -300,7 +303,9 @@ tbody, td, tfoot, th, thead, tr {
     }
 }
 
-
+.top-modal{
+    z-index: 10000;
+}
 
 
 

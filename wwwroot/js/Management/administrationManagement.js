@@ -152,7 +152,7 @@ function deleteImage(image) {
         var index = imagesList.findIndex( i => i === imageValue);  
         var imageTag = "image "+(index+1);
 
-        var colorValuesTable = {"image" :  imageTag,
+        var imageValuesTable = {"image" :  imageTag,
                         
                             "delete" : 
                             `        
@@ -163,7 +163,7 @@ function deleteImage(image) {
                             `  
                             };  
     
-        addImageTable(colorValuesTable);
+        addImageTable(imageValuesTable);
 
     });
    
@@ -205,7 +205,6 @@ function addSizeTable(size) {
         );  
 }
 
-
 function addImageTable(image) {
     $("#imagesTable").find("tbody")
         .append($("<tr>")           
@@ -235,6 +234,115 @@ function validateFieldItems(input, validateFunction) {
     });
     $("#"+input).blur(function (event) {
         validateFunction();
+    });
+}
+
+function captureGenderRestriction() {
+    
+    $("#newInputGender").keydown(function (event) {
+        setGenderRestriction();
+    });
+    $("#newInputGender").keyup(function (event) {
+        setGenderRestriction();
+    });  
+    $("#newInputGender").click(function(){
+        setGenderRestriction();
+    });
+
+}
+
+function captureStatusRestriction() {
+    
+    $("#newInputStatus").keydown(function (event) {
+        setStatusRestriction();
+    });
+    $("#newInputStatus").keyup(function (event) {
+        setStatusRestriction();
+    });  
+    $("#newInputStatus").click(function(){
+        setStatusRestriction();
+    });   
+}
+
+function setStatusRestriction() {
+        
+    var statusValue = $("#newInputStatus").val();
+    
+    if(statusValue === "Unavailable"){
+        setStockRestriction();
+    } else if(statusValue === "Available") {
+        validateStock();
+    } 
+}
+
+function setStockRestriction() {
+
+    
+    $("#newInputStock").addClass("active");
+    changeValidFieldInput("newInputStock");
+    $("#newInputStock").val(0);
+    
+}
+
+function setGenderRestriction() {
+    
+    var genderValue = $("#newInputGender").val();
+    
+    if(genderValue === "Feminine"){
+        setFemenineOptions();
+    }else{
+        setMaleOptions();
+    }
+}
+
+function setFemenineOptions() {
+    
+    $("#newInputCategory").empty();
+    
+    $("#newInputCategory").html(`
+          
+        <option value="T-Shirt">T-Shirt</option>
+        <option value="Jacket">Jacket</option>
+        <option value="Jeans">Jeans</option>
+        <option value="Blouse">Blouse</option>
+        <option value="Dress">Dress</option>
+        <option value="Pijama">Pijama</option>          
+    `);
+}
+
+function setMaleOptions() {
+
+    $("#newInputCategory").empty();
+    
+    $("#newInputCategory").html(`          
+        <option value="T-Shirt">T-Shirt</option>
+        <option value="Jacket">Jacket</option>                
+    `);
+}
+
+function validateSKUField() {
+
+    $("#newInputSKU").keydown(function (event) {
+        validateAverageField("newInputSKU", "invalidFieldSKU", "SKU");
+    });
+    $("#newInputSKU").keyup(function (event) {
+        validateAverageField("newInputSKU", "invalidFieldSKU", "SKU");
+    });
+    $("#newInputSKU").blur(function (event) {
+        validateAverageField("newInputSKU", "invalidFieldSKU", "SKU");
+    });
+}
+
+function validateNameField() {
+
+    $("#newInputName").keydown(function (event) {
+        validateAverageField("newInputName", "invalidFieldName", "Name");
+    });
+    $("#newInputName").keyup(function (event) {
+        validateAverageField("newInputName", "invalidFieldName", "Name");
+    });
+    $("#newInputName").blur(function (event) {
+        validateAverageField("newInputName", "invalidFieldName", "Name");
     });
 }
 
@@ -302,7 +410,186 @@ function validateImage() {
     return isCorrect;
 }
 
+function validateAverageField(field, invalidField, fieldName) {
+
+    var fieldValue = $("#"+field).val();
+
+    const fieldMaxLength = 50;
+    var isCorrect = true;
+
+    var fieldLength = fieldValue.length;
+
+    var pattern =  new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:',_-]{0,}$/);
+    if(!pattern.test(fieldValue)){
+        
+        isCorrect = false;
+        var invalidFieldValue = document.getElementById(invalidField);
+        invalidFieldValue.innerHTML = "Invalid "+ fieldName +" Format.";
+
+    }
+
+    if ((fieldValue === "") || (fieldLength > fieldMaxLength)) {
+
+        isCorrect = false;
+        var invalidFieldValue = document.getElementById(invalidField);
+
+        if (fieldValue === "") {
+            invalidFieldValue.innerHTML = fieldName+" Field Required";
+        } else {
+            invalidFieldValue.innerHTML = "Maximum length of 50 characters";
+        }
+    }
+            
+    if (!isCorrect) {
+        changeInValidFieldInput(field);
+    } else {
+        changeValidFieldInput(field);
+    }
+
+    return isCorrect;
+}
+
+function validateDescription() {
+
+    var newDescription = $("#newInputDescription").val();
+
+    const descriptionMaxLength = 100;
+    var isCorrect = true;
+
+    var descriptionLength = newDescription.length;
+
+    var pattern =  new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:',_-]{0,}$/);
+    if(!pattern.test(newDescription)){
+        
+        isCorrect = false;
+        var field = document.getElementById("invalidFieldDescription");
+        field.innerHTML = "Invalid Description Format.";
+    }
+
+    if ((newDescription === "") || (descriptionLength > descriptionMaxLength)) {
+
+        isCorrect = false;
+        var field = document.getElementById("invalidFieldDescription");
+
+        if (newDescription === "") {
+            field.innerHTML = "Description Field Required";
+        } else {
+            field.innerHTML = "Maximum length of 100 characters";
+        }
+    }
+            
+    if (!isCorrect) {
+        changeInValidFieldInput("newInputDescription");
+    } else {
+        changeValidFieldInput("newInputDescription")
+    }
+
+    return isCorrect;
+}
+
+function validatePrice() {
+
+    var newPrice = $("#newInputPrice").val();
+
+    const minPrice = 99;
+    var isCorrect = true;    
+
+    if ((newPrice === "") || (newPrice < minPrice)) {
+
+        isCorrect = false;
+        var field = document.getElementById("invalidFieldPrice");
+
+        if (newPrice === "") {
+            field.innerHTML = "Price Field Required";
+        } else {
+            field.innerHTML = "Minimum price of 99";
+        }
+    }
+            
+    if (!isCorrect) {
+        changeInValidFieldInput("newInputPrice");
+    } else {
+        changeValidFieldInput("newInputPrice")
+    }
+
+    return isCorrect;
+}
+
+function validateStock() {
+
+    var newStock = $("#newInputStock").val();
+    
+    var isCorrect = true;
+    
+    var pattern =  new RegExp(/^\d+$/);
+    if(!pattern.test(newStock)){
+        
+        isCorrect = false;
+        var field = document.getElementById("invalidFieldStock");
+        field.innerHTML = "Only integers.";
+    }
+
+    if (newStock === "") {
+
+        isCorrect = false;
+        var field = document.getElementById("invalidFieldStock");
+        
+        field.innerHTML = "Stock Field Required";
+        
+    }
+
+    var statusValue = $("#newInputStatus").val();    
+
+    if (newStock == 0 && statusValue === "Available") {
+        isCorrect = false;
+        var field = document.getElementById("invalidFieldStock");
+        
+        field.innerHTML = "There must be at least one";
+    }
+            
+    if (!isCorrect) {
+        changeInValidFieldInput("newInputStock");
+    } else {
+        changeValidFieldInput("newInputStock")
+    }
+
+    return isCorrect;
+}
+
+function validateCare() {
+
+    var newCare = $("#newInputCare").val();
+    
+    var isCorrect = true;    
+
+    var pattern =  new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:',_-]{0,}$/);
+    if(!pattern.test(newCare)){
+        
+        isCorrect = false;
+        var field = document.getElementById("invalidFieldCare");
+        field.innerHTML = "Invalid Care Format.";
+    }
+
+    if (newCare === "") {
+
+        isCorrect = false;
+        var field = document.getElementById("invalidFieldCare");
+        
+        field.innerHTML = "Care Field Required";
+       
+    }
+            
+    if (!isCorrect) {
+        changeInValidFieldInput("newInputCare");
+    } else {
+        changeValidFieldInput("newInputCare")
+    }
+
+    return isCorrect;
+}
+
 function setItemsInformation() {
+
     $("body").addClass("active");
     $("#sidebarToggle").addClass("active");
 
@@ -341,11 +628,11 @@ function setItemsInformation() {
             </tbody>
         </table>
         <div class="my-3">
-            <button class="btn btn-primary background-color-zofya" data-bs-toggle="modal" data-bs-target="#addItemModal">Add new
+            <button class="btn btn-primary background-color-zofya" onclick="showModalAddItem();">Add new
              item</button>
         </div>
     `);
-
+    // showModalAddItem
     $("#pageContentColorTable").html(`
           
         <table id="colorsTable" class="table table-striped table-hover">
@@ -446,11 +733,30 @@ function setItemsInformation() {
             {"data": "delete"}
         ] 
     });
-
-    // validateFieldItems("newInputColor", validateColor);
+    
     validateFieldItems("newInputImage", validateImage);
+    validateSKUField();
+    validateFieldItems("newInputDescription", validateDescription);    
+    validateNameField(); 
+    validateFieldItems("newInputPrice", validatePrice);    
+    validateFieldItems("newInputStock", validateStock);    
+    validateFieldItems("newInputCare", validateCare);    
 
+    setGenderRestriction();    
+    captureGenderRestriction();
+    captureStatusRestriction();
 
+}
+
+function showModalAddItem() {
+    $("#addItemModal").modal("show");
+    $("#modalFooterContent").html(`
+
+        <button onclick="addItem();" type="button" class="btn btn-primary"
+            id="addItemButton">Add Item</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" 
+            onclick="hideAddItemModal();">Close</button>
+    `);
 }
 
 var items = [];
@@ -492,7 +798,7 @@ function loadItemsDataTable(items) {
                             "edit" : 
                             `        
                                 <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
-                                    >
+                                    onclick='updateItem("${itemSKUValue}");'>
                                     <i class="fa-solid fa-pencil"></i>
                                 </button>    
                             `,
@@ -505,34 +811,147 @@ function loadItemsDataTable(items) {
                             `  
                             };  
 
-        addItemTable(itemValues);
+        if(item.status === "Deleted"){
+            addItemDangerTable(itemValues)
+        }else{
+            addItemTable(itemValues);
+        }        
                            
     });
 
 }
 
+function updateItem(sku) {
+
+    $("#modalFooterContent").html(`
+
+        <button onclick="updateDBItem();" type="button" class="btn btn-primary"
+            id="updateItemButton">Update Item</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" 
+            onclick="hideAddItemModal();">Close</button>
+    `);
+
+    
+    var skuValue = {
+        "id" : sku
+    }
+
+    $.ajax({
+
+        method: "POST",
+        url: urlServer+"/PostFindItemSKU",
+        cache: false,
+        processData: false,
+        contentType: "application/json",
+        data: JSON.stringify(skuValue)
+
+    }).done(function (data) {      
+               
+        
+        $("#newInputSKU").val(data.sku);
+        document.getElementById("newInputSKU").setAttribute("disabled", "");
+
+        $("#newInputDescription").val(data.description);
+        $("#newInputName").val(data.name);
+        $("#newInputPrice").val(data.price);
+        $("#newInputCategory").val(data.category);
+        $("#newInputStatus").val(data.status);
+        $("#newInputStock").val(data.stock);
+        $("#newInputGender").val(data.gender);
+        $("#newInputCare").val(data.care);
+
+        colorsList = data.colors;
+        $.each(data.colors, function (i, colorValue) {  
+
+            var colorValuesTable = {"color" :  colorValue,
+                            
+                                "delete" : 
+                                `        
+                                    <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                        onclick='deleteColor("${colorValue}");'>
+                                        <i class="fas fa-times"></i>
+                                    </button>    
+                                `  
+                                };  
+        
+            addColorTable(colorValuesTable);
+    
+        });
+
+        imagesList = data.images;
+        $.each(imagesList, function (i, imageValue) {  
+
+            var index = imagesList.findIndex( i => i === imageValue);  
+            var imageTag = "image "+(index+1);
+    
+            var imageValuesTable = {"image" :  imageTag,
+                            
+                                "delete" : 
+                                `        
+                                    <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                        onclick='deleteImage("${imageValue}");'>
+                                        <i class="fas fa-times"></i>
+                                    </button>    
+                                `  
+                                };  
+        
+            addImageTable(imageValuesTable);
+    
+        });
+
+        sizesList = data.sizes;
+        $.each(sizesList, function (i, sizeValue) {  
+
+            var sizeValuesTable = {"size" :  sizeValue,
+                            
+                                "delete" : 
+                                `        
+                                    <button type="button" class="btn btn-link btn-sm px-3" data-ripple-color="dark"
+                                        onclick='deleteSize("${sizeValue}");'>
+                                        <i class="fas fa-times"></i>
+                                    </button>    
+                                `  
+                                };  
+        
+            addSizeTable(sizeValuesTable);
+    
+        });
+       
+
+        $("#addItemModal").modal("show");
+
+        // customers = data;        
+        // loadCustomersDataTable(customers);
+
+    });
+}
+
 var deleteSKU="";
 function deleteItem(sku) {
-    deleteSKU = sku;    
-    // console.log(deleteSKU);
+    deleteSKU = sku;        
     $("#modalDeleteItem").modal("show");
 }
 
 function removeItem() {
+    
     hideDeleteModalItem();
+
+    var skuValueUpdate = {
+        "id" : deleteSKU
+    }
+
     $.ajax({
 
-        method: "DELETE",
-        url: urlServer+"/ItemDelete/"+deleteSKU,
+        method: "PUT",
+        url: urlServer+"/UpdateItemDelete",
         cache: false,
         processData: false,
-        contentType: false,                    
-        data: null
+        contentType: "application/json",                    
+        data: JSON.stringify(skuValueUpdate)
 
     }).done(function (data) {
 
         if(data.correct){
-
 
             loadItemsServerData();     
             showSuccessAlert(data.message);   
@@ -549,6 +968,24 @@ function addItemTable(item) {
     
     $("#itemsTable").find("tbody")
         .append($("<tr>")           
+            .append($("<td>").html(item.sku))
+            .append($("<td>").html(item.description))
+            .append($("<td>").html(item.name))            
+            .append($("<td>").html(item.price))
+            .append($("<td>").html(item.category))
+            .append($("<td>").html(item.status))
+            .append($("<td>").html(item.stock))
+            .append($("<td>").html(item.gender))
+            .append($("<td>").html(item.care))
+            .append($("<td>").html(item.edit))
+            .append($("<td>").html(item.delete))
+
+        );  
+}
+
+function addItemDangerTable(item) {
+    $("#itemsTable").find("tbody")
+        .append($("<tr class='table-danger'>")           
             .append($("<td>").html(item.sku))
             .append($("<td>").html(item.description))
             .append($("<td>").html(item.name))            
@@ -1177,6 +1614,261 @@ function validatePassword() {
     return isCorrect;
 }
 
+function validateColorsList() {
+    
+    var colorsNumber = colorsList.length;
+
+    if (colorsNumber > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function validateImagesList() {
+    
+    var imagesNumber = imagesList.length;
+
+    if (imagesNumber > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function validateSizesList() {
+    
+    var sizesNumber = sizesList.length;
+
+    if (sizesNumber > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function addItem() {
+
+    disableButtonItem("addItemButton");
+    var validationResult = true;
+
+    var validationFieldsResults = []
+    validationFieldsResults.push(validateAverageField("newInputSKU", "invalidFieldSKU", "SKU"));
+    validationFieldsResults.push(validateDescription());
+    validationFieldsResults.push(validateAverageField("newInputName", "invalidFieldName", "Name"));
+    validationFieldsResults.push(validatePrice());
+    validationFieldsResults.push(validateStock());
+    validationFieldsResults.push(validateCare());
+
+    validationFieldsResults.push(validateColorsList());
+    validationFieldsResults.push(validateImagesList());
+    validationFieldsResults.push(validateSizesList());    
+
+    var result = validationFieldsResults.includes(false);
+    
+    if (result) {
+        validationResult = false;
+    }
+
+    if (validationResult) {
+
+        var sku = $("#newInputSKU").val();
+        var description = $("#newInputDescription").val();
+        var name = $("#newInputName").val();
+        var price = $("#newInputPrice").val();
+        var category = $("#newInputCategory").val();
+        var status = $('#newInputStatus').val();
+        var stock = $('#newInputStock').val();
+        var gender = $('#newInputGender').val();
+        var care = $('#newInputCare').val();
+
+        var colorsValues = colorsList;
+        var imagesValues = imagesList;
+        var sizesValues = sizesList;
+
+        var item = {
+
+            "sku": sku,
+            "description": description,
+            "name": name,
+            "price": price,
+            "category": category,
+            "status": status,
+            "stock": stock,
+            "gender": gender,
+            "care": care,
+            "colors": colorsValues,
+            "images": imagesValues,
+            "sizes": sizesValues
+        };
+
+        $.ajax({
+
+            method: "POST",
+            url: urlServer + "/AddItem",
+            cache: false,
+            processData: false,
+            contentType: "application/json",
+            data: JSON.stringify(item)
+
+        }).done(function (data) {
+
+            if (data.correct) {
+
+                enableButtonItem("addItemButton");
+                hideAddItemModal();
+
+                loadItemsServerData();
+                cleanFields("newInputSKU");
+                cleanFields("newInputDescription");
+                cleanFields("newInputName");
+                cleanFields("newInputPrice");
+                cleanFields("newInputStock");
+                cleanFields("newInputCare");                
+                enableButtonItem("addItemButton");
+
+                showSuccessAlert(data.message);   
+
+
+            } else {
+
+                var errorMessages = data.message;
+                var errorFields = data.field;
+                
+                showAlert(errorMessages, true);                
+                enableButtonItem("addItemButton");
+            }
+
+        }).fail(function (jqXHR, textStatus) {
+
+            showRequestErrors(jqXHR, textStatus, true);
+            enableButtonItem("addItemButton");
+
+        });
+
+
+
+    } else {
+        showAlert(["Correct or complete the form fields"], true);
+        enableButtonItem("addItemButton");
+    }
+}
+
+function updateDBItem() {
+
+    disableButtonItem("updateItemButton");
+    var validationResult = true;
+
+    var validationFieldsResults = []
+    
+    validationFieldsResults.push(validateDescription());
+    validationFieldsResults.push(validateAverageField("newInputName", "invalidFieldName", "Name"));
+    validationFieldsResults.push(validatePrice());
+    validationFieldsResults.push(validateStock());
+    validationFieldsResults.push(validateCare());
+
+    validationFieldsResults.push(validateColorsList());
+    validationFieldsResults.push(validateImagesList());
+    validationFieldsResults.push(validateSizesList());    
+
+    var result = validationFieldsResults.includes(false);
+    
+    if (result) {
+        validationResult = false;
+    }
+
+    if (validationResult) {
+
+        var sku = $("#newInputSKU").val();
+        var description = $("#newInputDescription").val();
+        var name = $("#newInputName").val();
+        var price = $("#newInputPrice").val();
+        var category = $("#newInputCategory").val();
+        var status = $('#newInputStatus').val();
+        var stock = $('#newInputStock').val();
+        var gender = $('#newInputGender').val();
+        var care = $('#newInputCare').val();
+
+        var colorsValues = colorsList;
+        var imagesValues = imagesList;
+        var sizesValues = sizesList;
+
+        var item = {
+
+            "sku": sku,
+            "description": description,
+            "name": name,
+            "price": price,
+            "category": category,
+            "status": status,
+            "stock": stock,
+            "gender": gender,
+            "care": care,
+            "colors": colorsValues,
+            "images": imagesValues,
+            "sizes": sizesValues
+        };
+
+        $.ajax({
+
+            method: "PUT",
+            url: urlServer + "/UpdateItem",
+            cache: false,
+            processData: false,
+            contentType: "application/json",
+            data: JSON.stringify(item)
+
+        }).done(function (data) {
+
+            if (data.correct) {
+
+                enableButtonItem("updateItemButton");
+                hideAddItemModal();
+
+                loadItemsServerData();
+                cleanFields("newInputSKU");
+                cleanFields("newInputDescription");
+                cleanFields("newInputName");
+                cleanFields("newInputPrice");
+                cleanFields("newInputStock");
+                cleanFields("newInputCare");                
+                // enableButtonItem("addItemButton");
+
+                showSuccessAlert(data.message);   
+
+
+            } else {
+
+                var errorMessages = data.message;
+                var errorFields = data.field;
+                
+                showAlert(errorMessages, true);                
+                enableButtonItem("updateItemButton");
+            }
+
+        }).fail(function (jqXHR, textStatus) {
+
+            showRequestErrors(jqXHR, textStatus, true);
+            enableButtonItem("updateItemButton");
+
+        });
+
+
+
+    } else {
+        showAlert(["Correct or complete the form fields"], true);
+        enableButtonItem("updateItemButton");
+    }
+}
+
+function cleanFields(field) {
+    
+    $("#"+field).val("");
+    $("#"+field).removeClass("active");
+    $("#"+field).removeClass("is-valid");
+    $("#"+field).removeClass("is-invalid");
+}
+
 function updateRFC() {
 
     disableUpdateButton();
@@ -1758,6 +2450,23 @@ function hideUpdateModal() {
     $("#updateInput").removeClass("is-invalid");
 }
 
+function hideAddItemModal() {
+
+    document.getElementById("newInputSKU").removeAttribute("disabled");   
+    $('#addItemModal').modal('hide');
+    
+    clearItemField("newInputSKU");
+    clearItemField("newInputDescription");
+    clearItemField("newInputName");
+    clearItemField("newInputPrice");
+    clearItemField("newInputStock");
+    clearItemField("newInputCare");
+    clearItemField("newInputImage");
+
+    clearItemsLists();
+
+}
+
 function hideUpdateModalPassword() {
     $('#updateDialogPassword').modal('hide');
 }
@@ -1775,6 +2484,15 @@ function clearUpdateForm() {
     $("#updateInput").val("");
     $("#updateInput").removeClass("is-valid");
     $("#updateInput").removeClass("is-invalid");
+}
+
+function clearItemsLists() {
+    colorsList = [];
+    imagesList = [];
+    sizesList = [];
+    $("#colorsTable").find("tbody").empty();
+    $("#imagesTable").find("tbody").empty();
+    $("#sizesTable").find("tbody").empty();
 }
 
 function clearItemField(input) {

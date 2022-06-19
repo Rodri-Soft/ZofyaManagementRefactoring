@@ -53,7 +53,7 @@
                                 <i class="fa-solid fa-bag-shopping"></i>
                             </div>
                             <div class="col-9">
-                                Products
+                                Items
                             </div>
                         </div>
                     </a>
@@ -70,14 +70,14 @@
                         </div>
                     </a>
                 </li>
-                <li class="navigation-list-item">
+                <li class="navigation-list-item" id="ordersButton" onclick="setOrdersInformation();">
                     <a class="navigation-link" href="/">
                         <div class="row">
                             <div class="col-2">
-                                <i class="fas fa-calendar-alt"></i>
+                                <i class="fa-solid fa-truck"></i>
                             </div>
                             <div class="col-9">
-                                Calendar
+                                Orders
                             </div>
                         </div>
                     </a>
@@ -337,7 +337,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalErrors" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade top-modal" id="modalErrors" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -355,7 +355,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalCorrectMessage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade top-modal" id="modalCorrectMessage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -459,12 +459,12 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Item</h5>                    
+                    <h5 class="modal-title">Item</h5>                    
                 </div>
                 <div class="modal-body">
                     <form class="needs-validation" id="itemForm" novalidate>
 
-                        <div class="row" style="margin: 3% 0;">
+                        <div class="row" style="margin: 3% 0 5% 0;">
 
                             <label id="labelSKU" for="labelSKU" class="col-12 col-lg-2 col-form-label">
                                 SKU:
@@ -476,12 +476,12 @@
                                 <label id="newLabelSKU" for="newLabelSKU" class="form-label">
                                     SKU
                                 </label>
-                                <div id="invalidFieldSKU" class="invalid-feedback"></div>
+                                <div id="invalidFieldSKU" class="invalid-feedback invalid-field-margin"></div>
                             </div>
 
                         </div>
 
-                        <div class="row" style="margin: 0 0 3% 0;">
+                        <div class="row" style="margin: 3% 0 5% 0;">
 
                            <label id="labelDescription" for="labelDescription" class="col-12 col-lg-2 col-form-label">
                                 Description:
@@ -493,12 +493,12 @@
                                 <label id="newLabelDescription" for="newLabelDescription" class="form-label">
                                     Description
                                 </label>
-                                <div id="invalidFieldDescription" class="invalid-feedback"></div>
+                                <div id="invalidFieldDescription" class="invalid-feedback invalid-field-margin"></div>
                             </div>
 
                         </div> 
 
-                        <div class="row" style="margin: 3% 0;">
+                        <div class="row" style="margin: 3% 0 5% 0;">
 
                             <label id="labelName" for="labelName" class="col-12 col-lg-2 col-form-label">
                                 Name:
@@ -510,12 +510,12 @@
                                 <label id="newLabelName" for="newLabelName" class="form-label">
                                     Name
                                 </label>
-                                <div id="invalidFieldName" class="invalid-feedback"></div>
+                                <div id="invalidFieldName" class="invalid-feedback invalid-field-margin"></div>
                             </div>
 
                         </div>
 
-                        <div class="row" style="margin: 3% 0;">
+                        <div class="row" style="margin: 3% 0 5% 0;">
 
                             <label id="labelPrice" for="labelPrice" class="col-12 col-lg-2 col-form-label">
                                 Price:
@@ -527,46 +527,48 @@
                                 <label id="newLabelPrice" for="newLabelPrice" class="form-label">
                                     Price
                                 </label>
-                                <div id="invalidFieldPrice" class="invalid-feedback"></div>
+                                <div id="invalidFieldPrice" class="invalid-feedback invalid-field-margin"></div>
                             </div>
 
                         </div>
 
-                        <div class="row" style="margin: 3% 0;">
+                        <div class="row" style="margin: 3% 0 5% 0;">
 
                             <label id="labelCategory" for="labelCategory" class="col-12 col-lg-2 col-form-label">
                                 Category:
                             </label>
 
-                            <div class="form-outline col-12 col-lg-8">
-
-                                <input type="text" id="newInputCategory" class="form-control" placeholder="Fill in the field">
-                                <label id="newLabelCategory" for="newLabelCategory" class="form-label">
-                                    Category
-                                </label>
-                                <div id="invalidFieldCategory" class="invalid-feedback"></div>
+                            <div class="col-12 col-lg-8">                              
+                                <select id="newInputCategory" class="form-select">
+                                    <option value="T-Shirt">T-Shirt</option>
+                                    <option value="Jacket">Jacket</option>
+                                    <option value="Jeans">Jeans</option>
+                                    <option value="Blouse">Blouse</option>
+                                    <option value="Dress">Dress</option>
+                                    <option value="Pijama">Pijama</option>                                    
+                                </select>
                             </div>
 
                         </div>
 
-                        <div class="row" style="margin: 3% 0;">
+                        <div class="row" style="margin: 3% 0 5% 0;">
 
                             <label id="labelStatus" for="labelStatus" class="col-12 col-lg-2 col-form-label">
                                 Status:
                             </label>
 
-                            <div class="form-outline col-12 col-lg-8">
-
-                                <input type="text" id="newInputStatus" class="form-control" placeholder="Fill in the field">
-                                <label id="newLabelStatus" for="newLabelStatus" class="form-label">
-                                    Status
-                                </label>
-                                <div id="invalidFieldStatus" class="invalid-feedback"></div>
+                            <div class="col-12 col-lg-8">                                
+                                
+                                <select id="newInputStatus" class="form-select">
+                                    <option value="Available">Available</option>
+                                    <option value="Deleted">Deleted</option>
+                                    <option value="Unavailable">Unavailable</option>                                                                
+                                </select>
                             </div>
 
                         </div>
 
-                        <div class="row" style="margin: 3% 0;">
+                        <div class="row" style="margin: 3% 0 5% 0;">
 
                             <label id="labelStock" for="labelStock" class="col-12 col-lg-2 col-form-label">
                                 Stock:
@@ -578,29 +580,27 @@
                                 <label id="newLabelStock" for="newLabelStock" class="form-label">
                                     Stock
                                 </label>
-                                <div id="invalidFieldStock" class="invalid-feedback"></div>
+                                <div id="invalidFieldStock" class="invalid-feedback invalid-field-margin"></div>
                             </div>
 
                         </div>
 
-                        <div class="row" style="margin: 3% 0;">
+                        <div class="row" style="margin: 3% 0 5% 0;">
 
                             <label id="labelGender" for="labelGender" class="col-12 col-lg-2 col-form-label">
                                 Gender:
                             </label>
 
-                            <div class="form-outline col-12 col-lg-8">
-
-                                <input type="text" id="newInputGender" class="form-control" placeholder="Fill in the field">
-                                <label id="newLabelGender" for="newLabelGender" class="form-label">
-                                    Gender
-                                </label>
-                                <div id="invalidFieldGender" class="invalid-feedback"></div>
+                            <div class="col-12 col-lg-8">                              
+                                <select id="newInputGender" class="form-select">
+                                    <option value="Feminine">Feminine</option>
+                                    <option value="Male">Male</option>                                                                                          
+                                </select>
                             </div>
 
                         </div>
 
-                        <div class="row" style="margin: 3% 0;">
+                        <div class="row" style="margin: 3% 0 5% 0;">
 
                             <label id="labelCare" for="labelCare" class="col-12 col-lg-2 col-form-label">
                                 Care:
@@ -612,7 +612,7 @@
                                 <label id="newLabelCare" for="newLabelCare" class="form-label">
                                     Care
                                 </label>
-                                <div id="invalidFieldCare" class="invalid-feedback"></div>
+                                <div id="invalidFieldCare" class="invalid-feedback invalid-field-margin"></div>
                             </div>
 
                         </div>
@@ -624,13 +624,7 @@
                             </label>
 
                             <div class="col-12 col-lg-6">
-
-                                @* <input type="text" id="newInputColor" class="form-control" placeholder="Fill in the field">
-                                <label id="newLabelColor" for="newLabelColor" class="form-label">
-                                    Color
-                                </label>
-                                <div id="invalidFieldColor" class="invalid-feedback"></div> *@
-
+                               
                                 <select id="newInputColor" class="form-select">
                                     <option value="#000">Black</option>
                                     <option value="#0000FF">Blue</option>
@@ -714,11 +708,11 @@
                     </form>
                 </div>
                 
-                <div class="modal-footer">
-                    <button onclick="agregarAlumno(); return false;" type="button" class="btn btn-primary"
-                        data-bs-toggle="modal" id="#agregarAlumno">Add Item</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                    >Close</button>
+                <div id="modalFooterContent" class="modal-footer">
+                    <button onclick="addItem();" type="button" class="btn btn-primary"
+                        id="addItemButton">Add Item</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" 
+                    onclick="hideAddItemModal();">Close</button>
                 </div>
             </div>
         </div>
