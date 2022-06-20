@@ -207,9 +207,16 @@ body.active .page .content {
     padding-top: 0%!important;
 }
 
+@media (min-width: 350px) {
+    .form-table{
+        padding-top: 50%;
+    }    
+}
+
+
 @media (min-width: 576px) {
     .form-table{
-        padding-top: 35%;
+        padding-top: 30%;
     }
     .table{
         font-size: .9rem;
