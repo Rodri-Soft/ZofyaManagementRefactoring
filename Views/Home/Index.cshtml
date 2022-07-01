@@ -134,13 +134,13 @@
     </div>
 
     @* Modals *@
-    <div class="modal fade" tabindex="-1" id="updateDialog">
+    <div class="modal fade" tabindex="-1" id="updateDialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Update</h5>
-                    <button id="buttonClose" type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"
-                        onclick="hideUpdateModal();"></button>
+                    @* <button id="buttonClose" type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"
+                        onclick="hideUpdateModal();"></button> *@
                 </div>
                 <div class="modal-body">
                     
@@ -176,13 +176,13 @@
     </div>
 
 
-    <div class="modal fade" tabindex="-1" id="updateDialogPassword">
+    <div class="modal fade" tabindex="-1" id="updateDialogPassword" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Update</h5>
-                    <button id="buttonClosePassword" type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"
-                        onclick="hideUpdateModalPassword();"></button>
+                    @* <button id="buttonClosePassword" type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"
+                        onclick="hideModal('updateDialogPassword');"></button> *@
                 </div>
                 <div class="modal-body">
 
@@ -231,19 +231,19 @@
         </div>
     </div>
 
-    <div class="modal fade top-modal" id="modalErrors" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade top-modal" id="modalErrors" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Errors</h5>
-                    <button id="button-close-modal-errors" type="button" class="btn-close" data-mdb-dismiss="modal"
-                        aria-label="Close" onclick="hideModalErrors();"></button>
+                    @* <button id="button-close-modal-errors" type="button" class="btn-close" data-mdb-dismiss="modal"
+                        aria-label="Close" onclick="hideModal('modalErrors');"></button> *@
                 </div>
                 <div class="modal-body">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn button-action-style" data-mdb-dismiss="modal"
-                        onclick="hideModalErrors();">Close</button>
+                        onclick="hideModal('modalErrors');">Close</button>
                 </div>
             </div>
         </div>
@@ -260,7 +260,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn button-action-style" data-mdb-dismiss="modal"
-                        onclick="hideSuccessModal();">Close</button>
+                        onclick="hideModal('modalCorrectMessage');">Close</button>
                 </div>
             </div>
         </div>
@@ -277,7 +277,7 @@
                 </div>
                 <div class="modal-footer">
                     
-                    <a class="btn btn-secondary" asp-controller="Home" asp-action="LogOut">Close</a>
+                    <a class="btn btn-secondary button-action-style" asp-controller="Home" asp-action="LogOut">Close</a>
                     
                 </div>
             </div>
@@ -294,7 +294,7 @@
                 </div>
                 <div class="modal-footer">
                     
-                    <a class="btn btn-secondary" asp-controller="Home" asp-action="UpdateUserInformation">Close</a>
+                    <a class="btn btn-secondary button-action-style" asp-controller="Home" asp-action="UpdateUserInformation">Close</a>
                     
                 </div>
             </div>
@@ -612,13 +612,13 @@
         </div>
     </div>
 
-    <div class="modal fade" tabindex="-1" id="updateOrderModal">
+    <div class="modal fade" tabindex="-1" id="updateOrderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Update</h5>
-                    <button id="buttonClose" type="button" class="btn-close"
-                        onclick="hideUpdateOrderModal();"></button>
+                    @* <button id="buttonClose" type="button" class="btn-close"
+                        onclick="hideModal('updateOrderModal');"></button> *@
                 </div>
                 <div class="modal-body">
                     
@@ -649,7 +649,7 @@
                     <button onclick="updateOrderStatus();" type="button" class="btn button-action-style"
                         id="updateOrderButton">Save status</button>
                     <button type="button" class="btn button-action-style"
-                    onclick="hideUpdateOrderModal();">Close</button>
+                    onclick="hideModal('updateOrderModal');">Close</button>
                 </div>
             </div>
         </div>
@@ -690,6 +690,8 @@
         src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.11.5/b-2.2.2/b-html5-2.2.2/b-print-2.2.2/datatables.min.js"></script>
 
     <script src="/js/Management/administrationManagement.js"></script>
+    <script src="/js/Management/analytics.js"></script>
+    <script src="/js/Management/items.js"></script>
     <script>
 
         $(document).ready(function(){    

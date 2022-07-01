@@ -6,457 +6,317 @@ sidebarToggle.addEventListener("click", function () {
     document.getElementById("sidebarToggle").classList.toggle("active");
 });
 
-function setAnalyticsInformation() {
+// var sizesList = [];
+// function addSize() {
 
-    $("body").addClass("active");
-    $("#sidebarToggle").addClass("active");
 
-    uncheckButtons();
-    $("#analyticsButton").addClass("active");
-    $('#pageContentFluid').empty();
-    $('#pageContent').empty();
-    $('#pageContentlg').empty();
-    $('#pageContentColorTable').empty();
-    $('#pageContentImageTable').empty();
-    $('#pageContentSizeTable').empty();
-    
-    $("#highchartsContainer").html(`
-        <div class="row">
-            <figure class="highcharts-figure col-6">
-                <div id="containerPie"></div>        
-            </figure>
+//     var sizeValue = $("#newInputSize").val();
 
-            <figure class="highcharts-figure col-6">
-                <div id="containerBar"></div>                      
-            </figure>  
-        </div>
-    `);
+//     disableButton("addSizeButton");
 
-    $.ajax({
+//     var isCorrect = validateSize();
 
-        method: "GET",
-        url: urlServer+"/PopularItems",
-        cache: false,
-        processData: false,
-        contentType: false,                    
-        data: null
+//     if (!isCorrect) {
 
-    }).done(function (data) {
+//         enableButton("addSizeButton");
 
-        setPieGraph(data);
-        
-    });
+//         return;
+//     }
 
-    $.ajax({
+//     sizesList.push(sizeValue);
 
-        method: "GET",
-        url: urlServer+"/DeliveryOrders",
-        cache: false,
-        processData: false,
-        contentType: false,                    
-        data: null
+//     var sizeValuesTable = {
+//         "size": sizeValue,
 
-    }).done(function (data) {
+//         "delete":
+//             `        
+//                 <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
+//                     onclick='deleteSize("${sizeValue}");'>
+//                     <i class="fas fa-times"></i>
+//                 </button>    
+//             `
+//     };
 
-        setBarGraph(data);
-        
-    });
-    
+//     addSizeTable(sizeValuesTable);
 
-}
+//     enableButton("addSizeButton");
+// }
 
-function setBarGraph(data) {
-    
-    Highcharts.chart('containerBar', {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            align: 'center',
-            text: 'Concentration of delivery dates'
-        },        
-        accessibility: {
-            announceNewData: {
-                enabled: true
-            }
-        },
-        xAxis: {
-            type: 'category'
-        },
-        yAxis: {
-            title: {
-                text: 'Total percent delivery dates'
-            }
-    
-        },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
-            series: {
-                borderWidth: 0,
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.y:.1f}%'
-                }
-            }
-        },             
-        series: [
-            {
-                name: "Delivery date",
-                colorByPoint: true,
-                data: data
-            }
-        ],
-        credits: false
-        
-    });
-}
+// var imagesList = [];
+// function addImage() {
 
-function setPieGraph(data) {
-    Highcharts.chart('containerPie', {
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-        },
-        title: {
-            text: 'Customer Interest In Zofya Items'
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        accessibility: {
-            point: {
-                valueSuffix: '%'
-            }
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: false
-                },
-                showInLegend: true
-            }
-        },
-        series: [{
-            name: 'Interest',
-            colorByPoint: true,
-            data: data
-        }],
-        credits: false
-    });
-        
-}
+//     var imageValue = $("#newInputImage").val();
 
-var sizesList = [];
-function addSize() {
+//     disableButton("addImageButton");
 
-    
-    var sizeValue = $("#newInputSize").val();
+//     var isCorrect = validateImage();
 
-    disableButtonItem("addSizeButton");
-    
-    var isCorrect = validateSize();
+//     if (!isCorrect) {
+//         changeInValidFieldInput("newInputImage");
+//         enableButton("addImageButton");
 
-    if (!isCorrect) {
-        
-        enableButtonItem("addSizeButton");
+//         return;
+//     }
 
-        return;
-    }
-     
-    sizesList.push(sizeValue);
-        
-    var sizeValuesTable = {"size" :  sizeValue,
-                        
-                            "delete" : 
-                            `        
-                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
-                                    onclick='deleteSize("${sizeValue}");'>
-                                    <i class="fas fa-times"></i>
-                                </button>    
-                            `  
-                            };  
-    
-    addSizeTable(sizeValuesTable);
+//     clearField("newInputImage");
+//     imagesList.push(imageValue);
 
-    enableButtonItem("addSizeButton");
-}
+//     var imagesNumber = imagesList.length;
+//     var imageTag = "image_" + (imagesNumber);
 
-var imagesList = [];
-function addImage() {
+//     var imageValuesTable = {
+//         "image":
+//             `
+//                                 <a href="${imageValue}" target="_blank">
+//                                    ${imageTag}
+//                                 </a>
+//                             `
+//         ,
 
-    var imageValue = $("#newInputImage").val();
+//         "delete":
+//             `        
+//                                 <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
+//                                     onclick='deleteImage("${imageValue}");'>
+//                                     <i class="fas fa-times"></i>
+//                                 </button>    
+//                             `
+//     };
 
-    disableButtonItem("addImageButton");
-    
-    var isCorrect = validateImage();
+//     addImageTable(imageValuesTable);
 
-    if (!isCorrect) {
-        changeInValidFieldInput("newInputImage");
-        enableButtonItem("addImageButton");
+//     enableButton("addImageButton");
+// }
 
-        return;
-    }
+// var colorsList = [];
+// function addColor() {
 
-    clearItemField("newInputImage");    
-    imagesList.push(imageValue);
 
-    var imagesNumber = imagesList.length;
-    var imageTag = "image_"+(imagesNumber);
-        
-    var imageValuesTable = {"image" : 
-                            `
-                                <a href="${imageValue}" target="_blank">
-                                   ${imageTag}
-                                </a>
-                            `    
-                            ,
-                        
-                            "delete" : 
-                            `        
-                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
-                                    onclick='deleteImage("${imageValue}");'>
-                                    <i class="fas fa-times"></i>
-                                </button>    
-                            `  
-                            };  
-    
-    addImageTable(imageValuesTable);
+//     var colorValue = $("#newInputColor").val();
 
-    enableButtonItem("addImageButton");
-}
+//     disableButton("addColorButton");
 
-var colorsList = [];
-function addColor() {
+//     var isCorrect = validateColor();
 
-    
-    var colorValue = $("#newInputColor").val();
+//     if (!isCorrect) {
 
-    disableButtonItem("addColorButton");
-    
-    var isCorrect = validateColor();
+//         enableButton("addColorButton");
 
-    if (!isCorrect) {
-        
-        enableButtonItem("addColorButton");
+//         return;
+//     }
 
-        return;
-    }
-    
-    colorsList.push(colorValue);
-        
-    var colorValuesTable = {"color" :  colorValue,
-                        
-                            "delete" : 
-                            `        
-                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
-                                    onclick='deleteColor("${colorValue}");'>
-                                    <i class="fas fa-times"></i>
-                                </button>    
-                            `  
-                            };  
-    
-    addColorTable(colorValuesTable);
+//     colorsList.push(colorValue);
 
-    enableButtonItem("addColorButton");
-}
+//     var colorValuesTable = {
+//         "color": colorValue,
 
-function deleteColor(color) {
-    
-    var index = colorsList.findIndex( c => c === color);    
-    colorsList.splice(index, 1);
+//         "delete":
+//             `        
+//                                 <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
+//                                     onclick='deleteColor("${colorValue}");'>
+//                                     <i class="fas fa-times"></i>
+//                                 </button>    
+//                             `
+//     };
 
-    $("#colorsTable").find("tbody").empty();
+//     addColorTable(colorValuesTable);
 
-    $.each(colorsList, function (i, colorValue) {  
+//     enableButton("addColorButton");
+// }
 
-        var colorValuesTable = {"color" :  colorValue,
-                        
-                            "delete" : 
-                            `        
-                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
-                                    onclick='deleteColor("${colorValue}");'>
-                                    <i class="fas fa-times"></i>
-                                </button>    
-                            `  
-                            };  
-    
-        addColorTable(colorValuesTable);
+// function deleteColor(color) {
 
-    });
-   
-}
+//     var index = colorsList.findIndex(c => c === color);
+//     colorsList.splice(index, 1);
 
-function deleteImage(image) {
-    
-    var index = imagesList.findIndex( i => i === image);    
-    imagesList.splice(index, 1);
+//     $("#colorsTable").find("tbody").empty();
 
-    $("#imagesTable").find("tbody").empty();
+//     $.each(colorsList, function (i, colorValue) {
 
-    $.each(imagesList, function (i, imageValue) {  
+//         var colorValuesTable = {
+//             "color": colorValue,
 
-        var index = imagesList.findIndex( i => i === imageValue);  
-        var imageTag = "image_"+(index+1);
+//             "delete":
+//                 `        
+//                     <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
+//                         onclick='deleteColor("${colorValue}");'>
+//                         <i class="fas fa-times"></i>
+//                     </button>    
+//                 `
+//         };
 
-        var imageValuesTable = {"image" :  
-                            `
-                                <a href="${imageValue}" target="_blank">
-                                ${imageTag}
-                                </a>
-                            `                   
-                            ,
-                        
-                            "delete" : 
-                            `        
-                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
-                                    onclick='deleteImage("${imageValue}");'>
-                                    <i class="fas fa-times"></i>
-                                </button>    
-                            `  
-                            };  
-    
-        addImageTable(imageValuesTable);
+//         addColorTable(colorValuesTable);
 
-    });
-   
-}
+//     });
 
-function deleteSize(size) {
-    
-    var index = sizesList.findIndex( s => s === size);    
-    sizesList.splice(index, 1);
+// }
 
-    $("#sizesTable").find("tbody").empty();
+// function deleteImage(image) {
 
-    $.each(sizesList, function (i, sizeValue) {  
+//     var index = imagesList.findIndex(i => i === image);
+//     imagesList.splice(index, 1);
 
-        var sizeValuesTable = {"size" :  sizeValue,
-                        
-                            "delete" : 
-                            `        
-                                <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
-                                    onclick='deleteSize("${sizeValue}");'>
-                                    <i class="fas fa-times"></i>
-                                </button>    
-                            `  
-                            };  
-    
-        addSizeTable(sizeValuesTable);
+//     $("#imagesTable").find("tbody").empty();
 
-    });
-   
-}
+//     $.each(imagesList, function (i, imageValue) {
 
-function addSizeTable(size) {
-    
-    $("#sizesTable").find("tbody")
-        .append($("<tr>")           
-            .append($("<td>").html(size.size))            
-            .append($("<td>").html(size.delete))
+//         var index = imagesList.findIndex(i => i === imageValue);
+//         var imageTag = "image_" + (index + 1);
 
-        );  
-}
+//         var imageValuesTable = {
+//             "image":
+//                 `
+//                     <a href="${imageValue}" target="_blank">
+//                     ${imageTag}
+//                     </a>
+//                 `
+//             ,
 
-function addImageTable(image) {
-    $("#imagesTable").find("tbody")
-        .append($("<tr>")           
-            .append($("<td>").html(image.image))            
-            .append($("<td>").html(image.delete))
+//             "delete":
+//                 `        
+//                     <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
+//                         onclick='deleteImage("${imageValue}");'>
+//                         <i class="fas fa-times"></i>
+//                     </button>    
+//                 `
+//         };
 
-        );  
-}
+//         addImageTable(imageValuesTable);
 
-function addColorTable(color) {
-    
-    $("#colorsTable").find("tbody")
-        .append($("<tr>")           
-            .append($("<td>").html(color.color))            
-            .append($("<td>").html(color.delete))
+//     });
 
-        );  
-}
+// }
+
+// function deleteSize(size) {
+
+//     var index = sizesList.findIndex(s => s === size);
+//     sizesList.splice(index, 1);
+
+//     $("#sizesTable").find("tbody").empty();
+
+//     $.each(sizesList, function (i, sizeValue) {
+
+//         var sizeValuesTable = {
+//             "size": sizeValue,
+
+//             "delete":
+//                 `        
+//                     <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
+//                         onclick='deleteSize("${sizeValue}");'>
+//                         <i class="fas fa-times"></i>
+//                     </button>    
+//                 `
+//         };
+
+//         addSizeTable(sizeValuesTable);
+
+//     });
+
+// }
+
+// function addSizeTable(size) {
+
+//     $("#sizesTable").find("tbody")
+//         .append($("<tr>")
+//             .append($("<td>").html(size.size))
+//             .append($("<td>").html(size.delete))
+
+//         );
+// }
+
+// function addImageTable(image) {
+//     $("#imagesTable").find("tbody")
+//         .append($("<tr>")
+//             .append($("<td>").html(image.image))
+//             .append($("<td>").html(image.delete))
+
+//         );
+// }
+
+// function addColorTable(color) {
+
+//     $("#colorsTable").find("tbody")
+//         .append($("<tr>")
+//             .append($("<td>").html(color.color))
+//             .append($("<td>").html(color.delete))
+
+//         );
+// }
 
 function validateFieldItems(input, validateFunction) {
 
-    $("#"+input).keydown(function (event) {
+    $("#" + input).keydown(function (event) {
         validateFunction();
     });
-    $("#"+input).keyup(function (event) {
+    $("#" + input).keyup(function (event) {
         validateFunction();
     });
-    $("#"+input).blur(function (event) {
+    $("#" + input).blur(function (event) {
         validateFunction();
     });
 }
 
 function captureGenderRestriction() {
-    
+
     $("#newInputGender").keydown(function (event) {
         setGenderRestriction();
     });
     $("#newInputGender").keyup(function (event) {
         setGenderRestriction();
-    });  
-    $("#newInputGender").click(function(){
+    });
+    $("#newInputGender").click(function () {
         setGenderRestriction();
     });
 
 }
 
 function captureStatusRestriction() {
-    
+
     $("#newInputStatus").keydown(function (event) {
         setStatusRestriction();
     });
     $("#newInputStatus").keyup(function (event) {
         setStatusRestriction();
-    });  
-    $("#newInputStatus").click(function(){
+    });
+    $("#newInputStatus").click(function () {
         setStatusRestriction();
-    });   
+    });
 }
 
 function setStatusRestriction() {
-        
+
     var statusValue = $("#newInputStatus").val();
-    
-    if(statusValue === "Unavailable"){
+
+    if (statusValue === "Unavailable") {
         setStockRestriction();
-    } else if(statusValue === "Available") {
+    } else if (statusValue === "Available") {
         validateStock();
-    } 
+    }
 }
 
 function setStockRestriction() {
 
-    
+
     $("#newInputStock").addClass("active");
     changeValidFieldInput("newInputStock");
     $("#newInputStock").val(0);
-    
+
 }
 
 function setGenderRestriction() {
-    
+
     var genderValue = $("#newInputGender").val();
-    
-    if(genderValue === "Feminine"){
+
+    if (genderValue === "Feminine") {
         setFemenineOptions();
-    }else{
+    } else {
         setMaleOptions();
     }
 }
 
 function setFemenineOptions() {
-    
+
     $("#newInputCategory").empty();
-    
+
     $("#newInputCategory").html(`
           
         <option value="T-Shirt">T-Shirt</option>
@@ -471,7 +331,7 @@ function setFemenineOptions() {
 function setMaleOptions() {
 
     $("#newInputCategory").empty();
-    
+
     $("#newInputCategory").html(`          
         <option value="T-Shirt">T-Shirt</option>
         <option value="Jacket">Jacket</option>                
@@ -507,14 +367,14 @@ function validateNameField() {
 function validateColor() {
 
     var color = $("#newInputColor").val();
-    
+
     var isCorrect = true;
-      
-    var index = colorsList.findIndex( c => c === color); 
-    if(index != -1){
+
+    var index = colorsList.findIndex(c => c === color);
+    if (index != -1) {
         isCorrect = false;
     }
-               
+
 
     return isCorrect;
 }
@@ -522,14 +382,14 @@ function validateColor() {
 function validateSize() {
 
     var size = $("#newInputSize").val();
-    
+
     var isCorrect = true;
-      
-    var index = sizesList.findIndex( s => s === size); 
-    if(index != -1){
+
+    var index = sizesList.findIndex(s => s === size);
+    if (index != -1) {
         isCorrect = false;
     }
-               
+
 
     return isCorrect;
 }
@@ -543,22 +403,22 @@ function validateImage() {
 
     var imageLength = image.length;
 
-    var pattern =  new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/);
-    if(!pattern.test(image)){
-        
-        isCorrect = false;        
+    var pattern = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/);
+    if (!pattern.test(image)) {
+
+        isCorrect = false;
     }
 
     if ((image === "") || (imageLength > imageMaxLength)) {
 
-        isCorrect = false;        
-    }
-
-    var index = imagesList.findIndex( c => c === image); 
-    if(index != -1){
         isCorrect = false;
     }
-            
+
+    var index = imagesList.findIndex(c => c === image);
+    if (index != -1) {
+        isCorrect = false;
+    }
+
     if (!isCorrect) {
         changeInValidFieldInput("newInputImage");
     } else {
@@ -570,19 +430,19 @@ function validateImage() {
 
 function validateAverageField(field, invalidField, fieldName) {
 
-    var fieldValue = $("#"+field).val();
+    var fieldValue = $("#" + field).val();
 
     const fieldMaxLength = 50;
     var isCorrect = true;
 
     var fieldLength = fieldValue.length;
 
-    var pattern =  new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:',_-]{0,}$/);
-    if(!pattern.test(fieldValue)){
-        
+    var pattern = new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:',_-]{0,}$/);
+    if (!pattern.test(fieldValue)) {
+
         isCorrect = false;
         var invalidFieldValue = document.getElementById(invalidField);
-        invalidFieldValue.innerHTML = "Invalid "+ fieldName +" Format.";
+        invalidFieldValue.innerHTML = "Invalid " + fieldName + " Format.";
 
     }
 
@@ -592,12 +452,12 @@ function validateAverageField(field, invalidField, fieldName) {
         var invalidFieldValue = document.getElementById(invalidField);
 
         if (fieldValue === "") {
-            invalidFieldValue.innerHTML = fieldName+" Field Required";
+            invalidFieldValue.innerHTML = fieldName + " Field Required";
         } else {
             invalidFieldValue.innerHTML = "Maximum length of 50 characters";
         }
     }
-            
+
     if (!isCorrect) {
         changeInValidFieldInput(field);
     } else {
@@ -616,9 +476,9 @@ function validateDescription() {
 
     var descriptionLength = newDescription.length;
 
-    var pattern =  new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:',_-]{0,}$/);
-    if(!pattern.test(newDescription)){
-        
+    var pattern = new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:',_-]{0,}$/);
+    if (!pattern.test(newDescription)) {
+
         isCorrect = false;
         var field = document.getElementById("invalidFieldDescription");
         field.innerHTML = "Invalid Description Format.";
@@ -635,7 +495,7 @@ function validateDescription() {
             field.innerHTML = "Maximum length of 100 characters";
         }
     }
-            
+
     if (!isCorrect) {
         changeInValidFieldInput("newInputDescription");
     } else {
@@ -650,7 +510,7 @@ function validatePrice() {
     var newPrice = $("#newInputPrice").val();
 
     const minPrice = 99;
-    var isCorrect = true;    
+    var isCorrect = true;
 
     if ((newPrice === "") || (newPrice < minPrice)) {
 
@@ -663,7 +523,7 @@ function validatePrice() {
             field.innerHTML = "Minimum price of 99";
         }
     }
-            
+
     if (!isCorrect) {
         changeInValidFieldInput("newInputPrice");
     } else {
@@ -676,12 +536,12 @@ function validatePrice() {
 function validateStock() {
 
     var newStock = $("#newInputStock").val();
-    
+
     var isCorrect = true;
-    
-    var pattern =  new RegExp(/^\d+$/);
-    if(!pattern.test(newStock)){
-        
+
+    var pattern = new RegExp(/^\d+$/);
+    if (!pattern.test(newStock)) {
+
         isCorrect = false;
         var field = document.getElementById("invalidFieldStock");
         field.innerHTML = "Only integers.";
@@ -691,20 +551,20 @@ function validateStock() {
 
         isCorrect = false;
         var field = document.getElementById("invalidFieldStock");
-        
+
         field.innerHTML = "Stock Field Required";
-        
+
     }
 
-    var statusValue = $("#newInputStatus").val();    
+    var statusValue = $("#newInputStatus").val();
 
     if (newStock == 0 && statusValue === "Available") {
         isCorrect = false;
         var field = document.getElementById("invalidFieldStock");
-        
+
         field.innerHTML = "There must be at least one";
     }
-            
+
     if (!isCorrect) {
         changeInValidFieldInput("newInputStock");
     } else {
@@ -717,12 +577,12 @@ function validateStock() {
 function validateCare() {
 
     var newCare = $("#newInputCare").val();
-    
-    var isCorrect = true;    
 
-    var pattern =  new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:º',_-]{0,}$/);
-    if(!pattern.test(newCare)){
-        
+    var isCorrect = true;
+
+    var pattern = new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:º',_-]{0,}$/);
+    if (!pattern.test(newCare)) {
+
         isCorrect = false;
         var field = document.getElementById("invalidFieldCare");
         field.innerHTML = "Invalid Care Format.";
@@ -732,11 +592,11 @@ function validateCare() {
 
         isCorrect = false;
         var field = document.getElementById("invalidFieldCare");
-        
+
         field.innerHTML = "Care Field Required";
-       
+
     }
-            
+
     if (!isCorrect) {
         changeInValidFieldInput("newInputCare");
     } else {
@@ -791,7 +651,7 @@ function setItemsInformation() {
              item</button>
         </div>
     `);
-    
+
     $("#pageContentColorTable").html(`
           
         <table id="colorsTable" class="table table-striped table-hover">
@@ -837,71 +697,71 @@ function setItemsInformation() {
         </table>
     `);
 
-    itemsTable = $('#itemsTable').DataTable({       
+    itemsTable = $('#itemsTable').DataTable({
         paging: false,
         ordering: false,
         searching: false,
         info: false,
-        scrollY: 300,        
-        columns : [            
-            {"data": "sku"},
-            {"data": "description"},
-            {"data": "name"},
-            {"data": "price"},
-            {"data": "category"},
-            {"data": "status"},
-            {"data": "stock"},
-            {"data": "gender"},
-            {"data": "care"},
-            {"data": "edit"},
-            {"data": "delete"}
-        ] 
+        scrollY: 300,
+        columns: [
+            { "data": "sku" },
+            { "data": "description" },
+            { "data": "name" },
+            { "data": "price" },
+            { "data": "category" },
+            { "data": "status" },
+            { "data": "stock" },
+            { "data": "gender" },
+            { "data": "care" },
+            { "data": "edit" },
+            { "data": "delete" }
+        ]
     });
 
     loadItemsServerData();
 
-    colorTable = $('#colorsTable').DataTable({       
+    colorTable = $('#colorsTable').DataTable({
         paging: false,
         ordering: false,
         searching: false,
-        info: false,               
-        columns : [            
-            {"data": "color"},            
-            {"data": "delete"}
-        ] 
+        info: false,
+        columns: [
+            { "data": "color" },
+            { "data": "delete" }
+        ]
     });
 
-    imageTable = $('#imagesTable').DataTable({       
+    imageTable = $('#imagesTable').DataTable({
         paging: false,
         ordering: false,
         searching: false,
-        info: false,                                      
-        columns : [            
-            {"data": "image"},            
-            {"data": "delete"}
-        ] 
+        info: false,
+        columns: [
+            { "data": "image" },
+            { "data": "delete" }
+        ]
     });
-    
-    sizeTable = $('#sizesTable').DataTable({       
+
+    sizeTable = $('#sizesTable').DataTable({
         paging: false,
         ordering: false,
         searching: false,
-        info: false,               
-        columns : [            
-            {"data": "size"},            
-            {"data": "delete"}
-        ] 
+        info: false,
+        columns: [
+            { "data": "size" },
+            { "data": "delete" }
+        ]
     });
-    
+
     validateFieldItems("newInputImage", validateImage);
     validateSKUField();
-    validateFieldItems("newInputDescription", validateDescription);    
-    validateNameField(); 
-    validateFieldItems("newInputPrice", validatePrice);    
-    validateFieldItems("newInputStock", validateStock);    
-    validateFieldItems("newInputCare", validateCare);    
+    validateFieldItems("newInputDescription", validateDescription);
+    validateNameField();
+    validateFieldItems("newInputPrice", validatePrice);
+    validateFieldItems("newInputStock", validateStock);
+    validateFieldItems("newInputCare", validateCare);
 
-    setGenderRestriction();    
+    setGenderRestriction();
     captureGenderRestriction();
     captureStatusRestriction();
 
@@ -919,47 +779,47 @@ function showModalAddItem() {
 }
 
 var items = [];
-function loadItemsServerData() {       
+function loadItemsServerData() {
 
     $.ajax({
 
         method: "POST",
-        url: urlServer+"/ItemsData",
+        url: urlServer + "/ItemsData",
         cache: false,
         processData: false,
         contentType: "application/json",
         data: null
-    }).done(function (data) {      
+    }).done(function (data) {
 
         $("#itemsTable").find("tbody").empty();
-        items = data;        
+        items = data;
         loadItemsDataTable(items);
 
     });
-}        
+}
 
 function loadItemsDataTable(items) {
 
 
-    $.each(items, function (i, item) {                               
+    $.each(items, function (i, item) {
 
-        var itemSKUValue = item.sku;        
+        var itemSKUValue = item.sku;
 
         var descriptionString = item.description;
         var descriptionLength = item.description.length;
         var newDescriptionTag = "";
         const descriptionTagLength = 25;
-                
+
         if (descriptionLength > descriptionTagLength) {
             for (let i = 0; i < descriptionTagLength; i++) {
-                
+
                 const charDescription = descriptionString[i];
                 newDescriptionTag += charDescription;
-                
+
             }
             newDescriptionTag = newDescriptionTag + "...";
 
-        }else{
+        } else {
             newDescriptionTag = descriptionString;
         }
 
@@ -967,52 +827,53 @@ function loadItemsDataTable(items) {
         var careLength = item.care.length;
         var newCareTag = "";
         const careTagLength = 30;
-                
+
         if (careLength > careTagLength) {
             for (let i = 0; i < careTagLength; i++) {
-                
+
                 const charCare = careString[i];
                 newCareTag += charCare;
-                
+
             }
             newCareTag = newCareTag + "...";
 
-        }else{
+        } else {
             newCareTag = careString;
         }
-       
-        
-        var itemValues = {"sku" :  item.sku,
-                            "description" : newDescriptionTag,
-                            "name" : item.name,
-                            "price" : item.price,
-                            "category" : item.category,
-                            "status" : item.status,
-                            "stock" : item.stock,
-                            "gender" : item.gender,
-                            "care" : newCareTag,                            
-                            "edit" : 
-                            `        
+
+
+        var itemValues = {
+            "sku": item.sku,
+            "description": newDescriptionTag,
+            "name": item.name,
+            "price": item.price,
+            "category": item.category,
+            "status": item.status,
+            "stock": item.stock,
+            "gender": item.gender,
+            "care": newCareTag,
+            "edit":
+                `        
                                 <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                     onclick='updateItem("${itemSKUValue}");'>
                                     <i class="fa-solid fa-pencil"></i>
                                 </button>    
                             `,
-                            "delete" : 
-                            `        
+            "delete":
+                `        
                                 <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                     onclick='deleteItem("${itemSKUValue}");'>
                                     <i class="fas fa-times"></i>
                                 </button>    
-                            `  
-                            };  
+                            `
+        };
 
-        if(item.status === "Deleted"){
+        if (item.status === "Deleted") {
             addItemDangerTable(itemValues)
-        }else{
+        } else {
             addItemTable(itemValues);
-        }        
-                           
+        }
+
     });
 
 }
@@ -1027,23 +888,23 @@ function updateItem(sku) {
             onclick="hideAddItemModal();">Close</button>
     `);
 
-    
+
     var skuValue = {
-        "id" : sku
+        "id": sku
     }
 
     $.ajax({
 
         method: "POST",
-        url: urlServer+"/PostFindItemSKU",
+        url: urlServer + "/PostFindItemSKU",
         cache: false,
         processData: false,
         contentType: "application/json",
         data: JSON.stringify(skuValue)
 
-    }).done(function (data) {      
-               
-        
+    }).done(function (data) {
+
+
         $("#newInputSKU").val(data.sku);
         document.getElementById("newInputSKU").setAttribute("disabled", "");
 
@@ -1057,121 +918,124 @@ function updateItem(sku) {
         $("#newInputCare").val(data.care);
 
         colorsList = data.colors;
-        $.each(data.colors, function (i, colorValue) {  
+        $.each(data.colors, function (i, colorValue) {
 
-            var colorValuesTable = {"color" :  colorValue,
-                            
-                                "delete" : 
-                                `        
+            var colorValuesTable = {
+                "color": colorValue,
+
+                "delete":
+                    `        
                                     <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                         onclick='deleteColor("${colorValue}");'>
                                         <i class="fas fa-times"></i>
                                     </button>    
-                                `  
-                                };  
-        
+                                `
+            };
+
             addColorTable(colorValuesTable);
-    
+
         });
 
         imagesList = data.images;
-        $.each(imagesList, function (i, imageValue) {  
+        $.each(imagesList, function (i, imageValue) {
 
-            var index = imagesList.findIndex( i => i === imageValue);  
-            var imageTag = "image_"+(index+1);
-    
-            var imageValuesTable = {"image" :  
-            
-                                `
+            var index = imagesList.findIndex(i => i === imageValue);
+            var imageTag = "image_" + (index + 1);
+
+            var imageValuesTable = {
+                "image":
+
+                    `
                                     <a href="${imageValue}" target="_blank">
                                         ${imageTag}
                                     </a>
-                                `   
-                                ,
-                            
-                                "delete" : 
-                                `        
+                                `
+                ,
+
+                "delete":
+                    `        
                                     <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                         onclick='deleteImage("${imageValue}");'>
                                         <i class="fas fa-times"></i>
                                     </button>    
-                                `  
-                                };  
-        
+                                `
+            };
+
             addImageTable(imageValuesTable);
-    
+
         });
 
         sizesList = data.sizes;
-        $.each(sizesList, function (i, sizeValue) {  
+        $.each(sizesList, function (i, sizeValue) {
 
-            var sizeValuesTable = {"size" :  sizeValue,
-                            
-                                "delete" : 
-                                `        
+            var sizeValuesTable = {
+                "size": sizeValue,
+
+                "delete":
+                    `        
                                     <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                         onclick='deleteSize("${sizeValue}");'>
                                         <i class="fas fa-times"></i>
                                     </button>    
-                                `  
-                                };  
-        
+                                `
+            };
+
             addSizeTable(sizeValuesTable);
-    
+
         });
-       
+
 
         $("#addItemModal").modal("show");
-        
+
 
     });
 }
 
-var deleteSKU="";
+var deleteSKU = "";
 function deleteItem(sku) {
-    deleteSKU = sku;        
+    deleteSKU = sku;
     $("#modalDeleteItem").modal("show");
 }
 
 function removeItem() {
-    
-    hideDeleteModalItem();
+
+    hideModal('modalDeleteItem');
 
     var skuValueUpdate = {
-        "id" : deleteSKU
+        "id": deleteSKU
     }
 
     $.ajax({
 
         method: "PUT",
-        url: urlServer+"/UpdateItemDelete",
+        url: urlServer + "/UpdateItemDelete",
         cache: false,
         processData: false,
-        contentType: "application/json",                    
+        contentType: "application/json",
         data: JSON.stringify(skuValueUpdate)
 
     }).done(function (data) {
 
-        if(data.correct){
+        if (data.correct) {
 
-            loadItemsServerData();     
-            showSuccessAlert(data.message);   
-                                                              
+            loadItemsServerData();
+            showSuccessAlert(data.message, 'modalCorrectMessage');
+
         } else {
-            
+
             var errorMessages = data.message;
-            showAlert(errorMessages, true) 
+            showAlert(errorMessages, true)
         }
     });
 }
 
 function addItemTable(item) {
-    
+
     $("#itemsTable").find("tbody")
-        .append($("<tr>")           
+        .append($("<tr>")
             .append($("<td>").html(item.sku))
             .append($("<td>").html(item.description))
-            .append($("<td>").html(item.name))            
+            .append($("<td>").html(item.name))
             .append($("<td>").html(item.price))
             .append($("<td>").html(item.category))
             .append($("<td>").html(item.status))
@@ -1181,15 +1045,15 @@ function addItemTable(item) {
             .append($("<td>").html(item.edit))
             .append($("<td>").html(item.delete))
 
-        );  
+        );
 }
 
 function addItemDangerTable(item) {
     $("#itemsTable").find("tbody")
-        .append($("<tr class='table-danger'>")           
+        .append($("<tr class='table-danger'>")
             .append($("<td>").html(item.sku))
             .append($("<td>").html(item.description))
-            .append($("<td>").html(item.name))            
+            .append($("<td>").html(item.name))
             .append($("<td>").html(item.price))
             .append($("<td>").html(item.category))
             .append($("<td>").html(item.status))
@@ -1199,11 +1063,11 @@ function addItemDangerTable(item) {
             .append($("<td>").html(item.edit))
             .append($("<td>").html(item.delete))
 
-        );  
+        );
 }
 
 function setCustomersInformation() {
-    
+
     $("body").addClass("active");
     $("#sidebarToggle").addClass("active");
 
@@ -1237,18 +1101,18 @@ function setCustomersInformation() {
         </table>
     `);
 
-    customerTable = $('#customersTable').DataTable({       
+    customerTable = $('#customersTable').DataTable({
         paging: false,
         ordering: false,
         searching: false,
         info: false,
-        scrollY: 300,        
-        columns : [            
-            {"data": "fullname"},
-            {"data": "email"},
-            {"data": "phone"},
-            {"data": "delete"}
-        ] 
+        scrollY: 300,
+        columns: [
+            { "data": "fullname" },
+            { "data": "email" },
+            { "data": "phone" },
+            { "data": "delete" }
+        ]
     });
 
     loadCustomersServerData();
@@ -1257,7 +1121,7 @@ function setCustomersInformation() {
 }
 
 function setOrdersInformation() {
-    
+
     $("body").addClass("active");
     $("#sidebarToggle").addClass("active");
 
@@ -1294,21 +1158,21 @@ function setOrdersInformation() {
         </table>
     `);
 
-    customerTable = $('#ordersTable').DataTable({       
+    customerTable = $('#ordersTable').DataTable({
         paging: false,
         ordering: false,
         searching: false,
         info: false,
-        scrollY: 300,        
-        columns : [            
-            {"data": "id"},
-            {"data": "date"},
-            {"data": "deliveryDate"},
-            {"data": "status"},
-            {"data": "totalToPay"},
-            {"data": "idUser"},
-            {"data": "delete"}
-        ] 
+        scrollY: 300,
+        columns: [
+            { "data": "id" },
+            { "data": "date" },
+            { "data": "deliveryDate" },
+            { "data": "status" },
+            { "data": "totalToPay" },
+            { "data": "idUser" },
+            { "data": "delete" }
+        ]
     });
 
     loadOrdersServerData();
@@ -1316,206 +1180,208 @@ function setOrdersInformation() {
 }
 
 var orders = [];
-function loadOrdersServerData() {       
+function loadOrdersServerData() {
 
     $.ajax({
 
         method: "POST",
-        url: urlServer+"/OrdersData",
+        url: urlServer + "/OrdersData",
         cache: false,
         processData: false,
         contentType: "application/json",
         data: null
-    }).done(function (data) {      
+    }).done(function (data) {
 
         $("#ordersTable").find("tbody").empty();
-        orders = data;        
+        orders = data;
         loadOrdersDataTable(orders);
 
     });
-} 
+}
 
 function loadOrdersDataTable(orders) {
 
 
-    $.each(orders, function (i, order) {       
+    $.each(orders, function (i, order) {
 
         var orderIDValue = order.idOrder;
 
         var dateFormat = order.date;
-        dateFormat = dateFormat.substring(0,10);
+        dateFormat = dateFormat.substring(0, 10);
 
         var deliveryDateFormat = order.deliveryDate;
-        deliveryDateFormat = deliveryDateFormat.substring(0,10);
-                
-        var orderValues = {"id" :  order.idOrder,
-                            "date" : dateFormat,
-                            "deliveryDate" : deliveryDateFormat,
-                            "status" : order.status,
-                            "totalToPay" : order.totalToPay,
-                            "idUser" : order.idUser,
-                            "delete" : 
-                            `        
+        deliveryDateFormat = deliveryDateFormat.substring(0, 10);
+
+        var orderValues = {
+            "id": order.idOrder,
+            "date": dateFormat,
+            "deliveryDate": deliveryDateFormat,
+            "status": order.status,
+            "totalToPay": order.totalToPay,
+            "idUser": order.idUser,
+            "delete":
+                `        
                                 <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                     onclick='updateOrder("${orderIDValue}");'>
                                     <i class="fa-solid fa-pencil"></i>
                                 </button>    
-                            ` 
-                            };  
+                            `
+        };
 
         addOrderTable(orderValues);
-                           
+
     });
 
 }
 
-var updatedIDOrder="";
+var updatedIDOrder = "";
 function updateOrder(idOrder) {
-    updatedIDOrder = idOrder;    
+    updatedIDOrder = idOrder;
     $("#updateOrderModal").modal("show");
 }
 
 function updateOrderStatus() {
-    
-    hideUpdateOrderModal();    
 
-    var newStatus = $("#updatedStatudInput").val();        
+    hideModal('updateOrderModal');
+
+    var newStatus = $("#updatedStatudInput").val();
 
     let orderUpdateValuesJson = {
-        "idOrder" : updatedIDOrder,
+        "idOrder": updatedIDOrder,
         "status": newStatus
-    }    
+    }
 
     $.ajax({
 
         method: "PATCH",
-        url: urlServer+"/UpdateOrder",                        
-        contentType: "application/json",                
+        url: urlServer + "/UpdateOrder",
+        contentType: "application/json",
         data: JSON.stringify(orderUpdateValuesJson)
 
     }).done(function (data) {
 
-        if(data.correct){
-            
+        if (data.correct) {
+
             loadOrdersServerData();
-            showSuccessAlert(data.message);   
-                                                              
+            showSuccessAlert(data.message, 'modalCorrectMessage');
+
         } else {
-            
+
             var errorMessages = data.message;
-            showAlert(errorMessages, true) 
+            showAlert(errorMessages, true)
         }
 
     }).fail(function (jqXHR, textStatus) {
 
-        console.log(jqXHR, textStatus);        
+        console.log(jqXHR, textStatus);
 
     });
 }
 
 
 function addOrderTable(order) {
-    
+
     $("#ordersTable").find("tbody")
-        .append($("<tr>")           
+        .append($("<tr>")
             .append($("<td>").html(order.id))
             .append($("<td>").html(order.date))
-            .append($("<td>").html(order.deliveryDate))            
-            .append($("<td>").html(order.status))            
-            .append($("<td>").html(order.totalToPay))            
-            .append($("<td>").html(order.idUser))            
+            .append($("<td>").html(order.deliveryDate))
+            .append($("<td>").html(order.status))
+            .append($("<td>").html(order.totalToPay))
+            .append($("<td>").html(order.idUser))
             .append($("<td>").html(order.delete))
 
-        );  
+        );
 }
 
 var customers = [];
-function loadCustomersServerData() {       
+function loadCustomersServerData() {
 
     $.ajax({
 
         method: "POST",
-        url: urlServer+"/CustomersData",
+        url: urlServer + "/CustomersData",
         cache: false,
         processData: false,
         contentType: "application/json",
         data: null
-    }).done(function (data) {      
+    }).done(function (data) {
 
         $("#customersTable").find("tbody").empty();
-        customers = data;        
+        customers = data;
         loadCustomersDataTable(customers);
 
     });
-}        
+}
 
 function loadCustomersDataTable(customers) {
 
 
-    $.each(customers, function (i, customer) {                               
+    $.each(customers, function (i, customer) {
         var customerEmailValue = customer.email;
-        
-        var customerValues = {"fullname" :  customer.fullName,
-                            "email" : customer.email,
-                            "phone" : customer.phone,
-                            "delete" : 
-                            `        
+
+        var customerValues = {
+            "fullname": customer.fullName,
+            "email": customer.email,
+            "phone": customer.phone,
+            "delete":
+                `        
                                 <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
                                     onclick='deleteCustomer("${customerEmailValue}");'>
                                     <i class="fas fa-times"></i>
                                 </button>    
-                            ` 
-                            };  
+                            `
+        };
 
         addCustomerTable(customerValues);
-                           
+
     });
 
 }
 
-var deleteEmail="";
+var deleteEmail = "";
 function deleteCustomer(email) {
-    deleteEmail = email;    
+    deleteEmail = email;
     $("#modalDelete").modal("show");
 }
 
 function removeCustomer() {
-    hideDeleteModal();
+    hideModal('modalDelete');
     $.ajax({
 
         method: "DELETE",
-        url: urlServer+"/CustomerDelete/"+deleteEmail,
+        url: urlServer + "/CustomerDelete/" + deleteEmail,
         cache: false,
         processData: false,
-        contentType: false,                    
+        contentType: false,
         data: null
 
     }).done(function (data) {
 
-        if(data.correct){
+        if (data.correct) {
 
 
-            loadCustomersServerData();     
-            showSuccessAlert(data.message);   
-                                                              
+            loadCustomersServerData();
+            showSuccessAlert(data.message, 'modalCorrectMessage');
+
         } else {
-            
+
             var errorMessages = data.message;
-            showAlert(errorMessages, true) 
+            showAlert(errorMessages, true)
         }
     });
 }
 
 function addCustomerTable(customer) {
-    
+
     $("#customersTable").find("tbody")
-        .append($("<tr>")           
+        .append($("<tr>")
             .append($("<td>").html(customer.fullname))
             .append($("<td>").html(customer.email))
-            .append($("<td>").html(customer.phone))            
+            .append($("<td>").html(customer.phone))
             .append($("<td>").html(customer.delete))
 
-        );  
+        );
 }
 
 function setAdministratorUpdateInformation(userEmail) {
@@ -1580,23 +1446,23 @@ function setAdministratorUpdateInformation(userEmail) {
         ordering: false,
         searching: false,
         info: false,
-        columns : [            
-            {"data": "field"},
-            {"data": "value"}
-        ] 
+        columns: [
+            { "data": "field" },
+            { "data": "value" }
+        ]
     });
 
     loadData(userEmail);
 
     $("#administratorTable tbody").on("click", "tr", function () {
-    
-        var informationRow = administratorTable.row(this).data();                
-        
+
+        var informationRow = administratorTable.row(this).data();
+
         switch (informationRow.field) {
 
-            case 'RFC':            
+            case 'RFC':
                 
-                clearUpdateForm();
+                clearField('updateInput');
                 $('#updateDialog').modal('show');
                 document.getElementById("updateLabel").innerHTML = "RFC";
                 document.getElementById("updateNewLabel").innerHTML = "New RFC:";
@@ -1606,14 +1472,14 @@ function setAdministratorUpdateInformation(userEmail) {
                     <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
                         onclick="hideUpdateModal();">Close</button>
                 
-                `);             
+                `);
 
                 validateField(validateRFC);
                 break;
 
             case 'CURP':
                 
-                clearUpdateForm();
+                clearField('updateInput');
                 $('#updateDialog').modal('show');
                 document.getElementById("updateLabel").innerHTML = "CURP";
                 document.getElementById("updateNewLabel").innerHTML = "New CURP:";
@@ -1631,7 +1497,7 @@ function setAdministratorUpdateInformation(userEmail) {
 
             case 'Email':
                 
-                clearUpdateForm();
+                clearField('updateInput');
                 $('#updateDialog').modal('show');
                 document.getElementById("updateLabel").innerHTML = "Email";
                 document.getElementById("updateNewLabel").innerHTML = "New Email:";
@@ -1649,7 +1515,7 @@ function setAdministratorUpdateInformation(userEmail) {
 
             case 'Fullname':
                 
-                clearUpdateForm();
+                clearField('updateInput');
                 $('#updateDialog').modal('show');
                 document.getElementById("updateLabel").innerHTML = "Fullname";
                 document.getElementById("updateNewLabel").innerHTML = "Fullname:";
@@ -1661,20 +1527,22 @@ function setAdministratorUpdateInformation(userEmail) {
                         onclick="hideUpdateModal();">Close</button>
                 
                 `);
-                
+
                 validateField(validateFullName);
                 break;
 
             case 'Password':
+                
+                clearField('updateInputNewPassword');
+                clearField('updateInputCurrentPassword');
 
-                clearUpdatePasswordForm();
-                $('#updateDialogPassword').modal('show');                
+                $('#updateDialogPassword').modal('show');
 
                 $("#updateFormFooterPassword").html(`
 
                     <button onclick="updatePassword();" type="button" class="btn button-action-style" id="updatePasswordButton">Save Password</button>
                     <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
-                        onclick="hideUpdateModalPassword();">Close</button>
+                        onclick="hideModal('updateDialogPassword');">Close</button>
                 
                 `);
 
@@ -1683,7 +1551,7 @@ function setAdministratorUpdateInformation(userEmail) {
 
             case 'Phone':
                 
-                clearUpdateForm();
+                clearField('updateInput');
                 $('#updateDialog').modal('show');
                 document.getElementById("updateLabel").innerHTML = "Phone";
                 document.getElementById("updateNewLabel").innerHTML = "New Phone:";
@@ -1695,40 +1563,40 @@ function setAdministratorUpdateInformation(userEmail) {
                         onclick="hideUpdateModal();">Close</button>
                 
                 `);
-                
+
                 validateField(validatePhone);
                 break;
 
-            default:                
+            default:
                 break;
-        } 
+        }
     });
 }
 
 var staffInformation;
-function loadData(userEmail) {        
+function loadData(userEmail) {
 
     var IDResult = {
-        "id" : userEmail
-    };   
+        "id": userEmail
+    };
 
     $.ajax({
 
         method: "POST",
-        url: urlServer+"/PostFindStaffEmail",
+        url: urlServer + "/PostFindStaffEmail",
         cache: false,
         processData: false,
-        contentType: "application/json",                    
+        contentType: "application/json",
         data: JSON.stringify(IDResult)
 
     }).done(function (data) {
-        
-        staffInformation = data;                       
+
+        staffInformation = data;
         loadStaffDataTable(staffInformation);
     });
-} 
+}
 
-function loadStaffDataTable(staffInformation) {      
+function loadStaffDataTable(staffInformation) {
 
     $("#rfcRow").html(staffInformation.rfc);
     $("#curpRow").html(staffInformation.curp);
@@ -1771,14 +1639,14 @@ function validateRFC() {
     const rfcMaxLength = 13;
     var isCorrect = true;
 
-    var rfcLength = newRFC.length;    
+    var rfcLength = newRFC.length;
 
-    var pattern =  new RegExp(/^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/);
-    if(!pattern.test(newRFC)){
-        
-        isCorrect = false; 
+    var pattern = new RegExp(/^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/);
+    if (!pattern.test(newRFC)) {
+
+        isCorrect = false;
         var field = document.getElementById("invalidField");
-        field.innerHTML = "Invalid RFC Format";       
+        field.innerHTML = "Invalid RFC Format";
     }
 
     if ((newRFC === "") || (rfcLength > rfcMaxLength)) {
@@ -1793,10 +1661,10 @@ function validateRFC() {
         }
     }
 
-    if (!isCorrect) {
-        changeInValidField()
+    if (!isCorrect) {        
+        changeInValidFieldInput('updateInput');
     } else {
-        changeValidField()
+        changeValidFieldInput('updateInput');
     }
 
     return isCorrect;
@@ -1809,14 +1677,14 @@ function validateCURP() {
     const curpMaxLength = 18;
     var isCorrect = true;
 
-    var curpLength = newCURP.length;    
+    var curpLength = newCURP.length;
 
-    var pattern =  new RegExp(/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/);
-    if(!pattern.test(newCURP)){
-        
-        isCorrect = false; 
+    var pattern = new RegExp(/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/);
+    if (!pattern.test(newCURP)) {
+
+        isCorrect = false;
         var field = document.getElementById("invalidField");
-        field.innerHTML = "Invalid CURP Format";       
+        field.innerHTML = "Invalid CURP Format";
     }
 
     if ((newCURP === "") || (curpLength > curpMaxLength)) {
@@ -1831,10 +1699,10 @@ function validateCURP() {
         }
     }
 
-    if (!isCorrect) {
-        changeInValidField()
-    } else {
-        changeValidField()
+    if (!isCorrect) {        
+        changeInValidFieldInput('updateInput');
+    } else {        
+        changeValidFieldInput('updateInput');
     }
 
     return isCorrect;
@@ -1849,9 +1717,9 @@ function validateEmail() {
 
     var emailLength = newEmail.length;
 
-    var pattern =  new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*(\.[A-Za-z]{1,})$/);
-    if(!pattern.test(newEmail)){
-        
+    var pattern = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*(\.[A-Za-z]{1,})$/);
+    if (!pattern.test(newEmail)) {
+
         isCorrect = false;
         var field = document.getElementById("invalidField");
         field.innerHTML = "Invalid Email Format";
@@ -1869,10 +1737,10 @@ function validateEmail() {
         }
     }
 
-    if (!isCorrect) {
-        changeInValidField();
-    } else {
-        changeValidField();
+    if (!isCorrect) {        
+        changeInValidFieldInput('updateInput');
+    } else {        
+        changeValidFieldInput('updateInput');
     }
 
     return isCorrect;
@@ -1887,9 +1755,9 @@ function validateFullName() {
 
     var fullnameLength = newFullname.length;
 
-    var pattern =  new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:',_-]{0,}$/);
-    if(!pattern.test(newFullname)){
-        
+    var pattern = new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:',_-]{0,}$/);
+    if (!pattern.test(newFullname)) {
+
         isCorrect = false;
         var field = document.getElementById("invalidField");
         field.innerHTML = "Invalid Full Name Format";
@@ -1906,11 +1774,11 @@ function validateFullName() {
             field.innerHTML = "Maximum length of 100 characters";
         }
     }
-            
-    if (!isCorrect) {
-        changeInValidField()
-    } else {
-        changeValidField()
+
+    if (!isCorrect) {        
+        changeInValidFieldInput('updateInput');
+    } else {        
+        changeValidFieldInput('updateInput');
     }
 
     return isCorrect;
@@ -1925,9 +1793,9 @@ function validatePhone() {
 
     var phoneLength = newPhone.length;
 
-    var pattern =  new RegExp(/^[0-9]{10}$/);
-    if(!pattern.test(newPhone)){
-        
+    var pattern = new RegExp(/^[0-9]{10}$/);
+    if (!pattern.test(newPhone)) {
+
         isCorrect = false;
         var field = document.getElementById("invalidField");
         field.innerHTML = "Invalid Phone Format";
@@ -1945,10 +1813,10 @@ function validatePhone() {
         }
     }
 
-    if (!isCorrect) {
-        changeInValidField();
-    } else {
-        changeValidField();
+    if (!isCorrect) {        
+        changeInValidFieldInput('updateInput');
+    } else {        
+        changeValidFieldInput('updateInput');
     }
 
     return isCorrect;
@@ -1963,7 +1831,7 @@ function validatePassword() {
 
     var isCorrect = true;
 
-    var passwordLenght = newPassword.length;    
+    var passwordLenght = newPassword.length;
 
     if ((newPassword === "") ||
         ((passwordLenght < passwordMinLenght) || (passwordLenght > passwordMaxLength))) {
@@ -1983,7 +1851,7 @@ function validatePassword() {
     }
 
     if (!isCorrect) {
-        
+
         $("#updateInputNewPassword").removeClass("is-valid");
         $("#updateInputNewPassword").addClass("is-invalid");
 
@@ -1996,7 +1864,7 @@ function validatePassword() {
 }
 
 function validateColorsList() {
-    
+
     var colorsNumber = colorsList.length;
 
     if (colorsNumber > 0) {
@@ -2007,7 +1875,7 @@ function validateColorsList() {
 }
 
 function validateImagesList() {
-    
+
     var imagesNumber = imagesList.length;
 
     if (imagesNumber > 0) {
@@ -2018,7 +1886,7 @@ function validateImagesList() {
 }
 
 function validateSizesList() {
-    
+
     var sizesNumber = sizesList.length;
 
     if (sizesNumber > 0) {
@@ -2030,7 +1898,7 @@ function validateSizesList() {
 
 function addItem() {
 
-    disableButtonItem("addItemButton");
+    disableButton("addItemButton");
     var validationResult = true;
 
     var validationFieldsResults = []
@@ -2043,10 +1911,10 @@ function addItem() {
 
     validationFieldsResults.push(validateColorsList());
     validationFieldsResults.push(validateImagesList());
-    validationFieldsResults.push(validateSizesList());    
+    validationFieldsResults.push(validateSizesList());
 
     var result = validationFieldsResults.includes(false);
-    
+
     if (result) {
         validationResult = false;
     }
@@ -2096,7 +1964,7 @@ function addItem() {
 
             if (data.correct) {
 
-                enableButtonItem("addItemButton");
+                enableButton("addItemButton");
                 hideAddItemModal();
 
                 loadItemsServerData();
@@ -2105,25 +1973,24 @@ function addItem() {
                 cleanFields("newInputName");
                 cleanFields("newInputPrice");
                 cleanFields("newInputStock");
-                cleanFields("newInputCare");                
-                enableButtonItem("addItemButton");
+                cleanFields("newInputCare");
+                enableButton("addItemButton");
 
-                showSuccessAlert(data.message);   
+                showSuccessAlert(data.message, 'modalCorrectMessage');
 
 
             } else {
 
-                var errorMessages = data.message;
-                var errorFields = data.field;
-                
-                showAlert(errorMessages, true);                
-                enableButtonItem("addItemButton");
+                var errorMessages = data.message;                
+
+                showAlert(errorMessages, true);
+                enableButton("addItemButton");
             }
 
         }).fail(function (jqXHR, textStatus) {
 
             showRequestErrors(jqXHR, textStatus, true);
-            enableButtonItem("addItemButton");
+            enableButton("addItemButton");
 
         });
 
@@ -2131,17 +1998,17 @@ function addItem() {
 
     } else {
         showAlert(["Correct or complete the form fields"], true);
-        enableButtonItem("addItemButton");
+        enableButton("addItemButton");
     }
 }
 
 function updateDBItem() {
 
-    disableButtonItem("updateItemButton");
+    disableButton("updateItemButton");
     var validationResult = true;
 
     var validationFieldsResults = []
-    
+
     validationFieldsResults.push(validateDescription());
     validationFieldsResults.push(validateAverageField("newInputName", "invalidFieldName", "Name"));
     validationFieldsResults.push(validatePrice());
@@ -2150,10 +2017,10 @@ function updateDBItem() {
 
     validationFieldsResults.push(validateColorsList());
     validationFieldsResults.push(validateImagesList());
-    validationFieldsResults.push(validateSizesList());    
+    validationFieldsResults.push(validateSizesList());
 
     var result = validationFieldsResults.includes(false);
-    
+
     if (result) {
         validationResult = false;
     }
@@ -2203,7 +2070,7 @@ function updateDBItem() {
 
             if (data.correct) {
 
-                enableButtonItem("updateItemButton");
+                enableButton("updateItemButton");
                 hideAddItemModal();
 
                 loadItemsServerData();
@@ -2212,24 +2079,23 @@ function updateDBItem() {
                 cleanFields("newInputName");
                 cleanFields("newInputPrice");
                 cleanFields("newInputStock");
-                cleanFields("newInputCare");                                
+                cleanFields("newInputCare");
 
-                showSuccessAlert(data.message);   
+                showSuccessAlert(data.message, 'modalCorrectMessage');
 
 
             } else {
 
-                var errorMessages = data.message;
-                var errorFields = data.field;
-                
-                showAlert(errorMessages, true);                
-                enableButtonItem("updateItemButton");
+                var errorMessages = data.message;                
+
+                showAlert(errorMessages, true);
+                enableButton("updateItemButton");
             }
 
         }).fail(function (jqXHR, textStatus) {
 
             showRequestErrors(jqXHR, textStatus, true);
-            enableButtonItem("updateItemButton");
+            enableButton("updateItemButton");
 
         });
 
@@ -2237,26 +2103,26 @@ function updateDBItem() {
 
     } else {
         showAlert(["Correct or complete the form fields"], true);
-        enableButtonItem("updateItemButton");
+        enableButton("updateItemButton");
     }
 }
 
 function cleanFields(field) {
-    
-    $("#"+field).val("");
-    $("#"+field).removeClass("active");
-    $("#"+field).removeClass("is-valid");
-    $("#"+field).removeClass("is-invalid");
+
+    $("#" + field).val("");
+    $("#" + field).removeClass("active");
+    $("#" + field).removeClass("is-valid");
+    $("#" + field).removeClass("is-invalid");
 }
 
 function updateRFC() {
 
-    disableUpdateButton();
-    var validationResult = true;   
+    disableButton('updateButton');
+    var validationResult = true;
 
     validationResult = validateRFC();
 
-    if (validationResult) {        
+    if (validationResult) {
 
         var updateRFC = $("#updateInput").val();
 
@@ -2269,55 +2135,54 @@ function updateRFC() {
         $.ajax({
 
             method: "PUT",
-            url: urlServer+"/UpdateAdministrator",
+            url: urlServer + "/UpdateAdministrator",
             cache: false,
             processData: false,
-            contentType: "application/json",                    
+            contentType: "application/json",
             data: JSON.stringify(staffInformationUpdate)
 
         }).done(function (data) {
 
             if (data.correct) {
                 
-                clearUpdateForm();
-                enableUpdateButton();
+                clearField('updateInput');
+                enableButton('updateButton');
 
                 hideUpdateModal();
-                showSuccessInformationAlert(data.message);                  
+                showSuccessAlert(data.message, 'modalCorrectUserInformation');
 
             } else {
 
-                var errorMessages = data.message;
-                var errorFields = data.field;
-                
-                showAlert(errorMessages, true);
-                changeInValidField();
-                enableUpdateButton();
+                var errorMessages = data.message;                
+
+                showAlert(errorMessages, true);                
+                changeInValidFieldInput('updateInput');
+                enableButton('updateButton');
             }
 
         }).fail(function (jqXHR, textStatus) {
 
             showRequestErrors(jqXHR, textStatus);
-            enableUpdateButton();
+            enableButton('updateButton');
 
         });
 
     } else {
-        enableUpdateButton();
+        enableButton('updateButton');
     }
 
 }
 
 function updateCURP() {
-    
-    disableUpdateButton();
-    var validationResult = true;   
+
+    disableButton('updateButton');
+    var validationResult = true;
 
     validationResult = validateCURP();
 
-    if (validationResult) {        
+    if (validationResult) {
 
-        var updateCURPValue= $("#updateInput").val();
+        var updateCURPValue = $("#updateInput").val();
 
         var staffInformationUpdate = {
             "field": "curp",
@@ -2328,56 +2193,55 @@ function updateCURP() {
         $.ajax({
 
             method: "PUT",
-            url: urlServer+"/UpdateAdministrator",
+            url: urlServer + "/UpdateAdministrator",
             cache: false,
             processData: false,
-            contentType: "application/json",                    
+            contentType: "application/json",
             data: JSON.stringify(staffInformationUpdate)
 
         }).done(function (data) {
 
             if (data.correct) {
                 
-                clearUpdateForm();
-                enableUpdateButton();
+                clearField('updateInput');
+                enableButton('updateButton');
 
                 hideUpdateModal();
-                showSuccessInformationAlert(data.message);  
-                
+                showSuccessAlert(data.message, 'modalCorrectUserInformation');
+
 
             } else {
 
-                var errorMessages = data.message;
-                var errorFields = data.field;
-                
-                showAlert(errorMessages, true);
-                changeInValidField();
-                enableUpdateButton();
+                var errorMessages = data.message;                
+
+                showAlert(errorMessages, true);                
+                changeInValidFieldInput('updateInput');
+                enableButton('updateButton');
             }
 
         }).fail(function (jqXHR, textStatus) {
 
             showRequestErrors(jqXHR, textStatus);
-            enableUpdateButton();
+            enableButton('updateButton');
 
         });
 
     } else {
-        enableUpdateButton();
+        enableButton('updateButton');
     }
 
 }
 
 function updateEmail() {
-    
-    disableUpdateButton();
-    var validationResult = true;   
+
+    disableButton('updateButton');
+    var validationResult = true;
 
     validationResult = validateEmail();
 
-    if (validationResult) {        
+    if (validationResult) {
 
-        var updateEmailValue= $("#updateInput").val();
+        var updateEmailValue = $("#updateInput").val();
 
         var staffInformationUpdate = {
             "field": "email",
@@ -2388,54 +2252,53 @@ function updateEmail() {
         $.ajax({
 
             method: "PUT",
-            url: urlServer+"/UpdateAdministrator",
+            url: urlServer + "/UpdateAdministrator",
             cache: false,
             processData: false,
-            contentType: "application/json",                    
+            contentType: "application/json",
             data: JSON.stringify(staffInformationUpdate)
 
         }).done(function (data) {
 
             if (data.correct) {
                 
-                clearUpdateForm();
-                enableUpdateButton();
+                clearField('updateInput');
+                enableButton('updateButton');
 
                 hideUpdateModal();
-                showSuccessAccessAlert(data.message);                
+                showSuccessAlert(data.message, 'modalCorrectUserAccess');
 
             } else {
 
-                var errorMessages = data.message;
-                var errorFields = data.field;
-                
-                showAlert(errorMessages, true);
-                changeInValidField();
-                enableUpdateButton();
+                var errorMessages = data.message;                
+
+                showAlert(errorMessages, true);                
+                changeInValidFieldInput('updateInput');
+                enableButton('updateButton');
             }
 
         }).fail(function (jqXHR, textStatus) {
 
             showRequestErrors(jqXHR, textStatus);
-            enableUpdateButton();
+            enableButton('updateButton');
 
         });
 
     } else {
-        enableUpdateButton();
+        enableButton('updateButton');
     }
 }
 
 function updateFullname() {
-    
-    disableUpdateButton();
-    var validationResult = true;   
+
+    disableButton('updateButton');
+    var validationResult = true;
 
     validationResult = validateFullName();
 
-    if (validationResult) {        
+    if (validationResult) {
 
-        var updateFullnameValue= $("#updateInput").val();
+        var updateFullnameValue = $("#updateInput").val();
 
         var staffInformationUpdate = {
             "field": "fullname",
@@ -2446,56 +2309,55 @@ function updateFullname() {
         $.ajax({
 
             method: "PUT",
-            url: urlServer+"/UpdateAdministrator",
+            url: urlServer + "/UpdateAdministrator",
             cache: false,
             processData: false,
-            contentType: "application/json",                    
+            contentType: "application/json",
             data: JSON.stringify(staffInformationUpdate)
 
         }).done(function (data) {
 
             if (data.correct) {
                 
-                clearUpdateForm();
-                enableUpdateButton();
+                clearField('updateInput');
+                enableButton('updateButton');
 
                 hideUpdateModal();
-                showSuccessInformationAlert(data.message);                
+                showSuccessAlert(data.message, 'modalCorrectUserInformation');
 
             } else {
 
-                var errorMessages = data.message;
-                var errorFields = data.field;
-                
-                showAlert(errorMessages, true);
-                changeInValidField();
-                enableUpdateButton();
+                var errorMessages = data.message;                
+
+                showAlert(errorMessages, true);                
+                changeInValidFieldInput('updateInput');
+                enableButton('updateButton');
             }
 
         }).fail(function (jqXHR, textStatus) {
 
             showRequestErrors(jqXHR, textStatus);
-            enableUpdateButton();
+            enableButton('updateButton');
 
         });
 
     } else {
-        enableUpdateButton();
+        enableButton('updateButton');
     }
 
 }
 
 function updatePassword() {
-    
-    disableUpdatePasswordButton();
-    var validationResult = true;   
+
+    disableButton('updatePasswordButton');
+    var validationResult = true;
 
     validationResult = validatePassword();
 
-    if (validationResult) {        
+    if (validationResult) {
 
-        var updateCurrentPasswordValue= $("#updateInputCurrentPassword").val();
-        var updateNewPasswordValue= $("#updateInputNewPassword").val();
+        var updateCurrentPasswordValue = $("#updateInputCurrentPassword").val();
+        var updateNewPasswordValue = $("#updateInputNewPassword").val();
 
         var staffInformationUpdate = {
             "currentValue": updateCurrentPasswordValue,
@@ -2506,55 +2368,56 @@ function updatePassword() {
         $.ajax({
 
             method: "PUT",
-            url: urlServer+"/UpdateAdministratorPassword",
+            url: urlServer + "/UpdateAdministratorPassword",
             cache: false,
             processData: false,
-            contentType: "application/json",                    
+            contentType: "application/json",
             data: JSON.stringify(staffInformationUpdate)
 
         }).done(function (data) {
 
             if (data.correct) {
                 
-                clearUpdatePasswordForm();
-                enableUpdatePasswordButton();
+                clearField('updateInputNewPassword');
+                clearField('updateInputCurrentPassword');
 
-                hideUpdateModalPassword();
-                showSuccessInformationAlert(data.message);                
+                enableButton('updatePasswordButton');
+
+                hideModal('updateDialogPassword');
+                showSuccessAlert(data.message, 'modalCorrectUserInformation');
 
             } else {
 
-                var errorMessages = data.message;
-                var errorFields = data.field;
-                
-                showAlert(errorMessages, true);
-                changeInValidField();
-                enableUpdatePasswordButton();
+                var errorMessages = data.message;                
+
+                showAlert(errorMessages, true);                
+                changeInValidFieldInput('updateInput');
+                enableButton('updatePasswordButton');
             }
 
         }).fail(function (jqXHR, textStatus) {
 
             showRequestErrors(jqXHR, textStatus);
-            enableUpdatePasswordButton();
+            enableButton('updatePasswordButton');
 
         });
 
     } else {
-        enableUpdatePasswordButton();
+        enableButton('updatePasswordButton');
     }
 
 }
 
 function updatePhone() {
-    
-    disableUpdateButton();
-    var validationResult = true;   
+
+    disableButton('updateButton');
+    var validationResult = true;
 
     validationResult = validatePhone();
 
-    if (validationResult) {        
+    if (validationResult) {
 
-        var updatePhoneValue= $("#updateInput").val();
+        var updatePhoneValue = $("#updateInput").val();
 
         var staffInformationUpdate = {
             "field": "phone",
@@ -2565,47 +2428,46 @@ function updatePhone() {
         $.ajax({
 
             method: "PUT",
-            url: urlServer+"/UpdateAdministrator",
+            url: urlServer + "/UpdateAdministrator",
             cache: false,
             processData: false,
-            contentType: "application/json",                    
+            contentType: "application/json",
             data: JSON.stringify(staffInformationUpdate)
 
         }).done(function (data) {
 
             if (data.correct) {
                 
-                clearUpdateForm();
-                enableUpdateButton();
+                clearField('updateInput');
+                enableButton('updateButton');
 
                 hideUpdateModal();
-                showSuccessInformationAlert(data.message);                  
+                showSuccessAlert(data.message, 'modalCorrectUserInformation');
 
             } else {
 
-                var errorMessages = data.message;
-                var errorFields = data.field;
-                
-                showAlert(errorMessages, true);
-                changeInValidField();
-                enableUpdateButton();
+                var errorMessages = data.message;                
+
+                showAlert(errorMessages, true);                
+                changeInValidFieldInput('updateInput');
+                enableButton('updateButton');
             }
 
         }).fail(function (jqXHR, textStatus) {
 
             showRequestErrors(jqXHR, textStatus);
-            enableUpdateButton();
+            enableButton('updateButton');
 
         });
 
     } else {
-        enableUpdateButton();
+        enableButton('updateButton');
     }
 
 }
 
-function showAlert(errorMessages, isErrorAlert) {      
-    
+function showAlert(errorMessages, isErrorAlert) {
+
 
     $("#modalErrors").find(".modal-body").empty();
     errorMessages.forEach(message => {
@@ -2616,72 +2478,36 @@ function showAlert(errorMessages, isErrorAlert) {
 
         const alert = document.createElement('DIV');
         alert.textContent = message;
-        alert.classList.add('alert');        
+        alert.classList.add('alert');
         if (isErrorAlert) {
             alert.classList.add('alert-danger');
         } else {
             alert.classList.add('alert-success');
         }
-        
-        $("#modalErrors").find(".modal-body").append(alert);          
+
+        $("#modalErrors").find(".modal-body").append(alert);
 
     });
-    
-    $('#modalErrors').modal('show');    
+
+    $('#modalErrors').modal('show');
 }
 
-function showSuccessAlert(successMessages) {      
-    
+function showSuccessAlert(successMessages, modal) {
 
-    $("#modalCorrectMessage").find(".modal-body").empty();
+
+    $("#" + modal).find(".modal-body").empty();
     successMessages.forEach(message => {
-       
-        $("#modalCorrectMessage").find(".modal-body").html(`
+
+        $("#" + modal).find(".modal-body").html(`
             <i class="fa-regular fa-circle-check fa-3x" style="color:green"></i>
             <br>
             <br>
             ${message}        
-        `);     
+        `);
 
     });
-    
-    $('#modalCorrectMessage').modal('show');    
-}
 
-function showSuccessAccessAlert(successMessages) {      
-    
-
-    $("#modalCorrectUserAccess").find(".modal-body").empty();
-    successMessages.forEach(message => {
-       
-        $("#modalCorrectUserAccess").find(".modal-body").html(`
-            <i class="fa-regular fa-circle-check fa-3x" style="color:green"></i>
-            <br>
-            <br>
-            ${message}        
-        `);     
-
-    });
-    
-    $('#modalCorrectUserAccess').modal('show');    
-}
-
-function showSuccessInformationAlert(successMessages) {      
-    
-
-    $("#modalCorrectUserInformation").find(".modal-body").empty();
-    successMessages.forEach(message => {
-       
-        $("#modalCorrectUserInformation").find(".modal-body").html(`
-            <i class="fa-regular fa-circle-check fa-3x" style="color:green"></i>
-            <br>
-            <br>
-            ${message}        
-        `);     
-
-    });
-    
-    $('#modalCorrectUserInformation').modal('show');    
+    $("#" + modal).modal('show');
 }
 
 function showRequestErrors(jqXHR, textStatus) {
@@ -2692,33 +2518,33 @@ function showRequestErrors(jqXHR, textStatus) {
 
         var message = 'Not connect: Verify Network.';
         errorMessages.push(message);
-        
+
         showAlert(errorMessages, true);
-        
+
 
     } else if (jqXHR.status == 404) {
 
         var message = 'Requested page not found [404]';
         errorMessages.push(message);
-        
+
         showAlert(errorMessages, true);
-        
+
 
     } else if (jqXHR.status == 500) {
 
         var message = 'Internal Server Error [500].';
         errorMessages.push(message);
-        
+
         showAlert(errorMessages, true);
-        
+
 
     } else if (jqXHR.status == 400) {
 
         var message = 'Check wrong fields';
         errorMessages.push(message);
-        
+
         showAlert(errorMessages, true);
-                
+
 
     } else if (textStatus === 'parsererror') {
 
@@ -2726,15 +2552,15 @@ function showRequestErrors(jqXHR, textStatus) {
         errorMessages.push(message);
 
         showAlert(errorMessages, true);
-       
+
 
     } else if (textStatus === 'timeout') {
 
         var message = 'Time out error.';
         errorMessages.push(message);
-       
+
         showAlert(errorMessages, true);
-        
+
 
     } else if (textStatus === 'abort') {
 
@@ -2742,7 +2568,7 @@ function showRequestErrors(jqXHR, textStatus) {
         errorMessages.push(message);
 
         showAlert(errorMessages, true);
-        
+
 
     } else {
 
@@ -2752,68 +2578,30 @@ function showRequestErrors(jqXHR, textStatus) {
     }
 }
 
-function hideModalErrors() {
-    $('#modalErrors').modal('hide');
+function disableButton(button) {
+    document.getElementById(button).setAttribute("disabled", "");
 }
 
-function hideSuccessModal() {
-    $('#modalCorrectMessage').modal('hide');
-}
-
-function disableButtonItem(button) {
-    document.getElementById(button).setAttribute("disabled", "");           
-}
-
-function disableUpdateButton() {
-    document.getElementById("updateButton").setAttribute("disabled", "");           
-}
-
-function disableUpdatePasswordButton() {
-    document.getElementById("updatePasswordButton").setAttribute("disabled", "");           
-}
-
-function enableButtonItem(button) {
-    document.getElementById(button).removeAttribute("disabled");      
-}
-
-function enableUpdateButton() {
-    document.getElementById("updateButton").removeAttribute("disabled");      
-}
-
-function enableUpdatePasswordButton() {
-    document.getElementById("updatePasswordButton").removeAttribute("disabled");      
-}
-
-function changeValidField() {
-
-    $("#updateInput").removeClass("is-invalid");
-    $("#updateInput").addClass("is-valid");
-
-}
-
-function changeInValidField() {
-
-    $("#updateInput").removeClass("is-valid");
-    $("#updateInput").addClass("is-invalid");
-
+function enableButton(button) {
+    document.getElementById(button).removeAttribute("disabled");
 }
 
 function changeValidFieldInput(input) {
 
-    $("#"+input).removeClass("is-invalid");
-    $("#"+input).addClass("is-valid");
+    $("#" + input).removeClass("is-invalid");
+    $("#" + input).addClass("is-valid");
 
 }
 
 function changeInValidFieldInput(input) {
 
-    $("#"+input).removeClass("is-valid");
-    $("#"+input).addClass("is-invalid");
+    $("#" + input).removeClass("is-valid");
+    $("#" + input).addClass("is-invalid");
 
 }
 
 function uncheckButtons() {
-    
+
     $("#personalButton").removeClass("active");
     $("#customersButton").removeClass("active");
     $("#productsButton").removeClass("active");
@@ -2823,50 +2611,32 @@ function uncheckButtons() {
 }
 
 function hideUpdateModal() {
-    $('#updateDialog').modal('hide');
-    $("#updateInput").val("");
-    $("#updateInput").removeClass("is-valid");
-    $("#updateInput").removeClass("is-invalid");
+
+    hideModal('updateDialog');
+    clearField('updateInput');
 }
 
 function hideAddItemModal() {
 
-    document.getElementById("newInputSKU").removeAttribute("disabled");   
-    $('#addItemModal').modal('hide');
-    
-    clearItemField("newInputSKU");
-    clearItemField("newInputDescription");
-    clearItemField("newInputName");
-    clearItemField("newInputPrice");
-    clearItemField("newInputStock");
-    clearItemField("newInputCare");
-    clearItemField("newInputImage");
+    document.getElementById("newInputSKU").removeAttribute("disabled");
+    hideModal('addItemModal');
+
+    clearField("newInputSKU");
+    clearField("newInputDescription");
+    clearField("newInputName");
+    clearField("newInputPrice");
+    clearField("newInputStock");
+    clearField("newInputCare");
+    clearField("newInputImage");
 
     clearItemsLists();
 
 }
 
-function hideUpdateModalPassword() {
-    $('#updateDialogPassword').modal('hide');
-}
+function hideModal(modal) {
 
-function hideUpdateOrderModal() {
-    $('#updateOrderModal').modal('hide');
-}
+    $("#" + modal).modal('hide');
 
-function hideDeleteModal() {
-    $('#modalDelete').modal('hide');
-}
-
-function hideDeleteModalItem() {
-    $('#modalDeleteItem').modal('hide');
-}
-
-function clearUpdateForm() {
-    
-    $("#updateInput").val("");
-    $("#updateInput").removeClass("is-valid");
-    $("#updateInput").removeClass("is-invalid");
 }
 
 function clearItemsLists() {
@@ -2878,22 +2648,11 @@ function clearItemsLists() {
     $("#sizesTable").find("tbody").empty();
 }
 
-function clearItemField(input) {
-    
-    $("#"+input).val("");
-    $("#"+input).removeClass("is-valid");
-    $("#"+input).removeClass("is-invalid");
+function clearField(input) {
+
+    $("#" + input).val("");
+    $("#" + input).removeClass("is-valid");
+    $("#" + input).removeClass("is-invalid");
+    $("#" + input).removeClass("active");
+
 }
-
-function clearUpdatePasswordForm() {
-    
-    $("#updateInputCurrentPassword").val("");
-    $("#updateInputNewPassword").val("");
-    $("#updateInputNewPassword").removeClass("is-valid");
-    $("#updateInputNewPassword").removeClass("is-invalid");
-}
-
-   
-
-
-
