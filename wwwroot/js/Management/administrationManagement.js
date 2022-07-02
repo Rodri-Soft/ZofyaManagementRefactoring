@@ -133,6 +133,96 @@ function setAdministratorUpdateInformation(userEmail) {
     });
 
     loadData(userEmail);
+    setUpdateTableListeners();
+    
+}
+
+function setUpdateFormFooter(idForm, updateFunction, idButton, saveMessage, closeFunction, parameters) {
+    
+    $("#" + idForm).html(`
+
+        <button onclick="${updateFunction}();" type="button" class="btn button-action-style"
+            id=${idButton}>${saveMessage}</button>
+        <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
+            onclick="${closeFunction}(${parameters});">Close</button>
+
+    `);
+}
+
+function setRFCForm() {
+
+    clearField('updateInput');
+    $('#updateDialog').modal('show');
+    document.getElementById("updateLabel").innerHTML = "RFC";
+    document.getElementById("updateNewLabel").innerHTML = "New RFC:";
+    
+    setUpdateFormFooter('updateFormFooter', 'updateRFC', "updateButton",
+        "Save RFC", 'hideUpdateModal');
+    validateField('updateInput', validateRFC);
+}
+
+function setCURPForm() {
+
+    clearField('updateInput');
+    $('#updateDialog').modal('show');
+    document.getElementById("updateLabel").innerHTML = "CURP";
+    document.getElementById("updateNewLabel").innerHTML = "New CURP:";                
+
+    setUpdateFormFooter('updateFormFooter', 'updateCURP', "updateButton",
+        "Save CURP", 'hideUpdateModal');
+    validateField('updateInput', validateCURP);
+}
+
+function setEmailForm() {
+    
+    clearField('updateInput');
+    $('#updateDialog').modal('show');
+    document.getElementById("updateLabel").innerHTML = "Email";
+    document.getElementById("updateNewLabel").innerHTML = "New Email:";                
+
+    setUpdateFormFooter('updateFormFooter', 'updateEmail', "updateButton",
+        "Save Email", 'hideUpdateModal');
+    validateField('updateInput', validateEmail);
+}
+
+function setFullnameForm() {
+    
+    clearField('updateInput');
+    $('#updateDialog').modal('show');
+    document.getElementById("updateLabel").innerHTML = "Fullname";
+    document.getElementById("updateNewLabel").innerHTML = "Fullname:";
+    
+    setUpdateFormFooter('updateFormFooter', 'updateFullname', "updateButton",
+        "Save Full name", 'hideUpdateModal');
+    validateField('updateInput', validateFullName);
+}
+
+function setPasswordForm() {
+    
+    clearField('updateInputNewPassword');
+    clearField('updateInputCurrentPassword');
+
+    $('#updateDialogPassword').modal('show');
+    
+    setUpdateFormFooter('updateFormFooterPassword', 'updatePassword', "updatePasswordButton",
+        "Save Password", 'hideModal', "'updateDialogPassword'");
+    validateField('updateInputNewPassword', validatePassword);
+
+}
+
+function setPhoneForm() {
+    
+    clearField('updateInput');
+    $('#updateDialog').modal('show');
+    document.getElementById("updateLabel").innerHTML = "Phone";
+    document.getElementById("updateNewLabel").innerHTML = "New Phone:";
+   
+    setUpdateFormFooter('updateFormFooter', 'updatePhone', "updateButton",
+     "Save Phone", 'hideUpdateModal');
+    validateField('updateInput', validatePhone);
+}
+
+function setUpdateTableListeners() {
 
     $("#administratorTable tbody").on("click", "tr", function () {
 
@@ -142,109 +232,32 @@ function setAdministratorUpdateInformation(userEmail) {
 
             case 'RFC':
                 
-                clearField('updateInput');
-                $('#updateDialog').modal('show');
-                document.getElementById("updateLabel").innerHTML = "RFC";
-                document.getElementById("updateNewLabel").innerHTML = "New RFC:";
-                $("#updateFormFooter").html(`
-
-                    <button type="button" class="btn button-action-style" id="updateButton" onclick="updateRFC();">Save RFC</button>
-                    <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
-                        onclick="hideUpdateModal();">Close</button>
-                
-                `);
-
-                validateField('updateInput', validateRFC);
+                setRFCForm();
                 break;
 
             case 'CURP':
                 
-                clearField('updateInput');
-                $('#updateDialog').modal('show');
-                document.getElementById("updateLabel").innerHTML = "CURP";
-                document.getElementById("updateNewLabel").innerHTML = "New CURP:";
-                $("#updateFormFooter").html(`
-
-                    <button onclick="updateCURP();" type="button" class="btn button-action-style"
-                     id="updateButton">Save CURP</button>
-                    <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
-                        onclick="hideUpdateModal();">Close</button>
-                
-                `);
-
-                validateField('updateInput', validateCURP);
+                setCURPForm();
                 break;
 
             case 'Email':
                 
-                clearField('updateInput');
-                $('#updateDialog').modal('show');
-                document.getElementById("updateLabel").innerHTML = "Email";
-                document.getElementById("updateNewLabel").innerHTML = "New Email:";
-                $("#updateFormFooter").html(`
-
-                    <button onclick="updateEmail();" type="button" class="btn button-action-style" 
-                        id="updateButton">Save Email</button>
-                    <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
-                        onclick="hideUpdateModal();">Close</button>
-                
-                `);
-
-                validateField('updateInput', validateEmail);
+                setEmailForm();
                 break;
 
             case 'Fullname':
                 
-                clearField('updateInput');
-                $('#updateDialog').modal('show');
-                document.getElementById("updateLabel").innerHTML = "Fullname";
-                document.getElementById("updateNewLabel").innerHTML = "Fullname:";
-                $("#updateFormFooter").html(`
-
-                    <button onclick="updateFullname();" type="button" class="btn button-action-style"
-                        id="updateButton">Save Fullname</button>
-                    <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
-                        onclick="hideUpdateModal();">Close</button>
-                
-                `);
-
-                validateField('updateInput', validateFullName);
+                setFullnameForm();
                 break;
 
             case 'Password':
                 
-                clearField('updateInputNewPassword');
-                clearField('updateInputCurrentPassword');
-
-                $('#updateDialogPassword').modal('show');
-
-                $("#updateFormFooterPassword").html(`
-
-                    <button onclick="updatePassword();" type="button" class="btn button-action-style" id="updatePasswordButton">Save Password</button>
-                    <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
-                        onclick="hideModal('updateDialogPassword');">Close</button>
-                
-                `);
-
-                validateField('updateInputNewPassword', validatePassword);
+                setPasswordForm();
                 break;
 
             case 'Phone':
                 
-                clearField('updateInput');
-                $('#updateDialog').modal('show');
-                document.getElementById("updateLabel").innerHTML = "Phone";
-                document.getElementById("updateNewLabel").innerHTML = "New Phone:";
-                $("#updateFormFooter").html(`
-
-                    <button onclick="updatePhone(); return false;" type="button" class="btn button-action-style"
-                        id="updateButton">Save Phone</button>
-                    <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
-                        onclick="hideUpdateModal();">Close</button>
-                
-                `);
-
-                validateField('updateInput', validatePhone);
+                setPhoneForm();
                 break;
 
             default:
