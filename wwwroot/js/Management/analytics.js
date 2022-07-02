@@ -6,12 +6,7 @@ function setAnalyticsInformation() {
 
     uncheckButtons();
     $("#analyticsButton").addClass("active");
-    $('#pageContentFluid').empty();
-    $('#pageContent').empty();
-    $('#pageContentlg').empty();
-    $('#pageContentColorTable').empty();
-    $('#pageContentImageTable').empty();
-    $('#pageContentSizeTable').empty();
+    clearContainers();
 
     $("#highchartsContainer").html(`
         <div class="row">
