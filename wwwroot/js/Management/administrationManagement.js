@@ -137,88 +137,104 @@ function setAdministratorUpdateInformation(userEmail) {
     
 }
 
-function setUpdateFormFooter(idForm, updateFunction, idButton, saveMessage, closeFunction, parameters) {
+function setUpdateFormFooter(footerOptions, parameters) {
     
-    $("#" + idForm).html(`
+    $("#" + footerOptions.idForm).html(`
 
-        <button onclick="${updateFunction}();" type="button" class="btn button-action-style"
-            id=${idButton}>${saveMessage}</button>
+        <button onclick="${footerOptions.updateFunction}();" type="button" class="btn button-action-style"
+            id=${footerOptions.idButton}>${footerOptions.saveMessage}</button>
         <button type="button" class="btn button-action-style" data-bs-dismiss="modal"
-            onclick="${closeFunction}(${parameters});">Close</button>
+            onclick="${footerOptions.closeFunction}(${parameters});">Close</button>
 
     `);
 }
 
-function setRFCForm() {
+
+function setRFCForm(footerOptions) {
 
     clearField('updateInput');
     $('#updateDialog').modal('show');
     document.getElementById("updateLabel").innerHTML = "RFC";
     document.getElementById("updateNewLabel").innerHTML = "New RFC:";
-    
-    setUpdateFormFooter('updateFormFooter', 'updateRFC', "updateButton",
-        "Save RFC", 'hideUpdateModal');
+        
+    footerOptions.updateFunction = 'updateRFC';
+    footerOptions.saveMessage = "Save RFC";
+
+    setUpdateFormFooter(footerOptions);
     validateField('updateInput', validateRFC);
 }
 
-function setCURPForm() {
+function setCURPForm(footerOptions) {
 
     clearField('updateInput');
     $('#updateDialog').modal('show');
     document.getElementById("updateLabel").innerHTML = "CURP";
     document.getElementById("updateNewLabel").innerHTML = "New CURP:";                
+    
+    footerOptions.updateFunction = 'updateCURP';
+    footerOptions.saveMessage = "Save CURP";
 
-    setUpdateFormFooter('updateFormFooter', 'updateCURP', "updateButton",
-        "Save CURP", 'hideUpdateModal');
+    setUpdateFormFooter(footerOptions);
     validateField('updateInput', validateCURP);
 }
 
-function setEmailForm() {
+function setEmailForm(footerOptions) {
     
     clearField('updateInput');
     $('#updateDialog').modal('show');
     document.getElementById("updateLabel").innerHTML = "Email";
     document.getElementById("updateNewLabel").innerHTML = "New Email:";                
+   
+    footerOptions.updateFunction = 'updateEmail';
+    footerOptions.saveMessage = "Save Email";
 
-    setUpdateFormFooter('updateFormFooter', 'updateEmail', "updateButton",
-        "Save Email", 'hideUpdateModal');
+    setUpdateFormFooter(footerOptions);
     validateField('updateInput', validateEmail);
 }
 
-function setFullnameForm() {
+function setFullnameForm(footerOptions) {
     
     clearField('updateInput');
     $('#updateDialog').modal('show');
     document.getElementById("updateLabel").innerHTML = "Fullname";
-    document.getElementById("updateNewLabel").innerHTML = "Fullname:";
-    
-    setUpdateFormFooter('updateFormFooter', 'updateFullname', "updateButton",
-        "Save Full name", 'hideUpdateModal');
+    document.getElementById("updateNewLabel").innerHTML = "Fullname:";       
+
+    footerOptions.updateFunction = 'updateFullname';
+    footerOptions.saveMessage = "Save Full name";
+
+    setUpdateFormFooter(footerOptions);
     validateField('updateInput', validateFullName);
 }
 
-function setPasswordForm() {
+function setPasswordForm(footerOptions) {
     
     clearField('updateInputNewPassword');
     clearField('updateInputCurrentPassword');
 
     $('#updateDialogPassword').modal('show');
-    
-    setUpdateFormFooter('updateFormFooterPassword', 'updatePassword', "updatePasswordButton",
-        "Save Password", 'hideModal', "'updateDialogPassword'");
+        
+    footerOptions.idForm = 'updateFormFooterPassword';
+    footerOptions.updateFunction = 'updatePassword';
+    footerOptions.idButton = 'updatePasswordButton';
+    footerOptions.saveMessage = "Save Password";
+    footerOptions.closeFunction = 'hideModal';
+
+    setUpdateFormFooter(footerOptions, "'updateDialogPassword'");
     validateField('updateInputNewPassword', validatePassword);
 
 }
 
-function setPhoneForm() {
+function setPhoneForm(footerOptions) {
     
     clearField('updateInput');
     $('#updateDialog').modal('show');
     document.getElementById("updateLabel").innerHTML = "Phone";
     document.getElementById("updateNewLabel").innerHTML = "New Phone:";
    
-    setUpdateFormFooter('updateFormFooter', 'updatePhone', "updateButton",
-     "Save Phone", 'hideUpdateModal');
+    footerOptions.updateFunction = 'updatePhone';
+    footerOptions.saveMessage = "Save Phone";
+
+    setUpdateFormFooter(footerOptions);
     validateField('updateInput', validatePhone);
 }
 
@@ -227,37 +243,42 @@ function setUpdateTableListeners() {
     $("#administratorTable tbody").on("click", "tr", function () {
 
         var informationRow = administratorTable.row(this).data();
+        var footerOptions = {
+            "idForm": 'updateFormFooter',    
+            "idButton": "updateButton",    
+            "closeFunction": 'hideUpdateModal'
+        }
 
         switch (informationRow.field) {
 
             case 'RFC':
                 
-                setRFCForm();
+                setRFCForm(footerOptions);
                 break;
 
             case 'CURP':
                 
-                setCURPForm();
+                setCURPForm(footerOptions);
                 break;
 
             case 'Email':
                 
-                setEmailForm();
+                setEmailForm(footerOptions);
                 break;
 
             case 'Fullname':
                 
-                setFullnameForm();
+                setFullnameForm(footerOptions);
                 break;
 
             case 'Password':
                 
-                setPasswordForm();
+                setPasswordForm(footerOptions);
                 break;
 
             case 'Phone':
                 
-                setPhoneForm();
+                setPhoneForm(footerOptions);
                 break;
 
             default:
