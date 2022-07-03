@@ -149,61 +149,64 @@ function setUpdateFormFooter(footerOptions, parameters) {
     `);
 }
 
+function setFieldsForm(formOptions) {
+   
+    clearField(formOptions.input);
+    $("#" + formOptions.dialog).modal('show');
+    document.getElementById("updateLabel").innerHTML = formOptions.updateLabel;
+    document.getElementById("updateNewLabel").innerHTML = formOptions.updateNewLabel;
+}
 
-function setRFCForm(footerOptions) {
+function setUpdateForms(formOptions, footerOptions, functionField) {
+    
+    setFieldsForm(formOptions);
+    setUpdateFormFooter(footerOptions);
+    validateField('updateInput', functionField);
 
-    clearField('updateInput');
-    $('#updateDialog').modal('show');
-    document.getElementById("updateLabel").innerHTML = "RFC";
-    document.getElementById("updateNewLabel").innerHTML = "New RFC:";
+}
+
+function setRFCForm(footerOptions, formOptions) {    
+
+    formOptions.updateLabel = "RFC";
+    formOptions.updateNewLabel = "New RFC:";
         
     footerOptions.updateFunction = 'updateRFC';
     footerOptions.saveMessage = "Save RFC";
-
-    setUpdateFormFooter(footerOptions);
-    validateField('updateInput', validateRFC);
+   
+    setUpdateForms(formOptions, footerOptions, validateRFC);
 }
 
-function setCURPForm(footerOptions) {
-
-    clearField('updateInput');
-    $('#updateDialog').modal('show');
-    document.getElementById("updateLabel").innerHTML = "CURP";
-    document.getElementById("updateNewLabel").innerHTML = "New CURP:";                
+function setCURPForm(footerOptions, formOptions) {   
+    
+    formOptions.updateLabel = "CURP";
+    formOptions.updateNewLabel = "New CURP:";
     
     footerOptions.updateFunction = 'updateCURP';
     footerOptions.saveMessage = "Save CURP";
-
-    setUpdateFormFooter(footerOptions);
-    validateField('updateInput', validateCURP);
+    
+    setUpdateForms(formOptions, footerOptions, validateCURP);
 }
 
-function setEmailForm(footerOptions) {
+function setEmailForm(footerOptions, formOptions) {       
     
-    clearField('updateInput');
-    $('#updateDialog').modal('show');
-    document.getElementById("updateLabel").innerHTML = "Email";
-    document.getElementById("updateNewLabel").innerHTML = "New Email:";                
+    formOptions.updateLabel = "Email";
+    formOptions.updateNewLabel = "New Email:";    
    
     footerOptions.updateFunction = 'updateEmail';
     footerOptions.saveMessage = "Save Email";
-
-    setUpdateFormFooter(footerOptions);
-    validateField('updateInput', validateEmail);
+    
+    setUpdateForms(formOptions, footerOptions, validateEmail);
 }
 
-function setFullnameForm(footerOptions) {
-    
-    clearField('updateInput');
-    $('#updateDialog').modal('show');
-    document.getElementById("updateLabel").innerHTML = "Fullname";
-    document.getElementById("updateNewLabel").innerHTML = "Fullname:";       
+function setFullnameForm(footerOptions, formOptions) {         
+
+    formOptions.updateLabel = "Full Name";
+    formOptions.updateNewLabel = "New Full Name:";    
 
     footerOptions.updateFunction = 'updateFullname';
     footerOptions.saveMessage = "Save Full name";
-
-    setUpdateFormFooter(footerOptions);
-    validateField('updateInput', validateFullName);
+    
+    setUpdateForms(formOptions, footerOptions, validateFullName);
 }
 
 function setPasswordForm(footerOptions) {
@@ -224,18 +227,15 @@ function setPasswordForm(footerOptions) {
 
 }
 
-function setPhoneForm(footerOptions) {
-    
-    clearField('updateInput');
-    $('#updateDialog').modal('show');
-    document.getElementById("updateLabel").innerHTML = "Phone";
-    document.getElementById("updateNewLabel").innerHTML = "New Phone:";
+function setPhoneForm(footerOptions, formOptions) {        
+
+    formOptions.updateLabel = "Full Phone";
+    formOptions.updateNewLabel = "New Phone:";    
    
     footerOptions.updateFunction = 'updatePhone';
     footerOptions.saveMessage = "Save Phone";
-
-    setUpdateFormFooter(footerOptions);
-    validateField('updateInput', validatePhone);
+    
+    setUpdateForms(formOptions, footerOptions, validatePhone);
 }
 
 function setUpdateTableListeners() {
@@ -249,26 +249,31 @@ function setUpdateTableListeners() {
             "closeFunction": 'hideUpdateModal'
         }
 
+        var formOptions = {
+            "input": 'updateInput',
+            "dialog": 'updateDialog',        
+        }
+
         switch (informationRow.field) {
 
             case 'RFC':
                 
-                setRFCForm(footerOptions);
+                setRFCForm(footerOptions, formOptions);
                 break;
 
             case 'CURP':
                 
-                setCURPForm(footerOptions);
+                setCURPForm(footerOptions, formOptions);
                 break;
 
             case 'Email':
                 
-                setEmailForm(footerOptions);
+                setEmailForm(footerOptions, formOptions);
                 break;
 
             case 'Fullname':
                 
-                setFullnameForm(footerOptions);
+                setFullnameForm(footerOptions, formOptions);
                 break;
 
             case 'Password':
@@ -278,7 +283,7 @@ function setUpdateTableListeners() {
 
             case 'Phone':
                 
-                setPhoneForm(footerOptions);
+                setPhoneForm(footerOptions, formOptions);
                 break;
 
             default:
