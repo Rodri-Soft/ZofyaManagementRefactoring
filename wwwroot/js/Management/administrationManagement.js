@@ -336,6 +336,7 @@ function validateField(input, validateFunction) {
 function validateRFC() {
 
     var newRFC = $("#updateInput").val();
+    var field = document.getElementById("invalidField");
 
     const rfcMaxLength = 13;
     var isCorrect = true;
@@ -345,15 +346,13 @@ function validateRFC() {
     var pattern = new RegExp(/^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/);
     if (!pattern.test(newRFC)) {
 
-        isCorrect = false;
-        var field = document.getElementById("invalidField");
+        isCorrect = false;        
         field.innerHTML = "Invalid RFC Format";
     }
 
     if ((newRFC === "") || (rfcLength > rfcMaxLength)) {
 
-        isCorrect = false;
-        var field = document.getElementById("invalidField");
+        isCorrect = false;        
 
         if (newRFC === "") {
             field.innerHTML = "Field required";
@@ -374,6 +373,7 @@ function validateRFC() {
 function validateCURP() {
 
     var newCURP = $("#updateInput").val();
+    var field = document.getElementById("invalidField");
 
     const curpMaxLength = 18;
     var isCorrect = true;
@@ -383,15 +383,13 @@ function validateCURP() {
     var pattern = new RegExp(/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/);
     if (!pattern.test(newCURP)) {
 
-        isCorrect = false;
-        var field = document.getElementById("invalidField");
+        isCorrect = false;        
         field.innerHTML = "Invalid CURP Format";
     }
 
     if ((newCURP === "") || (curpLength > curpMaxLength)) {
 
-        isCorrect = false;
-        var field = document.getElementById("invalidField");
+        isCorrect = false;        
 
         if (newCURP === "") {
             field.innerHTML = "Field required";
@@ -412,6 +410,7 @@ function validateCURP() {
 function validateEmail() {
 
     var newEmail = $("#updateInput").val();
+    var field = document.getElementById("invalidField");
 
     const emailMaxLength = 50;
     var isCorrect = true;
@@ -421,15 +420,13 @@ function validateEmail() {
     var pattern = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*(\.[A-Za-z]{1,})$/);
     if (!pattern.test(newEmail)) {
 
-        isCorrect = false;
-        var field = document.getElementById("invalidField");
+        isCorrect = false;        
         field.innerHTML = "Invalid Email Format";
     }
 
     if ((newEmail === "") || (emailLength > emailMaxLength)) {
 
-        isCorrect = false;
-        var field = document.getElementById("invalidField");
+        isCorrect = false;        
 
         if (newEmail === "") {
             field.innerHTML = "Field required";
@@ -450,6 +447,7 @@ function validateEmail() {
 function validateFullName() {
 
     var newFullname = $("#updateInput").val();
+    var field = document.getElementById("invalidField");
 
     const fullnameMaxLength = 100;
     var isCorrect = true;
@@ -459,15 +457,13 @@ function validateFullName() {
     var pattern = new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:',_-]{0,}$/);
     if (!pattern.test(newFullname)) {
 
-        isCorrect = false;
-        var field = document.getElementById("invalidField");
+        isCorrect = false;        
         field.innerHTML = "Invalid Full Name Format";
     }
 
     if ((newFullname === "") || (fullnameLength > fullnameMaxLength)) {
 
-        isCorrect = false;
-        var field = document.getElementById("invalidField");
+        isCorrect = false;        
 
         if (newFullname === "") {
             field.innerHTML = "Field required";
@@ -488,6 +484,7 @@ function validateFullName() {
 function validatePhone() {
 
     var newPhone = $("#updateInput").val();
+    var field = document.getElementById("invalidField");
 
     const phoneMaxLength = 10;
     var isCorrect = true;
@@ -497,15 +494,13 @@ function validatePhone() {
     var pattern = new RegExp(/^[0-9]{10}$/);
     if (!pattern.test(newPhone)) {
 
-        isCorrect = false;
-        var field = document.getElementById("invalidField");
+        isCorrect = false;        
         field.innerHTML = "Invalid Phone Format";
     }
 
     if ((newPhone === "") || (phoneLength != phoneMaxLength)) {
 
-        isCorrect = false;
-        var field = document.getElementById("invalidField");
+        isCorrect = false;        
 
         if (newPhone === "") {
             field.innerHTML = "Field required";
@@ -526,6 +521,7 @@ function validatePhone() {
 function validatePassword() {
 
     var newPassword = $("#updateInputNewPassword").val();
+    var field = document.getElementById("invalidFieldNewPassword");
 
     const passwordMinLenght = 8;
     const passwordMaxLength = 16;
@@ -534,20 +530,20 @@ function validatePassword() {
 
     var passwordLenght = newPassword.length;
 
-    if ((newPassword === "") ||
-        ((passwordLenght < passwordMinLenght) || (passwordLenght > passwordMaxLength))) {
+    if (newPassword === "") {
 
-        isCorrect = false;
-        var field = document.getElementById("invalidFieldNewPassword");
+        isCorrect = false;                
+        field.innerHTML = "Password Field Required";        
+    }
 
-        if (newPassword === "") {
-            field.innerHTML = "Password Field Required";
+    if ((passwordLenght < passwordMinLenght) || (passwordLenght > passwordMaxLength)) {
+
+        isCorrect = false;       
+
+        if (passwordLenght < passwordMinLenght) {
+            field.innerHTML = "Minimum length of 8 characters";
         } else {
-            if (passwordLenght < passwordMinLenght) {
-                field.innerHTML = "Minimum length of 8 characters";
-            } else {
-                field.innerHTML = "Maximum length of 16 characters";
-            }
+            field.innerHTML = "Maximum length of 16 characters";
         }
     }
 
