@@ -157,12 +157,25 @@ function setFieldsForm(formOptions) {
     document.getElementById("updateNewLabel").innerHTML = formOptions.updateNewLabel;
 }
 
-function setUpdateForms(formOptions, footerOptions, functionField) {
+function setUpdateForms(formOptions, footerOptions, updateOptions) {
     
     setFieldsForm(formOptions);
     setUpdateFormFooter(footerOptions);
-    validateField('updateInput', functionField);
+    validateField('updateInput', updateOptions);
 
+}
+
+function getUpdateRFCOptions() {
+    
+    var pattern = new RegExp(/^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/);
+    
+    var updateOptions = {        
+        "maxLength": 13,
+        "pattern": pattern,
+        "field": "RFC"
+    }
+
+    return updateOptions;
 }
 
 function setRFCForm(footerOptions, formOptions) {    
@@ -171,9 +184,24 @@ function setRFCForm(footerOptions, formOptions) {
     formOptions.updateNewLabel = "New RFC:";
         
     footerOptions.updateFunction = 'updateRFC';
-    footerOptions.saveMessage = "Save RFC";
-   
-    setUpdateForms(formOptions, footerOptions, validateRFC);
+    footerOptions.saveMessage = "Save RFC";   
+
+    var updateOptions = getUpdateRFCOptions();
+       
+    setUpdateForms(formOptions, footerOptions, updateOptions);
+}
+
+function getUpdateCURPOptions() {
+    
+    var pattern = new RegExp(/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/);
+
+    var updateOptions = {        
+        "maxLength": 18,
+        "pattern": pattern,
+        "field": "CURP"
+    }
+
+    return updateOptions;
 }
 
 function setCURPForm(footerOptions, formOptions) {   
@@ -182,9 +210,24 @@ function setCURPForm(footerOptions, formOptions) {
     formOptions.updateNewLabel = "New CURP:";
     
     footerOptions.updateFunction = 'updateCURP';
-    footerOptions.saveMessage = "Save CURP";
+    footerOptions.saveMessage = "Save CURP";    
+
+    var updateOptions = getUpdateCURPOptions();
     
-    setUpdateForms(formOptions, footerOptions, validateCURP);
+    setUpdateForms(formOptions, footerOptions, updateOptions);
+}
+
+function getUpdateEmailOptions() {
+    
+    var pattern = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*(\.[A-Za-z]{1,})$/);
+
+    var updateOptions = {        
+        "maxLength": 50,
+        "pattern": pattern,
+        "field": "Email"
+    }
+
+    return updateOptions;
 }
 
 function setEmailForm(footerOptions, formOptions) {       
@@ -193,9 +236,25 @@ function setEmailForm(footerOptions, formOptions) {
     formOptions.updateNewLabel = "New Email:";    
    
     footerOptions.updateFunction = 'updateEmail';
-    footerOptions.saveMessage = "Save Email";
+    footerOptions.saveMessage = "Save Email";   
+
+    var updateOptions =  getUpdateEmailOptions();
     
-    setUpdateForms(formOptions, footerOptions, validateEmail);
+    
+    setUpdateForms(formOptions, footerOptions, updateOptions);
+}
+
+function getUpdateFullnameOptions() {
+    
+    var pattern = new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:',_-]{0,}$/);
+
+    var updateOptions = {        
+        "maxLength": 100,
+        "pattern": pattern,
+        "field": "Full Name"
+    }
+
+    return updateOptions;
 }
 
 function setFullnameForm(footerOptions, formOptions) {         
@@ -204,9 +263,37 @@ function setFullnameForm(footerOptions, formOptions) {
     formOptions.updateNewLabel = "New Full Name:";    
 
     footerOptions.updateFunction = 'updateFullname';
-    footerOptions.saveMessage = "Save Full name";
+    footerOptions.saveMessage = "Save Full name";    
+
+    var updateOptions = getUpdateFullnameOptions();
     
-    setUpdateForms(formOptions, footerOptions, validateFullName);
+    setUpdateForms(formOptions, footerOptions, updateOptions);
+}
+
+function getUpdatePhoneOptions() {
+    
+    var pattern = new RegExp(/^[0-9]{10}$/);
+
+    var updateOptions = {        
+        "maxLength": 10,
+        "pattern": pattern,
+        "field": "Phone"
+    }
+
+    return updateOptions;
+}
+
+function setPhoneForm(footerOptions, formOptions) {        
+
+    formOptions.updateLabel = "Full Phone";
+    formOptions.updateNewLabel = "New Phone:";    
+   
+    footerOptions.updateFunction = 'updatePhone';
+    footerOptions.saveMessage = "Save Phone";    
+
+    var updateOptions = getUpdatePhoneOptions();
+    
+    setUpdateForms(formOptions, footerOptions, updateOptions);
 }
 
 function setPasswordForm(footerOptions) {
@@ -227,17 +314,6 @@ function setPasswordForm(footerOptions) {
 
 }
 
-function setPhoneForm(footerOptions, formOptions) {        
-
-    formOptions.updateLabel = "Full Phone";
-    formOptions.updateNewLabel = "New Phone:";    
-   
-    footerOptions.updateFunction = 'updatePhone';
-    footerOptions.saveMessage = "Save Phone";
-    
-    setUpdateForms(formOptions, footerOptions, validatePhone);
-}
-
 function setUpdateTableListeners() {
 
     $("#administratorTable tbody").on("click", "tr", function () {
@@ -252,7 +328,7 @@ function setUpdateTableListeners() {
         var formOptions = {
             "input": 'updateInput',
             "dialog": 'updateDialog',        
-        }
+        }        
 
         switch (informationRow.field) {
 
@@ -325,198 +401,66 @@ function loadStaffDataTable(staffInformation) {
 
 }
 
-function validateField(input, validateFunction) {
+function validateField(input, updateOptions) {
 
     $("#" + input).keydown(function (event) {
-        validateFunction();
+
+        if (input === 'updateInputNewPassword') {
+            updateOptions();
+        } else {
+            validateAdministratorField(updateOptions);    
+        }
+        
     });
     $("#" + input).keyup(function (event) {
-        validateFunction();
+        
+        if (input === 'updateInputNewPassword') {
+            updateOptions();
+        } else {
+            validateAdministratorField(updateOptions);    
+        }
     });
     $("#" + input).blur(function (event) {
-        validateFunction();
+
+        if (input === 'updateInputNewPassword') {
+            updateOptions();
+        } else {
+            validateAdministratorField(updateOptions);    
+        }
     });
 }
 
-function validateRFC() {
+function validateAdministratorField(updateOptions) {
 
-    var newRFC = $("#updateInput").val();
+    var newField = $("#updateInput").val();
     var field = document.getElementById("invalidField");
 
-    const rfcMaxLength = 13;
+    const maxLength = updateOptions.maxLength;
     var isCorrect = true;
 
-    var rfcLength = newRFC.length;
-
-    var pattern = new RegExp(/^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/);
-    if (!pattern.test(newRFC)) {
+    var newInputLength = newField.length;
+    
+    var pattern = updateOptions.pattern;
+    if (!pattern.test(newField)) {
 
         isCorrect = false;        
-        field.innerHTML = "Invalid RFC Format";
+        field.innerHTML = "Invalid "+updateOptions.field+" Format";
     }
 
-    if ((newRFC === "") || (rfcLength > rfcMaxLength)) {
+    if ((newField === "") || (newInputLength > maxLength)) {
 
         isCorrect = false;        
 
-        if (newRFC === "") {
+        if (newField === "") {
             field.innerHTML = "Field required";
         } else {
-            field.innerHTML = "Maximum length of 13 characters";
+            field.innerHTML = "Maximum length of "+updateOptions.maxLength+" characters";
         }
     }
 
     if (!isCorrect) {        
         changeInValidFieldInput('updateInput');
     } else {
-        changeValidFieldInput('updateInput');
-    }
-
-    return isCorrect;
-}
-
-function validateCURP() {
-
-    var newCURP = $("#updateInput").val();
-    var field = document.getElementById("invalidField");
-
-    const curpMaxLength = 18;
-    var isCorrect = true;
-
-    var curpLength = newCURP.length;
-
-    var pattern = new RegExp(/^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/);
-    if (!pattern.test(newCURP)) {
-
-        isCorrect = false;        
-        field.innerHTML = "Invalid CURP Format";
-    }
-
-    if ((newCURP === "") || (curpLength > curpMaxLength)) {
-
-        isCorrect = false;        
-
-        if (newCURP === "") {
-            field.innerHTML = "Field required";
-        } else {
-            field.innerHTML = "Maximum length of 18 characters";
-        }
-    }
-
-    if (!isCorrect) {        
-        changeInValidFieldInput('updateInput');
-    } else {        
-        changeValidFieldInput('updateInput');
-    }
-
-    return isCorrect;
-}
-
-function validateEmail() {
-
-    var newEmail = $("#updateInput").val();
-    var field = document.getElementById("invalidField");
-
-    const emailMaxLength = 50;
-    var isCorrect = true;
-
-    var emailLength = newEmail.length;
-
-    var pattern = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*(\.[A-Za-z]{1,})$/);
-    if (!pattern.test(newEmail)) {
-
-        isCorrect = false;        
-        field.innerHTML = "Invalid Email Format";
-    }
-
-    if ((newEmail === "") || (emailLength > emailMaxLength)) {
-
-        isCorrect = false;        
-
-        if (newEmail === "") {
-            field.innerHTML = "Field required";
-        } else {
-            field.innerHTML = "Maximum length of 50 characters";
-        }
-    }
-
-    if (!isCorrect) {        
-        changeInValidFieldInput('updateInput');
-    } else {        
-        changeValidFieldInput('updateInput');
-    }
-
-    return isCorrect;
-}
-
-function validateFullName() {
-
-    var newFullname = $("#updateInput").val();
-    var field = document.getElementById("invalidField");
-
-    const fullnameMaxLength = 100;
-    var isCorrect = true;
-
-    var fullnameLength = newFullname.length;
-
-    var pattern = new RegExp(/^[0-9a-zA-ZÀ-ÿ\\u00f1\\u00d1]{1,}[0-9\sa-zA-ZÀ-ÿ\\u00f1\\u00d1.:',_-]{0,}$/);
-    if (!pattern.test(newFullname)) {
-
-        isCorrect = false;        
-        field.innerHTML = "Invalid Full Name Format";
-    }
-
-    if ((newFullname === "") || (fullnameLength > fullnameMaxLength)) {
-
-        isCorrect = false;        
-
-        if (newFullname === "") {
-            field.innerHTML = "Field required";
-        } else {
-            field.innerHTML = "Maximum length of 100 characters";
-        }
-    }
-
-    if (!isCorrect) {        
-        changeInValidFieldInput('updateInput');
-    } else {        
-        changeValidFieldInput('updateInput');
-    }
-
-    return isCorrect;
-}
-
-function validatePhone() {
-
-    var newPhone = $("#updateInput").val();
-    var field = document.getElementById("invalidField");
-
-    const phoneMaxLength = 10;
-    var isCorrect = true;
-
-    var phoneLength = newPhone.length;
-
-    var pattern = new RegExp(/^[0-9]{10}$/);
-    if (!pattern.test(newPhone)) {
-
-        isCorrect = false;        
-        field.innerHTML = "Invalid Phone Format";
-    }
-
-    if ((newPhone === "") || (phoneLength != phoneMaxLength)) {
-
-        isCorrect = false;        
-
-        if (newPhone === "") {
-            field.innerHTML = "Field required";
-        } else {
-            field.innerHTML = "Maximum length of 10 characters";
-        }
-    }
-
-    if (!isCorrect) {        
-        changeInValidFieldInput('updateInput');
-    } else {        
         changeValidFieldInput('updateInput');
     }
 
@@ -576,9 +520,11 @@ function cleanFields(field) {
 function updateRFC() {
 
     disableButton('updateButton');
-    var validationResult = true;
+    var validationResult = true;    
+    
+    var updateOptions = getUpdateRFCOptions();
 
-    validationResult = validateRFC();
+    validationResult = validateAdministratorField(updateOptions);
 
     if (validationResult) {
 
@@ -636,7 +582,9 @@ function updateCURP() {
     disableButton('updateButton');
     var validationResult = true;
 
-    validationResult = validateCURP();
+    var updateOptions = getUpdateCURPOptions();
+
+    validationResult = validateAdministratorField(updateOptions);
 
     if (validationResult) {
 
@@ -695,7 +643,9 @@ function updateEmail() {
     disableButton('updateButton');
     var validationResult = true;
 
-    validationResult = validateEmail();
+    var updateOptions = getUpdateEmailOptions();
+
+    validationResult = validateAdministratorField(updateOptions);
 
     if (validationResult) {
 
@@ -752,7 +702,9 @@ function updateFullname() {
     disableButton('updateButton');
     var validationResult = true;
 
-    validationResult = validateFullName();
+    var updateOptions = getUpdateFullnameOptions();
+
+    validationResult = validateAdministratorField(updateOptions);
 
     if (validationResult) {
 
@@ -871,7 +823,9 @@ function updatePhone() {
     disableButton('updateButton');
     var validationResult = true;
 
-    validationResult = validatePhone();
+    var updateOptions = getUpdatePhoneOptions();
+
+    validationResult = validateAdministratorField(updateOptions);
 
     if (validationResult) {
 
