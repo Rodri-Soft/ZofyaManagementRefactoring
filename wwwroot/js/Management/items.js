@@ -261,9 +261,9 @@ function loadItemsDataTable(items) {
         };
 
         if (item.status === "Deleted") {
-            addItemDangerTable(itemValues)
+            addItemTable(itemValues, true)
         } else {
-            addItemTable(itemValues);
+            addItemTable(itemValues, false);
         }
 
     });
@@ -439,10 +439,17 @@ function makeRequest(requestOptions) {
     }
 }
 
-function addItemTable(item) {
+function addItemTable(item, isDeleted) {
+
+    var trString = "";
+    if (isDeleted) {
+        trString = "<tr class='table-danger'>";
+    } else {
+        trString = "<tr>";
+    }
 
     $("#itemsTable").find("tbody")
-        .append($("<tr>")
+        .append($(trString)
             .append($("<td>").html(item.sku))
             .append($("<td>").html(item.description))
             .append($("<td>").html(item.name))
@@ -458,23 +465,23 @@ function addItemTable(item) {
         );
 }
 
-function addItemDangerTable(item) {
-    $("#itemsTable").find("tbody")
-        .append($("<tr class='table-danger'>")
-            .append($("<td>").html(item.sku))
-            .append($("<td>").html(item.description))
-            .append($("<td>").html(item.name))
-            .append($("<td>").html(item.price))
-            .append($("<td>").html(item.category))
-            .append($("<td>").html(item.status))
-            .append($("<td>").html(item.stock))
-            .append($("<td>").html(item.gender))
-            .append($("<td>").html(item.care))
-            .append($("<td>").html(item.edit))
-            .append($("<td>").html(item.delete))
+// function addItemDangerTable(item) {
+//     $("#itemsTable").find("tbody")
+//         .append($("<tr class='table-danger'>")
+//             .append($("<td>").html(item.sku))
+//             .append($("<td>").html(item.description))
+//             .append($("<td>").html(item.name))
+//             .append($("<td>").html(item.price))
+//             .append($("<td>").html(item.category))
+//             .append($("<td>").html(item.status))
+//             .append($("<td>").html(item.stock))
+//             .append($("<td>").html(item.gender))
+//             .append($("<td>").html(item.care))
+//             .append($("<td>").html(item.edit))
+//             .append($("<td>").html(item.delete))
 
-        );
-}
+//         );
+// }
 
 function updateItem(sku) {
 
