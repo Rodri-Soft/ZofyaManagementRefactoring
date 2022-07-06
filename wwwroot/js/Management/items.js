@@ -61,7 +61,9 @@ function setItemsInformation() {
 
     loadItemsServerData();
 
-    setListItemsTable();    
+    setListItemsTable();  
+    
+    setValidation();
 }
 
 function setListItemsTable() {
@@ -148,19 +150,34 @@ function setListItemsTable() {
 //Factorizar pintar tablas
 
 
-function setValidatoin() {
+function setValidation() {
     
-    validateField("newInputImage", validateImage);
+    validateFieldItems("newInputImage", validateImage);
     validateSKUField();
-    validateField("newInputDescription", validateDescription);
+    validateFieldItems("newInputDescription", validateDescription);
     validateNameField();
-    validateField("newInputPrice", validatePrice);
-    validateField("newInputStock", validateStock);
-    validateField("newInputCare", validateCare);
+    validateFieldItems("newInputPrice", validatePrice);
+    validateFieldItems("newInputStock", validateStock);
+    validateFieldItems("newInputCare", validateCare);
 
     setGenderRestriction();    
     captureRestriction('newInputGender', setGenderRestriction);    
     captureRestriction('newInputStatus', setStatusRestriction);
+}
+
+function validateFieldItems(input, validateFunction) {
+    
+    $("#" + input).keydown(function (event) {        
+        validateFunction();                    
+    });
+
+    $("#" + input).keyup(function (event) {               
+        validateFunction();           
+    });
+
+    $("#" + input).blur(function (event) {        
+        validateFunction();            
+    });
 }
 
 var items = [];
@@ -358,10 +375,22 @@ function createItem() {
 
 function addItem() {
 
-    disableButton("addItemButton");
+    var requestOptions = {
+        "button": "addItemButton",
+        "validation": true,
+        "method": "POST",
+        "url": "/AddItem"
+    }    
+
+    makeRequest(requestOptions);
+}
+
+function makeRequest(requestOptions) {
+    
+    disableButton(requestOptions.button);
 
     var validationResult = true;   
-    validationResult = getValidationResults(true);
+    validationResult = getValidationResults(requestOptions.validation);
 
     if (validationResult) {        
 
@@ -369,8 +398,8 @@ function addItem() {
 
         $.ajax({
 
-            method: "POST",
-            url: urlServer + "/AddItem",
+            method: requestOptions.method,
+            url: urlServer + requestOptions.url,
             cache: false,
             processData: false,
             contentType: "application/json",
@@ -380,7 +409,7 @@ function addItem() {
 
             if (data.correct) {
 
-                enableButton("addItemButton");
+                enableButton(requestOptions.button);
                 hideAddItemModal();
 
                 loadItemsServerData();                                
@@ -392,13 +421,13 @@ function addItem() {
                 var errorMessages = data.message;                
 
                 showAlert(errorMessages, true);
-                enableButton("addItemButton");
+                enableButton(requestOptions.button);
             }
 
         }).fail(function (jqXHR, textStatus) {
 
             showRequestErrors(jqXHR, textStatus, true);
-            enableButton("addItemButton");
+            enableButton(requestOptions.button);
 
         });
 
@@ -406,7 +435,7 @@ function addItem() {
 
     } else {
         showAlert(["Correct or complete the form fields"], true);
-        enableButton("addItemButton");
+        enableButton(requestOptions.button);
     }
 }
 
@@ -578,54 +607,14 @@ function setUpdateSizesList(list) {
 
 function updateDBItem() {
 
-    disableButton("updateItemButton");    
+    var requestOptions = {
+        "button": "updateItemButton",
+        "validation": false,
+        "method": "PUT",
+        "url": "/UpdateItem"
+    }    
 
-    var validationResult = true;   
-    validationResult = getValidationResults(false);
-
-    if (validationResult) {
-
-        var item = createItem();
-
-        $.ajax({
-
-            method: "PUT",
-            url: urlServer + "/UpdateItem",
-            cache: false,
-            processData: false,
-            contentType: "application/json",
-            data: JSON.stringify(item)
-
-        }).done(function (data) {
-
-            if (data.correct) {
-
-                enableButton("updateItemButton");
-                hideAddItemModal();
-
-                loadItemsServerData();               
-                showSuccessAlert(data.message, 'modalCorrectMessage');
-
-
-            } else {
-
-                var errorMessages = data.message;                
-
-                showAlert(errorMessages, true);
-                enableButton("updateItemButton");
-            }
-
-        }).fail(function (jqXHR, textStatus) {
-
-            showRequestErrors(jqXHR, textStatus, true);
-            enableButton("updateItemButton");
-
-        });
-
-    } else {
-        showAlert(["Correct or complete the form fields"], true);
-        enableButton("updateItemButton");
-    }
+    makeRequest(requestOptions);    
 }
 
 var deleteSKU = "";
