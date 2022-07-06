@@ -195,14 +195,9 @@ function loadItemsDataTable(items) {
         var newDescriptionTag = "";
         const descriptionTagLength = 25;
 
-        if (descriptionLength > descriptionTagLength) {
-            for (let i = 0; i < descriptionTagLength; i++) {
+        if (descriptionLength > descriptionTagLength) {            
 
-                const charDescription = descriptionString[i];
-                newDescriptionTag += charDescription;
-
-            }
-            newDescriptionTag = newDescriptionTag + "...";
+            newDescriptionTag = reduceStringDescription(descriptionTagLength, descriptionString);
 
         } else {
             newDescriptionTag = descriptionString;
@@ -214,13 +209,8 @@ function loadItemsDataTable(items) {
         const careTagLength = 30;
 
         if (careLength > careTagLength) {
-            for (let i = 0; i < careTagLength; i++) {
-
-                const charCare = careString[i];
-                newCareTag += charCare;
-
-            }
-            newCareTag = newCareTag + "...";
+            
+            newCareTag = reduceStringDescription(careTagLength, careString);
 
         } else {
             newCareTag = careString;
@@ -261,6 +251,23 @@ function loadItemsDataTable(items) {
 
     });
 
+}
+
+function reduceStringDescription(length, stringDescription) {
+    
+    var newTag = "";
+
+    for (let i = 0; i < length; i++) {
+
+        const charTag = stringDescription[i];
+        newTag += charTag;
+
+    }
+
+    newTag = newTag + "...";
+
+    return newTag;
+    
 }
 
 function showModalAddItem() {
