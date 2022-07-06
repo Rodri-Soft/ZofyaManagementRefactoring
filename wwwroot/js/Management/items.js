@@ -36,52 +36,7 @@ function setItemsInformation() {
             <button id="buttonTest" class="btn button-action-style" onclick="showModalAddItem();">Add new
              item</button>
         </div>
-    `);
-
-    $("#pageContentColorTable").html(`
-          
-        <table id="colorsTable" class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Color</th>
-                    <th scope="col">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-            
-            </tbody>
-        </table>
-    `);
-
-    $("#pageContentImageTable").html(`
-          
-        <table id="imagesTable" class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Image</th>
-                    <th scope="col">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-            
-            </tbody>
-        </table>
-    `);
-
-    $("#pageContentSizeTable").html(`
-          
-        <table id="sizesTable" class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Size</th>
-                    <th scope="col">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-            
-            </tbody>
-        </table>
-    `);
+    `);   
 
     itemsTable = $('#itemsTable').DataTable({
         paging: false,
@@ -106,6 +61,56 @@ function setItemsInformation() {
 
     loadItemsServerData();
 
+    setListItemsTable();    
+}
+
+function setListItemsTable() {
+
+    $("#pageContentColorTable").html(`
+          
+        <table id="colorsTable" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Color</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
+        </table>
+    `);
+
+    $("#pageContentImageTable").html(`
+        
+        <table id="imagesTable" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
+        </table>
+    `);
+
+    $("#pageContentSizeTable").html(`
+        
+        <table id="sizesTable" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Size</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
+        </table>
+    `);
+    
     colorTable = $('#colorsTable').DataTable({
         paging: false,
         ordering: false,
@@ -138,7 +143,13 @@ function setItemsInformation() {
             { "data": "delete" }
         ]
     });
+}
 
+//Factorizar pintar tablas
+
+
+function setValidatoin() {
+    
     validateField("newInputImage", validateImage);
     validateSKUField();
     validateField("newInputDescription", validateDescription);
@@ -150,7 +161,6 @@ function setItemsInformation() {
     setGenderRestriction();    
     captureRestriction('newInputGender', setGenderRestriction);    
     captureRestriction('newInputStatus', setStatusRestriction);
-
 }
 
 var items = [];
@@ -469,76 +479,92 @@ function updateItem(sku) {
         $("#newInputGender").val(data.gender);
         $("#newInputCare").val(data.care);
 
-        colorsList = data.colors;
-        $.each(data.colors, function (i, colorValue) {
+        colorsList = data.colors;       
+        setUpdateColorList(colorsList);
 
-            var colorValuesTable = {
-                "color": colorValue,
+        imagesList = data.images;       
+        setUpdateImagesList(imagesList);
 
-                "delete":
-                    `        
-                        <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
-                            onclick='deleteColor("${colorValue}");'>
-                            <i class="fas fa-times"></i>
-                        </button>    
-                    `
-            };
-
-            addColorTable(colorValuesTable);
-
-        });
-
-        imagesList = data.images;
-        $.each(imagesList, function (i, imageValue) {
-
-            var index = imagesList.findIndex(i => i === imageValue);
-            var imageTag = "image_" + (index + 1);
-
-            var imageValuesTable = {
-                "image":
-
-                    `
-                        <a href="${imageValue}" target="_blank">
-                            ${imageTag}
-                        </a>
-                    `
-                ,
-
-                "delete":
-                    `        
-                        <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
-                            onclick='deleteImage("${imageValue}");'>
-                            <i class="fas fa-times"></i>
-                        </button>    
-                    `
-            };
-
-            addImageTable(imageValuesTable);
-
-        });
-
-        sizesList = data.sizes;
-        $.each(sizesList, function (i, sizeValue) {
-
-            var sizeValuesTable = {
-                "size": sizeValue,
-
-                "delete":
-                    `        
-                        <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
-                            onclick='deleteSize("${sizeValue}");'>
-                            <i class="fas fa-times"></i>
-                        </button>    
-                    `
-            };
-
-            addSizeTable(sizeValuesTable);
-
-        });
+        sizesList = data.sizes;        
+        setUpdateSizesList(sizesList);
 
 
         $("#addItemModal").modal("show");
 
+
+    });
+}
+
+function setUpdateColorList(list) {
+    
+    $.each(list, function (i, colorValue) {
+
+        var colorValuesTable = {
+            "color": colorValue,
+
+            "delete":
+                `        
+                    <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
+                        onclick='deleteColor("${colorValue}");'>
+                        <i class="fas fa-times"></i>
+                    </button>    
+                `
+        };
+
+        addColorTable(colorValuesTable);
+
+    });
+
+}
+
+function setUpdateImagesList(list) {
+
+    $.each(list, function (i, imageValue) {
+
+        var index = imagesList.findIndex(i => i === imageValue);
+        var imageTag = "image_" + (index + 1);
+
+        var imageValuesTable = {
+            "image":
+
+                `
+                    <a href="${imageValue}" target="_blank">
+                        ${imageTag}
+                    </a>
+                `
+            ,
+
+            "delete":
+                `        
+                    <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
+                        onclick='deleteImage("${imageValue}");'>
+                        <i class="fas fa-times"></i>
+                    </button>    
+                `
+        };
+
+        addImageTable(imageValuesTable);
+
+    });
+}
+
+function setUpdateSizesList(list) { 
+
+    $.each(list, function (i, sizeValue) {
+
+        var sizeValuesTable = {
+            "size": sizeValue,
+
+            "delete":
+                `        
+                    <button type="button" class="btn btn-link btn-sm px-3 icon-color" data-ripple-color="dark"
+                        onclick='deleteSize("${sizeValue}");'>
+                        <i class="fas fa-times"></i>
+                    </button>    
+                `
+        };
+
+        addSizeTable(sizeValuesTable);
 
     });
 }
